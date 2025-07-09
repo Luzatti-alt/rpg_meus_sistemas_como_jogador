@@ -1,4 +1,5 @@
 from ficha import *
+from Dados import * #so chamar o metodo ali e ja faz a rolagem e ver como add na camera
 ficha_esc = input("selecione a ficha: ").lower()
 valido = False
 #so para conseguir acessar o metodo de hab_bonus e fazer a consulta da ficha aqui
@@ -17,7 +18,14 @@ def play():
             fichas[ficha_esc].ficha_info()
             fichas[ficha_esc].hab_bonus()
             play()
-        #cura
+            #dados
+        elif act == "d4":
+            print(f"caiu: {Dados.d4()}")
+        elif act == "d10":
+            print(f"caiu: {Dados.d10()}")
+        elif act == "d20":
+            print(f"caiu: {Dados.d20()}")
+             #cura
         elif act == "cura":
             print("numero curado")
             cura = int(input("digite valor curado (ex: 5 de hp de cura): "))
@@ -46,7 +54,7 @@ def play():
             #add func de resetar o num das habilidades
             play()
         #invalidos
-        elif act == "ficha"or"cura"or"dano"or"lv up"or"hab usada"or"hab reset"or"fim da sessão":
+        elif act == "ficha"or"cura"or"dano"or"lv up"or"hab usada"or"hab reset"or"fim da sessão"or"d10":
             print("digitou algo inválido digite algo entre(por enquanto so fecha o programa)")
             instrucoes()
             play()
