@@ -1,0 +1,3 @@
+pip install numpy
+pip install opencv-python(pois tem para outras linguagens)
+de preferencia usar pytho 3.12 que roda melhor sla pq

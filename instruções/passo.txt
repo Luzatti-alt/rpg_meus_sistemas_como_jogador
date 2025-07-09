@@ -1,0 +1,3 @@
+sistema rolagem
+aparecer o numero que caiu na camera
+sistema de hp contagem de habilidades(resetar)etc
