@@ -1,5 +1,6 @@
 from ficha import *
 from Dados import * #add na camera o resultado o que falta dos dados
+from camera import *
 ficha_esc = input("selecione a ficha: ").lower()
 valido = False
 #so para conseguir acessar o metodo de hab_bonus e fazer a consulta da ficha aqui
