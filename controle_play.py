@@ -4,9 +4,9 @@ ficha_esc = input("selecione a ficha: ").lower()
 valido = False
 #so para conseguir acessar o metodo de hab_bonus e fazer a consulta da ficha aqui
 fichas = {
-    "golpnur": golpnur,
+    "golpnur": golpnur,# obj e como ele fica aqui
     "xx": xx,
-    #add outros players e seu objs(dados da ficha) dentro daqui e do outro jeito que ta no outro
+    #add outros players e seu objs(dados da ficha) n arquivo onde fica localizado as fichas e aqui do jeito que esta
 }
 def instrucoes():
     print("\ninstruções deste controle use somente durante combate \nver ficha | ficha \nsofreu dano | dano e dps num de dano sofrido(ex dano 5) \ncurado | vida e dps num da cura(vida 5) \nupou de nivel | lv up \nusou habilidade | hab usada dps o nome dela e por fim qnt de vezs usadas no turno ex chute 1(chute 1 vez)\nrecarregou habilidade | hab reset \nse a sessão acabou |fim da sessão\n fim do guia")
@@ -21,10 +21,13 @@ def play():
             #dados
         elif act == "d4":
             print(f"caiu: {Dados.d4()}")
+            play()
         elif act == "d10":
             print(f"caiu: {Dados.d10()}")
+            play()
         elif act == "d20":
             print(f"caiu: {Dados.d20()}")
+            play()
              #cura
         elif act == "cura":
             print("numero curado")
