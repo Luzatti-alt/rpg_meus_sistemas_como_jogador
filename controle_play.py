@@ -7,6 +7,18 @@ import threading #para poder rodar a camera e os inputs
 ficha_esc = input("selecione a ficha: ").lower()
 valido = False
 cam_on = False
+escurecer_ativo = False 
+red_blue_off = True
+hsv_state_red = False
+hsv_state_blue = False
+hsv_state_green = False
+police = False
+police_contador  = 0
+walter = False
+enter_pressed = False
+pixelar_ativo = False
+solarizar_ativo = False
+negativo_ativo = False
 #so para conseguir acessar o metodo de hab_bonus e fazer a consulta da ficha aqui
 fichas = {
     "golpnur": golpnur,# obj e como ele fica aqui
@@ -17,21 +29,21 @@ def instrucoes():
     print("\ninstruções deste controle use somente durante combate \nver ficha | ficha \nsofreu dano | dano e dps num de dano sofrido(ex dano 5) \ncurado | vida e dps num da cura(vida 5) \nupou de nivel | lv up \nusou habilidade | hab usada dps o nome dela e por fim qnt de vezs usadas no turno ex chute 1(chute 1 vez)\nrecarregou habilidade | hab reset \nse a sessão acabou |fim da sessão\n fim do guia")
 def Cam():
         cam = cv2.VideoCapture(0)
-        rotacao = 0
-        state = 1
+        global rotacao
+        global state
         #p/ações especificas
-        escurecer_ativo = False 
-        red_blue_off = True
-        hsv_state_red = False
-        hsv_state_blue = False
-        hsv_state_green = False
-        police = False
-        police_contador  = 0
-        walter = False
-        enter_pressed = False
-        pixelar_ativo = False
-        solarizar_ativo = False
-        negativo_ativo = False
+        global escurecer_ativo
+        global red_blue_off
+        global hsv_state_red
+        global hsv_state_blue
+        global hsv_state_green
+        global police
+        global police_contador
+        global walter
+        global enter_pressed
+        global pixelar_ativo
+        global solarizar_ativo
+        global negativo_ativo
         #filtros
         def pixelar(img):   
             altura, largura = img.shape[:2]
@@ -283,6 +295,21 @@ def Cam():
         cv2.destroyAllWindows()
 def play():
     global cam_on
+    global rotacao
+    global state
+    #p/ações especificas
+    global escurecer_ativo
+    global red_blue_off
+    global hsv_state_red
+    global hsv_state_blue
+    global hsv_state_green
+    global police
+    global police_contador
+    global walter
+    global enter_pressed
+    global pixelar_ativo
+    global solarizar_ativo
+    global negativo_ativo
     if cam_on == False:
         thread = threading.Thread(target=Cam, daemon=True)
         thread.start()
