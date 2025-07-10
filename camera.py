@@ -66,6 +66,7 @@ class camera:
             s = np.clip(s, 60, 255).astype(np.uint8)
             hsv_mod = cv2.merge([h, s, v])
             return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
+
     #detectar camera
         if not cam.isOpened():
             print("Erro ao abrir a câmera.")
@@ -76,7 +77,7 @@ class camera:
         while True:
             validacao, frame = cam.read()
             if not validacao:
-                print("Erro ao capturar frame.")
+                #print("Erro ao capturar frame.")
                 break
             # Aplica rotação no frame original
             if rotacao == 1:
@@ -268,4 +269,5 @@ class camera:
                 break
         cam.release()
         cv2.destroyAllWindows()
-    connect()
+    if __name__ == "__main__":#nn iniciar a camera em outro qnd rodar na hora
+        camera.connect()
