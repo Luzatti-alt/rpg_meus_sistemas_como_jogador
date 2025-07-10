@@ -32,7 +32,7 @@ def escurecer(img):
     v = (v * 0.42).clip(0, 255).astype(np.uint8)  # reduz brilho pela metade
     hsv_mod = cv2.merge([h, s, v])
     return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
-def apply_red_filter(img):
+def vermelho(img):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
     h[:] = 179
@@ -40,7 +40,7 @@ def apply_red_filter(img):
     s = np.clip(s, 0, 255).astype(np.uint8)
     hsv_mod = cv2.merge([h, s, v])
     return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
-def apply_blue_filter(img):
+def azul(img):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
     h[:] = 120
@@ -48,7 +48,7 @@ def apply_blue_filter(img):
     s = np.clip(s, 0, 255).astype(np.uint8)
     hsv_mod = cv2.merge([h, s, v])
     return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
-def apply_green_filter(img):
+def verde(img):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
     h[:] = 60
@@ -56,7 +56,7 @@ def apply_green_filter(img):
     s = np.clip(s, 0, 255).astype(np.uint8)
     hsv_mod = cv2.merge([h, s, v])
     return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
-def apply_walter_filter(img):
+def walter(img):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
     h[:] = 10
@@ -89,22 +89,22 @@ while True:
     if police and not red_blue_off:
         police_contador += 1
         if police_contador % 30 < 15:
-            frame_display = apply_red_filter(frame_display)
+            frame_display = vermelho(frame_display)
         else:
-            frame_display = apply_blue_filter(frame_display)
+            frame_display = azul(frame_display)
     else:
         # Aplica filtro vermelho
         if hsv_state_red and not red_blue_off:
-            frame_display = apply_red_filter(frame_display)
+            frame_display = vermelho(frame_display)
         # Aplica filtro azul
         if hsv_state_blue and not red_blue_off:
-            frame_display = apply_blue_filter(frame_display)
+            frame_display = azul(frame_display)
         # Aplica filtro verde
         if hsv_state_green:
-            frame_display = apply_green_filter(frame_display)
+            frame_display = verde(frame_display)
         # Aplica filtro walter
         if walter:
-            frame_display = apply_walter_filter(frame_display)
+            frame_display = walter(frame_display)
         if pixelar_ativo:
             frame_display = pixelar(frame_display)
         if solarizar_ativo:
