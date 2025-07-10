@@ -85,7 +85,7 @@ def Cam():
             s = np.clip(s, 0, 255).astype(np.uint8)
             hsv_mod = cv2.merge([h, s, v])
             return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
-        def walter(img):
+        def filtro_walter(img):
             hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
             h, s, v = cv2.split(hsv)
             h[:] = 10
@@ -203,6 +203,7 @@ def play():
             escurecer_ativo = pixelar_ativo = solarizar_ativo = negativo_ativo = False
             hsv_state_red = hsv_state_blue = hsv_state_green = police = walter = False
             red_blue_off = True
+            state = 1
             print("Todos os filtros desativados")
         elif act == "police":
             police = True
