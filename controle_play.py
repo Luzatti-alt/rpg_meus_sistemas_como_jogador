@@ -1,6 +1,7 @@
 from ficha import *
 from Dados import * #add na camera o resultado o que falta dos dados
 from camera import *#tem que fazer uma tread para o sistema e outro para a camera estudar isso
+import threading #para poder rodar a camera e os inputs
 ficha_esc = input("selecione a ficha: ").lower()
 valido = False
 #so para conseguir acessar o metodo de hab_bonus e fazer a consulta da ficha aqui
@@ -13,14 +14,15 @@ def instrucoes():
     print("\ninstruções deste controle use somente durante combate \nver ficha | ficha \nsofreu dano | dano e dps num de dano sofrido(ex dano 5) \ncurado | vida e dps num da cura(vida 5) \nupou de nivel | lv up \nusou habilidade | hab usada dps o nome dela e por fim qnt de vezs usadas no turno ex chute 1(chute 1 vez)\nrecarregou habilidade | hab reset \nse a sessão acabou |fim da sessão\n fim do guia")
 def play():
      while valido:
-        camera.connect()
+        Camera.connect()
+        thread = threading.Thread(target=Camera.connect, daemon=True)
+        thread.start()
         act = input("\n sua açõa é: ")
         #ficha aparecer elementos
         if act == "ficha":
             fichas[ficha_esc].ficha_info()
             fichas[ficha_esc].hab_bonus()
             play()
-            #dados
         elif act == "d4":
             print(f"caiu: {Dados.d4()}")
             play()
