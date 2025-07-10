@@ -133,7 +133,7 @@ def Cam():
                     frame_display = verde(frame_display)
                 # Aplica filtro walter
                 if walter:
-                    frame_display = walter(frame_display)
+                    frame_display = filtro_walter(frame_display)
                 if pixelar_ativo:
                     frame_display = pixelar(frame_display)
                 if solarizar_ativo:
@@ -160,6 +160,7 @@ def play():
     global hsv_state_red, hsv_state_blue, hsv_state_green
     global police, police_contador, walter, enter_pressed
     global pixelar_ativo, solarizar_ativo, negativo_ativo
+    global valido
     if not cam_on:
         thread = threading.Thread(target=Cam, daemon=True)
         thread.start()
@@ -258,5 +259,3 @@ elif ficha_esc == "xx":
     instrucoes()
     play()
 #geral das fichas
-#if ficha_esc != "golpnur" or "xx" or "a" or "b" or "c":
-    #print("sem ficha ainda ou ficha inválida")
