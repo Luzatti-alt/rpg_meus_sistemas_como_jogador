@@ -1,5 +1,5 @@
 from ficha import *
-from Dados import * #ver como fazer ele nn rodar qnd inicar e ver como add na camera
+from Dados import * #add na camera o resultado o que falta dos dados
 ficha_esc = input("selecione a ficha: ").lower()
 valido = False
 #so para conseguir acessar o metodo de hab_bonus e fazer a consulta da ficha aqui
@@ -32,24 +32,25 @@ def play():
         elif act == "cura":
             print("numero curado")
             cura = int(input("digite valor curado (ex: 5 de hp de cura): "))
-            #add pegar valor da vida e fazer somar ou diminuir aqui para melhora
+            #add pegar valor da vida e fazer somar ou diminuir aqui para controle
             play()
         #dano
         elif act == "dano":
             print("dano sofrido")
             dano = int(input("digite valor de dano sofrido (ex: 5 de hp de dano): "))
-            #add pegar valor da vida e fazer somar ou diminuir aqui para melhora
+            #add pegar valor da vida e fazer somar ou diminuir aqui para controle
             play()
         #lv up
         elif act == "lv up":
             print("level upado em sua ficha \n")
+            #updatar o lv na ficha escolhida
             play()
         #usadas
         elif act == "hab usada":
             print("qual habilidade usada: ")
-            qual_hab = input("")
+            qual_hab = input("qual habilidade será usada: ")
             print("quantos usos: ")
-            qnt_usos = input("")
+            qnt_usos = input("quantas vezes foi usada no turno: ")
             play()
         #reset
         elif act == "hab reset":
@@ -66,7 +67,6 @@ def play():
             print("espero que tenha tido uma boa sessão")
             break
         exit()
-
 #especifica por jogador
 #eu
 if ficha_esc =="golpnur":
@@ -82,6 +82,7 @@ elif ficha_esc == "xx":
     valido = True
     instrucoes()
     play()
+#geral das fichas
 if ficha_esc != "golpnur" or "xx" or "a" or "b" or "c":
     print("sem ficha ainda ou ficha inválida")
     exit()
