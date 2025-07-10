@@ -1,7 +1,8 @@
 import cv2
 import keyboard
 import numpy as np
-class camera:
+import threading
+class Camera:
     def connect():
         cam = cv2.VideoCapture(0)
         rotacao = 0
@@ -66,7 +67,6 @@ class camera:
             s = np.clip(s, 60, 255).astype(np.uint8)
             hsv_mod = cv2.merge([h, s, v])
             return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
-
     #detectar camera
         if not cam.isOpened():
             print("Erro ao abrir a câmera.")
@@ -269,5 +269,6 @@ class camera:
                 break
         cam.release()
         cv2.destroyAllWindows()
-    if __name__ == "__main__":#nn iniciar a camera em outro qnd rodar na hora
-        camera.connect()
+if __name__ == "__main__":#nn iniciar a camera em outro qnd rodar na hora
+    thread = threading.Thread(target=Camera.connect)
+    thread.start()
