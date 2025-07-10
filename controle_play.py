@@ -1,19 +1,19 @@
 from ficha import *
-from Dados import * #so chamar o metodo ali e ja faz a rolagem e ver como add na camera
+from Dados import * #ver como fazer ele nn rodar qnd inicar e ver como add na camera
 ficha_esc = input("selecione a ficha: ").lower()
 valido = False
 #so para conseguir acessar o metodo de hab_bonus e fazer a consulta da ficha aqui
 fichas = {
     "golpnur": golpnur,
     "xx": xx,
-    #add outros players e seu objs ficha deito aqui e do outro jeito que ta no outro
+    #add outros players e seu objs(dados da ficha) dentro daqui e do outro jeito que ta no outro
 }
 def instrucoes():
     print("\ninstruções deste controle use somente durante combate \nver ficha | ficha \nsofreu dano | dano e dps num de dano sofrido(ex dano 5) \ncurado | vida e dps num da cura(vida 5) \nupou de nivel | lv up \nusou habilidade | hab usada dps o nome dela e por fim qnt de vezs usadas no turno ex chute 1(chute 1 vez)\nrecarregou habilidade | hab reset \nse a sessão acabou |fim da sessão\n fim do guia")
 def play():
      while valido:
         act = input("\n sua açõa é: ")
-        #ficha
+        #ficha aparecer elementos
         if act == "ficha":
             fichas[ficha_esc].ficha_info()
             fichas[ficha_esc].hab_bonus()
@@ -54,7 +54,7 @@ def play():
             #add func de resetar o num das habilidades
             play()
         #invalidos
-        elif act == "ficha"or"cura"or"dano"or"lv up"or"hab usada"or"hab reset"or"fim da sessão"or"d10":
+        elif act == "ficha"or"cura"or"dano"or"lv up"or"hab usada"or"hab reset"or"fim da sessão"or"d4"or"d10"or"d20":
             print("digitou algo inválido digite algo entre(por enquanto so fecha o programa)")
             instrucoes()
             play()
