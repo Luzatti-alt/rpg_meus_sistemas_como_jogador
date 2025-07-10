@@ -164,104 +164,81 @@ def play():
         thread = threading.Thread(target=Cam, daemon=True)
         thread.start()
         cam_on = True
-
     while valido:
         act = input("\n sua ação é: ")
-
         if act == "ficha":
             fichas[ficha_esc].ficha_info()
             fichas[ficha_esc].hab_bonus()
-
         elif act == "pixel":
             pixelar_ativo = not pixelar_ativo
             print(f"Pixelar {'ativado' if pixelar_ativo else 'desativado'}")
-
         elif act == "vermelho":
             hsv_state_red = True
             hsv_state_blue = hsv_state_green = False
             red_blue_off = False
             print("Filtro vermelho ativado")
-
         elif act == "azul":
             hsv_state_blue = True
             hsv_state_red = hsv_state_green = False
             red_blue_off = False
             print("Filtro azul ativado")
-
         elif act == "verde":
             hsv_state_green = True
             hsv_state_red = hsv_state_blue = False
             red_blue_off = True
             print("Filtro verde ativado")
-
         elif act == "negativo":
             negativo_ativo = not negativo_ativo
             print(f"Negativo {'ativado' if negativo_ativo else 'desativado'}")
-
         elif act == "solarizar":
             solarizar_ativo = not solarizar_ativo
             print(f"Solarizar {'ativado' if solarizar_ativo else 'desativado'}")
-
         elif act == "escurecer":
             escurecer_ativo = True
             hsv_state_red = hsv_state_blue = hsv_state_green = False
             red_blue_off = True
             print("Escurecimento ativado")
-
         elif act == "normal":
             escurecer_ativo = pixelar_ativo = solarizar_ativo = negativo_ativo = False
             hsv_state_red = hsv_state_blue = hsv_state_green = police = walter = False
             red_blue_off = True
             print("Todos os filtros desativados")
-
         elif act == "police":
             police = True
             hsv_state_red = hsv_state_blue = hsv_state_green = False
             red_blue_off = False
             print("Modo polícia ativado")
-
         elif act == "walter":
             walter = True
             hsv_state_red = hsv_state_blue = hsv_state_green = False
             print("Modo Walter ativado")
-
         elif act == "bw":
             state = 2
             print("Modo preto e branco ativado")
-
         elif act == "cor":
             state = 1
             print("Modo colorido ativado")
-
         elif act == "d4":
             print(f"caiu: {Dados.d4()}")
-
         elif act == "d10":
             print(f"caiu: {Dados.d10()}")
-
         elif act == "d20":
             print(f"caiu: {Dados.d20()}")
-
         elif act == "cura":
             cura = int(input("Valor curado: "))
             # Adicione lógica de aumento de vida
-
         elif act == "dano":
             dano = int(input("Valor de dano sofrido: "))
             # Adicione lógica de redução de vida
-
         elif act == "lv up":
             print("Level upado.")
-
         elif act == "hab usada":
             qual_hab = input("Habilidade usada: ")
             qnt_usos = input("Usos no turno: ")
             # Adicione lógica de uso
-
         elif act == "hab reset":
             print("Usos resetados.")
             # Adicione lógica de reset
-
         elif act == "fim da sessão":
             print("Espero que tenha tido uma boa sessão!")
             break
