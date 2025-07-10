@@ -7,6 +7,8 @@ import threading #para poder rodar a camera e os inputs
 ficha_esc = input("selecione a ficha: ").lower()
 valido = False
 cam_on = False
+rotacao = 0
+state = 1
 escurecer_ativo = False 
 red_blue_off = True
 hsv_state_red = False
@@ -145,148 +147,7 @@ def Cam():
                 frame_display = cv2.cvtColor(frame_display, cv2.COLOR_BGR2GRAY)
             cv2.imshow("Camera", frame_display)
             # Controle das setas # estou fazendo deste jeito ´para multimplas teclas o key == nn funciona com certas teclas
-            if keyboard.is_pressed('left'):
-                print("esquerda")
-                rotacao = 3
-            elif keyboard.is_pressed('up'):
-                print("cima")
-                rotacao = 0
-            elif keyboard.is_pressed('right'):
-                print("direita")
-                rotacao = 1
-            elif keyboard.is_pressed('down'):
-                print("baixo")
-                rotacao = 2
-            key = cv2.waitKey(1) & 0xFF  # captura tecla
-            if key not in [ord('r'), ord('b'), ord('p'), 255]:  # 255 = nenhuma tecla
-                police = False
-                hsv_state_blue = False
-                hsv_state_red = False
-                red_blue_off = True
-                escurecer_ativo = False
-                pixelar_ativo = False
-                solarizar_ativo = False
-                negativo_ativo = False
-            # Debounce Enter(evitar lag e mudar somente quando apertar e nn precionar)
-            if key == 13:  # enter
-                if not enter_pressed:
-                    if state == 2:
-                        state = 1
-                    else:
-                        state = 2
-                    print(f"Modo: {'Preto e Branco' if state == 2 else 'Colorido'}")
-                    enter_pressed = True
-                    hsv_state_red = False
-                    hsv_state_blue = False
-                    hsv_state_green = False
-                    police = False
-                    walter = False
-                    escurecer_ativo = False
-                    pixelar_ativo = False
-                    solarizar_ativo = False
-                    negativo_ativo = False
-            else:
-                enter_pressed = False
-            #modo vermelho
-            if keyboard.is_pressed('r'):
-                hsv_state_red = True
-                hsv_state_blue = False
-                hsv_state_green = False
-                red_blue_off = False
-                escurecer_ativo = False
-                police = False
-                walter = False
-                pixelar_ativo = False
-                solarizar_ativo = False
-                negativo_ativo = False
-            if keyboard.is_pressed('b'):
-                hsv_state_blue = True
-                hsv_state_red = False
-                red_blue_off = False
-                police = False
-                hsv_state_green = False
-                escurecer_ativo = False
-                walter = False
-                pixelar_ativo = False
-                solarizar_ativo = False
-                negativo_ativo = False
-            if keyboard.is_pressed('g'):
-                hsv_state_blue = False
-                hsv_state_red = False
-                red_blue_off = True
-                police = False
-                hsv_state_green = True
-                escurecer_ativo = False
-                walter = False
-                pixelar_ativo = False
-                solarizar_ativo = False
-                negativo_ativo = False
-            if keyboard.is_pressed('n'):
-                hsv_state_blue = False
-                hsv_state_red = False
-                hsv_state_green = False
-                police = False
-                walter = False
-                escurecer_ativo = False
-                state = 0
-                pixelar_ativo = False
-                solarizar_ativo = False
-                negativo_ativo = False
-            if keyboard.is_pressed('w'):
-                hsv_state_blue = False
-                hsv_state_red = False
-                hsv_state_green = False
-                police = False
-                walter = True
-                escurecer_ativo = False
-                pixelar_ativo = False
-                solarizar_ativo = False
-                negativo_ativo = False
-            if keyboard.is_pressed('p'):
-                hsv_state_blue = False
-                hsv_state_red = False
-                hsv_state_green = False
-                walter = False
-                police = True
-                police_contador = 0  # Resetar o contador aqui
-                red_blue_off = False  # Ativar modo de cor para o police funcionar
-                pixelar_ativo = False
-                solarizar_ativo = False
-                negativo_ativo = False
-                escurecer_ativo = False
-            if keyboard.is_pressed('e'):
-                hsv_state_blue = False
-                hsv_state_red = False
-                hsv_state_green = False
-                walter = False
-                police = False
-                red_blue_off = True
-                escurecer_ativo = True
-                pixelar_ativo = False
-                solarizar_ativo = False
-                negativo_ativo = False
-            if keyboard.is_pressed('a'):
-                hsv_state_blue = False
-                hsv_state_red = False
-                hsv_state_green = False
-                walter = False
-                police = False
-                red_blue_off = True
-                escurecer_ativo = False
-                pixelar_ativo = True    
-                solarizar_ativo = False
-                negativo_ativo = False
-            if keyboard.is_pressed('i'):
-                hsv_state_blue = False
-                hsv_state_red = False
-                hsv_state_green = False
-                walter = False
-                police = False
-                red_blue_off = True
-                escurecer_ativo = False
-                pixelar_ativo = False
-                solarizar_ativo = False
-                negativo_ativo = True
+            key = cv2.waitKey(1)
             if key == 27:  # esc para fechar
                 print("fechando")
                 exit()
@@ -294,82 +155,116 @@ def Cam():
         cam.release()
         cv2.destroyAllWindows()
 def play():
-    global cam_on
-    global rotacao
-    global state
-    #p/ações especificas
-    global escurecer_ativo
-    global red_blue_off
-    global hsv_state_red
-    global hsv_state_blue
-    global hsv_state_green
-    global police
-    global police_contador
-    global walter
-    global enter_pressed
-    global pixelar_ativo
-    global solarizar_ativo
-    global negativo_ativo
-    if cam_on == False:
+    global cam_on, rotacao, state
+    global escurecer_ativo, red_blue_off
+    global hsv_state_red, hsv_state_blue, hsv_state_green
+    global police, police_contador, walter, enter_pressed
+    global pixelar_ativo, solarizar_ativo, negativo_ativo
+    if not cam_on:
         thread = threading.Thread(target=Cam, daemon=True)
         thread.start()
-        Cam()
         cam_on = True
+
     while valido:
-        act = input("\n sua açõa é: ")
-        #ficha aparecer elementos
+        act = input("\n sua ação é: ")
+
         if act == "ficha":
             fichas[ficha_esc].ficha_info()
             fichas[ficha_esc].hab_bonus()
-            play()
+
+        elif act == "pixel":
+            pixelar_ativo = not pixelar_ativo
+            print(f"Pixelar {'ativado' if pixelar_ativo else 'desativado'}")
+
+        elif act == "vermelho":
+            hsv_state_red = True
+            hsv_state_blue = hsv_state_green = False
+            red_blue_off = False
+            print("Filtro vermelho ativado")
+
+        elif act == "azul":
+            hsv_state_blue = True
+            hsv_state_red = hsv_state_green = False
+            red_blue_off = False
+            print("Filtro azul ativado")
+
+        elif act == "verde":
+            hsv_state_green = True
+            hsv_state_red = hsv_state_blue = False
+            red_blue_off = True
+            print("Filtro verde ativado")
+
+        elif act == "negativo":
+            negativo_ativo = not negativo_ativo
+            print(f"Negativo {'ativado' if negativo_ativo else 'desativado'}")
+
+        elif act == "solarizar":
+            solarizar_ativo = not solarizar_ativo
+            print(f"Solarizar {'ativado' if solarizar_ativo else 'desativado'}")
+
+        elif act == "escurecer":
+            escurecer_ativo = True
+            hsv_state_red = hsv_state_blue = hsv_state_green = False
+            red_blue_off = True
+            print("Escurecimento ativado")
+
+        elif act == "normal":
+            escurecer_ativo = pixelar_ativo = solarizar_ativo = negativo_ativo = False
+            hsv_state_red = hsv_state_blue = hsv_state_green = police = walter = False
+            red_blue_off = True
+            print("Todos os filtros desativados")
+
+        elif act == "police":
+            police = True
+            hsv_state_red = hsv_state_blue = hsv_state_green = False
+            red_blue_off = False
+            print("Modo polícia ativado")
+
+        elif act == "walter":
+            walter = True
+            hsv_state_red = hsv_state_blue = hsv_state_green = False
+            print("Modo Walter ativado")
+
+        elif act == "bw":
+            state = 2
+            print("Modo preto e branco ativado")
+
+        elif act == "cor":
+            state = 1
+            print("Modo colorido ativado")
+
         elif act == "d4":
             print(f"caiu: {Dados.d4()}")
-            play()
+
         elif act == "d10":
             print(f"caiu: {Dados.d10()}")
-            play()
+
         elif act == "d20":
             print(f"caiu: {Dados.d20()}")
-            play()
-             #cura
+
         elif act == "cura":
-            print("numero curado")
-            cura = int(input("digite valor curado (ex: 5 de hp de cura): "))
-            #add pegar valor da vida e fazer somar ou diminuir aqui para controle
-            play()
-        #dano
+            cura = int(input("Valor curado: "))
+            # Adicione lógica de aumento de vida
+
         elif act == "dano":
-            print("dano sofrido")
-            dano = int(input("digite valor de dano sofrido (ex: 5 de hp de dano): "))
-            #add pegar valor da vida e fazer somar ou diminuir aqui para controle
-            play()
-        #lv up
+            dano = int(input("Valor de dano sofrido: "))
+            # Adicione lógica de redução de vida
+
         elif act == "lv up":
-            print("level upado em sua ficha \n")
-            #updatar o lv na ficha escolhida
-            play()
-        #usadas
+            print("Level upado.")
+
         elif act == "hab usada":
-            print("qual habilidade usada: ")
-            qual_hab = input("qual habilidade será usada: ")
-            print("quantos usos: ")
-            qnt_usos = input("quantas vezes foi usada no turno: ")
-            play()
-        #reset
+            qual_hab = input("Habilidade usada: ")
+            qnt_usos = input("Usos no turno: ")
+            # Adicione lógica de uso
+
         elif act == "hab reset":
-            print("num de usos das habilidades resetados")
-            #add func de resetar o num das habilidades
-            play()
-        #invalidos
-        elif act == "ficha"or"cura"or"dano"or"lv up"or"hab usada"or"hab reset"or"fim da sessão"or"d4"or"d10"or"d20":
-            print("digitou algo inválido digite algo entre(por enquanto so fecha o programa)")
-            instrucoes()
-            play()
-        #fim sessão
+            print("Usos resetados.")
+            # Adicione lógica de reset
+
         elif act == "fim da sessão":
-            print("espero que tenha tido uma boa sessão")
+            print("Espero que tenha tido uma boa sessão!")
             break
-        exit()
 #especifica por jogador
 #eu
 if ficha_esc =="golpnur":
@@ -386,6 +281,5 @@ elif ficha_esc == "xx":
     instrucoes()
     play()
 #geral das fichas
-if ficha_esc != "golpnur" or "xx" or "a" or "b" or "c":
-    print("sem ficha ainda ou ficha inválida")
-    exit()
+#if ficha_esc != "golpnur" or "xx" or "a" or "b" or "c":
+    #print("sem ficha ainda ou ficha inválida")
