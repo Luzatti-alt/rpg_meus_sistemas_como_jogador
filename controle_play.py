@@ -27,7 +27,7 @@ fichas = {
     #add outros players e seu objs(dados da ficha) n arquivo onde fica localizado as fichas e aqui do jeito que esta
 }
 def instrucoes():
-    print("\ninstruções deste controle use somente durante combate \nver ficha | ficha \nsofreu dano | dano e dps num de dano sofrido(ex dano 5) \ncurado | vida e dps num da cura(vida 5) \nupou de nivel | lv up \nusou habilidade | hab usada dps o nome dela e por fim qnt de vezs usadas no turno ex chute 1(chute 1 vez)\nrecarregou habilidade | hab reset \nse a sessão acabou |fim da sessão\n fim do guia")
+    print("\ninstruções deste controle use somente durante combate \nver ficha | ficha \nsofreu dano | dano e dps num de dano sofrido(ex dano 5) curado | vida e dps num da cura(vida 5) upou de nivel | lv up usou habilidade | hab usada dps o nome dela e por fim qnt de vezs usadas no turno ex chute 1(chute 1 vez)recarregou habilidade | hab reset \n efeitos de camera são digitados aqui: pixel(para pixelizar a camera),vermelho(imagem mais avermelhada),azul(imagem mais azulada) verde(imagem mais verde) inverter(inverte as cores) escurecer normal(retira os filtros) policia(alterna entre vermelho e azul) walter(filtro laranja) noir cor(desativa o noir/ou use o normal)\nse a sessão acabou |fim da sessão\n fim do guia")
 def Cam():
         cam = cv2.VideoCapture(0)
         global rotacao
@@ -191,7 +191,7 @@ def play():
             red_blue_off = True
             state = 1
             print("Todos os filtros desativados")
-        elif act == "police":
+        elif act == "policia":
             police = True
             hsv_state_red = hsv_state_blue = hsv_state_green = False
             red_blue_off = False
@@ -200,7 +200,7 @@ def play():
             walter = True
             hsv_state_red = hsv_state_blue = hsv_state_green = False
             print("Modo Walter ativado")
-        elif act == "bw":
+        elif act == "noir":
             state = 2
             print("Modo preto e branco ativado")
         elif act == "cor":
