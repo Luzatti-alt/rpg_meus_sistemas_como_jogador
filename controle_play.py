@@ -20,6 +20,8 @@ walter = False
 enter_pressed = False
 pixelar_ativo = False
 negativo_ativo = False
+dado_atual_img = None
+dado_atual_num = None
 #so para conseguir acessar o metodo de hab_bonus e fazer a consulta da ficha aqui
 fichas = {
     "golpnur": golpnur,# obj e como ele fica aqui
@@ -44,6 +46,37 @@ def Cam():
         global enter_pressed
         global pixelar_ativo
         global negativo_ativo
+        def mostrar_dado_no_frame(frame):
+            global dado_atual_img, dado_atual_num
+            if dado_atual_img is not None and dado_atual_num is not None:
+                # Posição onde o dado vai aparecer
+                x, y = 10, 10
+                frame = sobrepor_imagem_fundo(frame, dado_atual_img, x, y)
+                # Escreve o número do dado ao lado da imagem
+                cv2.putText(frame, str(dado_atual_num),
+                            (x + dado_atual_img.shape[1] + 10, y + 40),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 255, 255), 3, cv2.LINE_AA)
+            return frame
+        def sobrepor_imagem_fundo(frame, imagem, x, y):
+            h, w = imagem.shape[:2]
+            if y + h > frame.shape[0] or x + w > frame.shape[1]:
+                return frame
+            roi = frame[y:y+h, x:x+w]
+            if imagem.shape[2] == 4:
+                overlay = imagem[:, :, :3]
+                mask = imagem[:, :, 3:] / 255.0
+                roi[:] = (1.0 - mask) * roi + mask * overlay
+            else:
+                frame[y:y+h, x:x+w] = imagem
+            return frame
+        def d4_img():
+            img_d4 = cv2.imread("imagens/d4-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+        def d6_img():
+            img_d6 = cv2.imread("imagens/d6-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+        def d10_img():
+            img_d10 = cv2.imread("imagens/d10-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+        def d20_img():
+            img_d20 = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
         #filtros
         def pixelar(img):   
             altura, largura = img.shape[:2]
@@ -132,7 +165,8 @@ def Cam():
                     frame_display = escurecer(frame_display)
                 # Aplica modo preto e branco se selecionado
             if state == 2:
-                frame_display = cv2.cvtColor(frame_display, cv2.COLOR_BGR2GRAY)
+                frame_display = mostrar_dado_no_frame(frame_display)
+            frame_display = mostrar_dado_no_frame(frame_display)
             cv2.imshow("Camera", frame_display)
             # Controle das setas # estou fazendo deste jeito ´para multimplas teclas o key == nn funciona com certas teclas
             key = cv2.waitKey(1)
@@ -142,6 +176,7 @@ def Cam():
                 break
         cam.release()
         cv2.destroyAllWindows()
+
 def play():
     global cam_on, rotacao, state
     global escurecer_ativo, red_blue_off
@@ -149,6 +184,7 @@ def play():
     global police, police_contador, walter, enter_pressed
     global pixelar_ativo, negativo_ativo
     global valido
+    global dado_atual_img, dado_atual_num 
     if not cam_on:
         thread = threading.Thread(target=Cam, daemon=True)
         thread.start()
@@ -189,6 +225,8 @@ def play():
             escurecer_ativo = pixelar_ativo = negativo_ativo = False
             hsv_state_red = hsv_state_blue = hsv_state_green = police = walter = False
             red_blue_off = True
+            dado_atual_img = None
+            dado_atual_num = None
             state = 1
             print("Todos os filtros desativados")
         elif act == "policia":
@@ -208,18 +246,23 @@ def play():
             print("Modo colorido ativado")
             #dados
             #achar dados ortogonais e animar nums aleatorios e a impressão de cair um numero e isso aparecer na camera
-        elif act == "d4":
-            img_d4 = cv2.imread("imagens/d4-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-            print(f"caiu: {Dados.d4()}")
+        if act == "d4":
+            dado_atual_img = cv2.imread("imagens/d4-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+            dado_atual_num = Dados.d4()
+            print(f"caiu: {dado_atual_num}")
         elif act == "d6":
-            img_d4 = cv2.imread("imagens/d6-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-            print(f"caiu: {Dados.d6()}")
+            dado_atual_img = cv2.imread("imagens/d6-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+            dado_atual_num = Dados.d6()
+            print(f"caiu: {dado_atual_num}")
         elif act == "d10":
-            img_d4 = cv2.imread("imagens/d10-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-            print(f"caiu: {Dados.d10()}")
+            dado_atual_img = cv2.imread("imagens/d10-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+            dado_atual_num = Dados.d10()
+            print(f"caiu: {dado_atual_num}")
         elif act == "d20":
-            img_d4 = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-            print(f"caiu: {Dados.d20()}")
+            dado_atual_img = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+            dado_atual_num = Dados.d20()
+            print(f"caiu: {dado_atual_num}")
+
             #açoes geral
         elif act == "cura":
             cura = int(input("Valor curado: "))
