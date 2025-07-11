@@ -207,8 +207,11 @@ def play():
             state = 1
             print("Modo colorido ativado")
             #dados
+            #achar dados ortogonais e animar nums aleatorios e a impressão de cair um numero e isso aparecer na camera
         elif act == "d4":
             print(f"caiu: {Dados.d4()}")
+        elif act == "d6":
+            print(f"caiu: {Dados.d6()}")
         elif act == "d10":
             print(f"caiu: {Dados.d10()}")
         elif act == "d20":
@@ -226,6 +229,8 @@ def play():
         elif act == "hab usada":
             qual_hab = input("Habilidade usada: ")
             qnt_usos = input("Usos no turno: ")
+            uso_perso = golpnur.bonus_usos#sem () neste caso
+            print(uso_perso)
             # Adicione lógica de uso
         elif act == "hab reset":
             print("Usos resetados.")
