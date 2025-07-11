@@ -239,18 +239,11 @@ def play():
             print("Espero que tenha tido uma boa sessão!")
             break
 #especifica por jogador
-#eu
-if ficha_esc =="golpnur":
-    golpnur.ficha_info()
-    golpnur.hab_bonus()
+if ficha_esc in fichas:
+    fichas[ficha_esc].ficha_info()
+    fichas[ficha_esc].hab_bonus()
     valido = True
     instrucoes()
     play()
-#outros personagem
-elif ficha_esc == "xx":
-    xx.ficha_info()
-    xx.hab_bonus()
-    valido = True
-    instrucoes()
-    play()
-#geral das fichas
+else:
+    print(f"Ficha '{ficha_esc}' não encontrada. Verifique a ortografia.")
