@@ -3,6 +3,7 @@ from Dados import * #add na camera o resultado o que falta dos dados
 import cv2
 import keyboard
 import numpy as np
+import keyboard
 import threading #para poder rodar a camera e os inputs
 ficha_esc = input("selecione a ficha: ").lower()
 valido = False
@@ -176,6 +177,14 @@ def Cam():
                 frame_display = mostrar_dado_no_frame(frame_display)
             frame_display = mostrar_dado_no_frame(frame_display)
             cv2.imshow("Camera", frame_display)
+            if keyboard.is_pressed('left'):
+                rotacao = 3
+            elif keyboard.is_pressed('up'):
+                rotacao = 0
+            elif keyboard.is_pressed('right'):
+                rotacao = 1
+            elif keyboard.is_pressed('down'):
+                rotacao = 2
             # Controle das setas # estou fazendo deste jeito ´para multimplas teclas o key == nn funciona com certas teclas
             key = cv2.waitKey(1)
             if key == 27:  # esc para fechar
