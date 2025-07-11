@@ -53,9 +53,17 @@ def Cam():
                 x, y = 10, 10
                 frame = sobrepor_imagem_fundo(frame, dado_atual_img, x, y)
                 # Escreve o número do dado ao lado da imagem
-                cv2.putText(frame, str(dado_atual_num),
-                            (x + dado_atual_img.shape[1] + 10, y + 40),
-                            cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 255, 255), 3, cv2.LINE_AA)
+                img_h, img_w = dado_atual_img.shape[:2]
+                center_x = x + img_w // 2
+                center_y = y + img_h // 2
+                text = str(dado_atual_num)
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                font_scale = 1.5
+                thickness = 3
+                text_size, _ = cv2.getTextSize(text, font, font_scale, thickness)
+                text_x = center_x - text_size[0] // 2
+                text_y = center_y + text_size[1] // 2  # alinha pela base do texto
+                cv2.putText(frame, text, (text_x, text_y), font, font_scale, (255, 255, 255), thickness, cv2.LINE_AA)
             return frame
         def sobrepor_imagem_fundo(frame, imagem, x, y):
             h, w = imagem.shape[:2]
