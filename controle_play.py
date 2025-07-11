@@ -230,8 +230,11 @@ def play():
             red_blue_off = True
             print("Escurecimento ativado")
         elif act == "normal":
-            escurecer_ativo = pixelar_ativo = negativo_ativo = False
-            hsv_state_red = hsv_state_blue = hsv_state_green = police = walter = False
+            hsv_state_red = False
+            hsv_state_blue = False
+            hsv_state_green = False
+            police = False
+            walter = False
             red_blue_off = True
             dado_atual_img = None
             dado_atual_num = None
