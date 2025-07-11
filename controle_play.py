@@ -209,12 +209,16 @@ def play():
             #dados
             #achar dados ortogonais e animar nums aleatorios e a impressão de cair um numero e isso aparecer na camera
         elif act == "d4":
+            img_d4 = cv2.imread("imagens/d4-removebg-preview.png", cv2.IMREAD_UNCHANGED)
             print(f"caiu: {Dados.d4()}")
         elif act == "d6":
+            img_d4 = cv2.imread("imagens/d6-removebg-preview.png", cv2.IMREAD_UNCHANGED)
             print(f"caiu: {Dados.d6()}")
         elif act == "d10":
+            img_d4 = cv2.imread("imagens/d10-removebg-preview.png", cv2.IMREAD_UNCHANGED)
             print(f"caiu: {Dados.d10()}")
         elif act == "d20":
+            img_d4 = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
             print(f"caiu: {Dados.d20()}")
             #açoes geral
         elif act == "cura":
