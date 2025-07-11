@@ -19,7 +19,6 @@ police_contador  = 0
 walter = False
 enter_pressed = False
 pixelar_ativo = False
-solarizar_ativo = False
 negativo_ativo = False
 #so para conseguir acessar o metodo de hab_bonus e fazer a consulta da ficha aqui
 fichas = {
@@ -44,15 +43,12 @@ def Cam():
         global walter
         global enter_pressed
         global pixelar_ativo
-        global solarizar_ativo
         global negativo_ativo
         #filtros
         def pixelar(img):   
             altura, largura = img.shape[:2]
             pequeno = cv2.resize(img, (32, 24),     interpolation=cv2.INTER_LINEAR)
             return cv2.resize(pequeno,  (largura, altura),   interpolation=cv2.INTER_NEAREST)
-        def solarizar(img):
-         return cv2.max(img, 255 - img)
         def negativo(img):
             return cv2.bitwise_not(img)
         def escurecer(img):
@@ -130,8 +126,6 @@ def Cam():
                     frame_display = filtro_walter(frame_display)
                 if pixelar_ativo:
                     frame_display = pixelar(frame_display)
-                if solarizar_ativo:
-                    frame_display = solarizar(frame_display)
                 if negativo_ativo:
                     frame_display = negativo(frame_display)
                 if escurecer_ativo:
@@ -153,7 +147,7 @@ def play():
     global escurecer_ativo, red_blue_off
     global hsv_state_red, hsv_state_blue, hsv_state_green
     global police, police_contador, walter, enter_pressed
-    global pixelar_ativo, solarizar_ativo, negativo_ativo
+    global pixelar_ativo, negativo_ativo
     global valido
     if not cam_on:
         thread = threading.Thread(target=Cam, daemon=True)
@@ -183,19 +177,16 @@ def play():
             hsv_state_red = hsv_state_blue = False
             red_blue_off = True
             print("Filtro verde ativado")
-        elif act == "negativo":
+        elif act == "inverter":
             negativo_ativo = not negativo_ativo
             print(f"Negativo {'ativado' if negativo_ativo else 'desativado'}")
-        elif act == "solarizar":
-            solarizar_ativo = not solarizar_ativo
-            print(f"Solarizar {'ativado' if solarizar_ativo else 'desativado'}")
         elif act == "escurecer":
             escurecer_ativo = True
             hsv_state_red = hsv_state_blue = hsv_state_green = False
             red_blue_off = True
             print("Escurecimento ativado")
         elif act == "normal":
-            escurecer_ativo = pixelar_ativo = solarizar_ativo = negativo_ativo = False
+            escurecer_ativo = pixelar_ativo = negativo_ativo = False
             hsv_state_red = hsv_state_blue = hsv_state_green = police = walter = False
             red_blue_off = True
             state = 1
