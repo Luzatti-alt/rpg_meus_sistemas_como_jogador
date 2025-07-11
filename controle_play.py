@@ -112,9 +112,7 @@ def Cam():
                 frame = cv2.rotate(frame, cv2.ROTATE_180)
             elif rotacao == 3:
                 frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
-            # Cria uma cópia para exibir e aplicar efeitos
             frame_display = frame.copy()
-            # Aplica filtros em cadeia
             if police and not red_blue_off:
                 police_contador += 1
                 if police_contador % 30 < 15:
@@ -122,16 +120,12 @@ def Cam():
                 else:
                     frame_display = azul(frame_display)
             else:
-                # Aplica filtro vermelho
                 if hsv_state_red and not red_blue_off:
                     frame_display = vermelho(frame_display)
-                # Aplica filtro azul
                 if hsv_state_blue and not red_blue_off:
                     frame_display = azul(frame_display)
-                # Aplica filtro verde
                 if hsv_state_green:
                     frame_display = verde(frame_display)
-                # Aplica filtro walter
                 if walter:
                     frame_display = filtro_walter(frame_display)
                 if pixelar_ativo:
@@ -170,6 +164,7 @@ def play():
         if act == "ficha":
             fichas[ficha_esc].ficha_info()
             fichas[ficha_esc].hab_bonus()
+            #efeitos camera
         elif act == "pixel":
             pixelar_ativo = not pixelar_ativo
             print(f"Pixelar {'ativado' if pixelar_ativo else 'desativado'}")
@@ -220,12 +215,14 @@ def play():
         elif act == "cor":
             state = 1
             print("Modo colorido ativado")
+            #dados
         elif act == "d4":
             print(f"caiu: {Dados.d4()}")
         elif act == "d10":
             print(f"caiu: {Dados.d10()}")
         elif act == "d20":
             print(f"caiu: {Dados.d20()}")
+            #açoes geral
         elif act == "cura":
             cura = int(input("Valor curado: "))
             # Adicione lógica de aumento de vida
@@ -234,6 +231,7 @@ def play():
             # Adicione lógica de redução de vida
         elif act == "lv up":
             print("Level upado.")
+            #logica aumentar o lv
         elif act == "hab usada":
             qual_hab = input("Habilidade usada: ")
             qnt_usos = input("Usos no turno: ")
@@ -252,7 +250,7 @@ if ficha_esc =="golpnur":
     valido = True
     instrucoes()
     play()
-#
+#outros personagem
 elif ficha_esc == "xx":
     xx.ficha_info()
     xx.hab_bonus()
