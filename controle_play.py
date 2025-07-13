@@ -289,10 +289,13 @@ def play():
             dano = int(input("Valor de dano sofrido: "))
             # Adicione lógica de redução de vida
         elif act == "hab usada":
-            qual_hab = input("Habilidade usada: ")
-            qnt_usos = input("Usos no turno: ")
-            uso_perso = fichas[ficha_esc].bonus_usos#sem () neste caso para acessar direto o valor
-            print(uso_perso)
+            qual_hab = input("Habilidade usada: ").lower()
+            hab_ficha = fichas[ficha_esc].bonus.lower()
+            if qual_hab == hab_ficha:
+                qnt_usos = input("Usos no turno: ")
+                uso_qnt_perso = fichas[ficha_esc].bonus_usos#sem () neste caso para acessar direto o valor
+            else: 
+                print("não existe essa habilidade")
             # Adicione lógica de uso
         elif act == "hab reset":
             print("Usos resetados.")
