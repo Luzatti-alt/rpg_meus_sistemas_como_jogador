@@ -193,7 +193,6 @@ def Cam():
                 break
         cam.release()
         cv2.destroyAllWindows()
-
 def play():
     global cam_on, rotacao, state
     global escurecer_ativo, red_blue_off
@@ -282,7 +281,6 @@ def play():
             dado_atual_img = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
             dado_atual_num = Dados.d20()
             print(f"caiu: {dado_atual_num}")
-
             #açoes geral
         elif act == "cura":
             cura = int(input("Valor curado: "))
@@ -292,11 +290,11 @@ def play():
             # Adicione lógica de redução de vida
         elif act == "lv up":
             print("Level upado.")
-            #logica aumentar o lv
+            fichas[ficha_esc].lv_up()
         elif act == "hab usada":
             qual_hab = input("Habilidade usada: ")
             qnt_usos = input("Usos no turno: ")
-            uso_perso = golpnur.bonus_usos#sem () neste caso
+            uso_perso = fichas[ficha_esc].bonus_usos#sem () neste caso
             print(uso_perso)
             # Adicione lógica de uso
         elif act == "hab reset":
