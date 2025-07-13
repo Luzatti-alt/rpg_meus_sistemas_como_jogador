@@ -5,6 +5,7 @@ import keyboard
 import numpy as np
 import keyboard
 import threading #para poder rodar a camera e os inputs
+turnos_reviver = 3
 ficha_esc = input("selecione a ficha: ").lower()
 valido = False
 cam_on = False
@@ -199,7 +200,7 @@ def play():
     global hsv_state_red, hsv_state_blue, hsv_state_green
     global police, police_contador, walter, enter_pressed
     global pixelar_ativo, negativo_ativo
-    global valido
+    global valido, turnos_reviver
     global dado_atual_img, dado_atual_num 
     if not cam_on:
         thread = threading.Thread(target=Cam, daemon=True)
@@ -284,13 +285,23 @@ def play():
             #açoes geral/mecanicas
         elif act == "cura":
             cura = int(input("Valor curado: "))
+            fichas[ficha_esc].hp_val += cura
+            turnos_reviver = 3
+            print(f"cura aplicada {fichas[ficha_esc].hp_val}")
+            cura = None
             # Adicione lógica do restore com valor especifico
         elif act == "dano":
-            if fichas[ficha_esc].hp_val < 0:
-                print("morreu")
-            print(fichas[ficha_esc].hp_val)
-            dano = int(input("Valor de dano sofrido: "))
-            fichas[ficha_esc].hp_val  -= dano
+            if fichas[ficha_esc].hp_val < 1:
+                turnos_reviver -= 1
+                print("menos 1 turno para reviver")
+                print(fichas[ficha_esc].hp_val)
+                if turnos_reviver < 1:
+                    print("morreu")
+            else:
+                print(fichas[ficha_esc].hp_val)
+                dano = int(input("Valor de dano sofrido: "))
+                fichas[ficha_esc].hp_val  -= dano
+                dano = None
             # Adicione lógica de redução de vida
         elif act == "hab usada":
             qual_hab = input("Habilidade usada: ").lower()
