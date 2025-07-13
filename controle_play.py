@@ -286,10 +286,11 @@ def play():
             cura = int(input("Valor curado: "))
             # Adicione lógica do restore com valor especifico
         elif act == "dano":
+            if fichas[ficha_esc].hp_val < 0:
+                print("morreu")
+            print(fichas[ficha_esc].hp_val)
             dano = int(input("Valor de dano sofrido: "))
             fichas[ficha_esc].hp_val  -= dano
-            if fichas[ficha_esc].hp_val >= 0:
-                print("morreu")
             # Adicione lógica de redução de vida
         elif act == "hab usada":
             qual_hab = input("Habilidade usada: ").lower()
