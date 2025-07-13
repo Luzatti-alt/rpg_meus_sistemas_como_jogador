@@ -285,13 +285,9 @@ def play():
         elif act == "cura":
             cura = int(input("Valor curado: "))
             # Adicione lógica do restore com valor especifico
-        elif act == "full restore":
-            fichas[ficha_esc].restore()
         elif act == "dano":
             dano = int(input("Valor de dano sofrido: "))
             # Adicione lógica de redução de vida
-        elif act == "lv up":
-            fichas[ficha_esc].lv_up()
         elif act == "hab usada":
             qual_hab = input("Habilidade usada: ")
             qnt_usos = input("Usos no turno: ")
@@ -301,6 +297,12 @@ def play():
         elif act == "hab reset":
             print("Usos resetados.")
             # Adicione lógica de reset
+        elif act == "full restore":
+            fichas[ficha_esc].restore()
+        elif act == "salario":
+            salario = input("digite seu ganho($): ")
+        elif act == "lv up":
+            fichas[ficha_esc].lv_up()
         elif act == "fim da sessão":
             print("Espero que tenha tido uma boa sessão!")
             break
