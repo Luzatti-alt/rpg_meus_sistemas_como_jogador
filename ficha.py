@@ -36,6 +36,9 @@ class Ficha:
     def hab_bonus (self) -> None:
         print(f"sua habilidade bonus: {self.bonus}")
         print(f"sua quantidade de habilidade bonus restantes: {self.bonus_usos}")
+    def lv_up(self) -> None:
+        self.lv += 1
+        print(f"level de {self.nome_char} upado: {self.lv}")
 #aqui se atribui valoras aos personagens
 #exemplo
 golpnur : Ficha = Ficha("Golpnur",1,7,0,0,0,7,65,65,0,1,5,42,42,True,"gusparada de tinta", 3)#fazer em minusculo para ajudar em criar o controle
