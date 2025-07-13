@@ -1,11 +1,14 @@
 class Ficha:
-    def __init__ (self,nome_char:str,lv:int,hp:int,hpb:int,armour:int,mare:int,ca:int,mv_p:int,mv_t:int,esquiva_p:int,esquiva_t:int,dinheiro:int,esp:int,esp_max:int,vivo:bool, bonus: str, bonus_usos: int)->None:
+    def __init__ (self,nome_char:str,lv:int,hp:int,hp_val:int,hpb:int,armour:int,mare:int,ca:int,mv_p:int,mv_t:int,esquiva_p:int,esquiva_t:int,dinheiro:int,esp:int,esp_max:int,vivo:bool, bonus: str, bonus_usos: int)->None:
         #__init__ atribuir valores(self(obj),nome:str(nome que é do tipo string),lv:int,etc) ->(retorna) none(nn precisa add: return ______)
         #uso de self para multiplos que usam a mesma classe nome(self/this/instance) : classe = ...
         #esta parte é mais para dados
         self.nome_char = nome_char #nome personagem
         self.lv = lv #level atual
         self.hp = hp #hp atual
+        self.hp_val = hp_val #valor do hp
+        if hp_val==0:
+            vivo = False
         self.hpb = hpb #hpb(ver com o miguel esta sigla)
         self.armour = armour #armadura
         self.mare = mare #mare(ver com o miguel esta sigla)
@@ -40,8 +43,8 @@ class Ficha:
         self.lv += 1
         print(f"level de {self.nome_char} upado: {self.lv}")
 #aqui se atribui valoras aos personagens
-#exemplo
-golpnur : Ficha = Ficha("Golpnur",1,7,0,0,0,7,65,65,0,1,5,42,42,True,"gusparada de tinta", 3)#fazer em minusculo para ajudar em criar o controle
-xx : Ficha = Ficha("xx",1,7,0,0,0,7,65,65,0,1,5,42,42,True,"mvp", 3)
+#exemplo hp 11 hp_atual 7 
+golpnur : Ficha = Ficha("Golpnur",1,7,11,0,0,0,7,65,65,0,1,5,42,42,True,"gusparada de tinta", 3)#fazer em minusculo para ajudar em criar o controle
+xx : Ficha = Ficha("xx",1,7,0,0,0,7,7,765,65,0,1,5,42,42,True,"mvp", 3)
 #obj.metodo executar um def(parametro(tipo de dados)) interno da classe com esse nome ex:
 #pedir ficha
