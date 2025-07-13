@@ -42,6 +42,9 @@ class Ficha:
     def lv_up(self) -> None:
         self.lv += 1
         print(f"level de {self.nome_char} upado: {self.lv}")
+    def restore(self)->None:
+        self.hp = self.hp_val
+        print("teste: ",self.hp_val)
 #aqui se atribui valoras aos personagens
 #exemplo hp 11 hp_atual 7 
 golpnur : Ficha = Ficha("Golpnur",1,7,11,0,0,0,7,65,65,0,1,5,42,42,True,"gusparada de tinta", 3)#fazer em minusculo para ajudar em criar o controle
