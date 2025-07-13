@@ -281,20 +281,21 @@ def play():
             dado_atual_img = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
             dado_atual_num = Dados.d20()
             print(f"caiu: {dado_atual_num}")
-            #açoes geral
+            #açoes geral/mecanicas
         elif act == "cura":
             cura = int(input("Valor curado: "))
-            # Adicione lógica de aumento de vida
+            # Adicione lógica do restore com valor especifico
+        elif act == "full restore":
+            fichas[ficha_esc].restore()
         elif act == "dano":
             dano = int(input("Valor de dano sofrido: "))
             # Adicione lógica de redução de vida
         elif act == "lv up":
-            print("Level upado.")
             fichas[ficha_esc].lv_up()
         elif act == "hab usada":
             qual_hab = input("Habilidade usada: ")
             qnt_usos = input("Usos no turno: ")
-            uso_perso = fichas[ficha_esc].bonus_usos#sem () neste caso
+            uso_perso = fichas[ficha_esc].bonus_usos#sem () neste caso para acessar direto o valor
             print(uso_perso)
             # Adicione lógica de uso
         elif act == "hab reset":
