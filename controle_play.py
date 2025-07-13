@@ -287,6 +287,7 @@ def play():
             # Adicione lógica do restore com valor especifico
         elif act == "dano":
             dano = int(input("Valor de dano sofrido: "))
+            fichas[ficha_esc].dano()
             # Adicione lógica de redução de vida
         elif act == "hab usada":
             qual_hab = input("Habilidade usada: ").lower()
@@ -315,6 +316,10 @@ if ficha_esc in fichas:
     fichas[ficha_esc].hab_bonus()
     valido = True
     instrucoes()
-    play()
+    jogar_valido = fichas[ficha_esc].vivo
+    if jogar_valido:
+        play()
+    else:
+        print("jogador morto")
 else:
     print(f"Ficha '{ficha_esc}' não encontrada. Verifique a ortografia.")
