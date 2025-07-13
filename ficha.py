@@ -9,6 +9,8 @@ class Ficha:
         self.hp_val = hp_val #valor do hp
         if hp_val==0:
             vivo = False
+        else:
+            vivo = True
         self.hpb = hpb #hpb(ver com o miguel esta sigla)
         self.armour = armour #armadura
         self.mare = mare #mare(ver com o miguel esta sigla)
