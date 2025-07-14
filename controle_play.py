@@ -80,14 +80,6 @@ def Cam():
             else:
                 frame[y:y+h, x:x+w] = imagem
             return frame
-        def d4_img():
-            img_d4 = cv2.imread("imagens/d4-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-        def d6_img():
-            img_d6 = cv2.imread("imagens/d6-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-        def d10_img():
-            img_d10 = cv2.imread("imagens/d10-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-        def d20_img():
-            img_d20 = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
         def barras_webcam(img):
             hp = fichas[ficha_esc].hp_val
             hp_max = fichas[ficha_esc].hp
