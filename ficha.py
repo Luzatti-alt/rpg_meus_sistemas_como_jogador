@@ -20,6 +20,8 @@ class Ficha:
         self.esquiva_p = esquiva_p#esquiva padrão(ver a diferença)
         self.esquiva_t = esquiva_t#esquiva total(ver a diferença)
         self.dinheiro = dinheiro#dinheiro
+        self.esp = esp #mana
+        self.esp_max = esp_max #mana max
         self.vivo :bool = True
         self.bonus = bonus #nome da habilidade bonus
         self.bonus_usos = bonus_usos # qnts usos restantes 
@@ -47,6 +49,7 @@ class Ficha:
     def restore(self)->None:
         self.hp = self.hp_val
         print("teste: ",self.hp_val)
+        print("dano aplicado a ficha: ",self.hp_val)
 #aqui se atribui valoras aos personagens
 #exemplo hp 11 hp_atual 7 
 golpnur : Ficha = Ficha("Golpnur",1,7,11,0,0,0,7,65,65,0,1,5,42,42,True,"gusparada de tinta", 3)#fazer em minusculo para ajudar em criar o controle
