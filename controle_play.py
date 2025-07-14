@@ -97,21 +97,19 @@ def Cam():
         def barras_webcam(img):
             espessura_hp = 1#talvez fazer um calculo
             espessura_mana = 1#talvez fazer um calculo
-            cor_hp_full = (13,217,16)#rgb
+            cor_hp_full = (13,217,16)#rgb verde
             cor_hp_incompleto = (255,0,0)
             cor_mana_full = (255,234,0)
             cor_mana_incompleto = (250,240,132)
             largura = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH)) #480 no meu pc
-            altura =int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT)) #640 no meu pc
-            print(f"altura: {altura}")
-            print(f"largura: {largura}")
+            altura = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT)) #640 no meu pc
             #p1(superior esquerdo) p2(inferior direito) sendo com x e y
             #p1 e p2 hp
-            p_hp_um = (int(largura - (largura / 8)), int(altura / 10))
-            p_hp_dois = (int(largura), int(altura / 9))
+            p_hp_um = (int(largura - (largura / 8)-50), int(altura-100))
+            p_hp_dois = (int(50), int(altura-50))
             #p1 e p2 mana
-            p_mana_um = (int(largura / 9), int(altura - (altura / 10)))
-            p_mana_dois = (int(largura / 10), int(altura / 10))
+            p_mana_um = (int(largura-100), int(altura - (altura / 10)))
+            p_mana_dois = (int(largura-50), int(altura / 10))
             #largura/altura dividira peça qnt do valor em segmentos
             qnt_vida = hp
             largura_vida = hp_max #valor estatico por personagem (na subdivisões)
