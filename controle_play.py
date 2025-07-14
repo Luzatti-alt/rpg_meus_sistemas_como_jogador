@@ -162,13 +162,6 @@ def Cam():
             s = np.clip(s, 60, 255).astype(np.uint8)
             hsv_mod = cv2.merge([h, s, v])
             return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
-    #detectar camera
-        if not cam.isOpened():
-            print("Erro ao abrir a câmera.\n")
-            exit()
-        elif cam.isOpened():
-            print("Conectada\n")
-        #funções da webcam
         while True:
             validacao, frame = cam.read()
             if not validacao:
@@ -239,88 +232,88 @@ def play():
         cam_on = True
     while valido:
         act = input("\n sua ação é: ").lower()
-        if act == "ficha":
-            fichas[ficha_esc].ficha_info()
-            fichas[ficha_esc].hab_bonus()
-            #efeitos camera
-        elif act == "pixel":
-            pixelar_ativo = not pixelar_ativo
-            print(f"Pixelar {'ativado' if pixelar_ativo else 'desativado'}")
-        elif act == "vermelho":
-            hsv_state_red = True
-            hsv_state_blue = hsv_state_green = False
-            red_blue_off = False
-            print("Filtro vermelho ativado")
-        elif act == "azul":
-            hsv_state_blue = True
-            hsv_state_red = hsv_state_green = False
-            red_blue_off = False
-            print("Filtro azul ativado")
-        elif act == "verde":
-            hsv_state_green = True
-            hsv_state_red = hsv_state_blue = False
-            red_blue_off = True
-            print("Filtro verde ativado")
-        elif act == "inverter":
-            negativo_ativo = not negativo_ativo
-            print(f"Negativo {'ativado' if negativo_ativo else 'desativado'}")
-        elif act == "escurecer":
-            escurecer_ativo = True
-            hsv_state_red = hsv_state_blue = hsv_state_green = False
-            red_blue_off = True
-            print("Escurecimento ativado")
-        elif act == "normal":
-            hsv_state_red = False
-            hsv_state_blue = False
-            hsv_state_green = False
-            police = False
-            walter = False
-            red_blue_off = True
-            dado_atual_img = None
-            dado_atual_num = None
-            state = 1
-            print("Todos os filtros desativados")
-        elif act == "policia":
-            police = True
-            hsv_state_red = hsv_state_blue = hsv_state_green = False
-            red_blue_off = False
-            print("Modo polícia ativado")
-        elif act == "walter":
-            walter = True
-            hsv_state_red = hsv_state_blue = hsv_state_green = False
-            print("Modo Walter ativado")
-        elif act == "noir":
-            state = 2
-            print("Modo preto e branco ativado")
-        elif act == "cor":
-            state = 1
-            print("Modo colorido ativado")
-            #dados
-        if act == "d4":
-            dado_atual_img = cv2.imread("imagens/d4-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-            dado_atual_num = Dados.d4()
-            print(f"caiu: {dado_atual_num}")
-        elif act == "d6":
-            dado_atual_img = cv2.imread("imagens/d6-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-            dado_atual_num = Dados.d6()
-            print(f"caiu: {dado_atual_num}")
-        elif act == "d10":
-            dado_atual_img = cv2.imread("imagens/d10-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-            dado_atual_num = Dados.d10()
-            print(f"caiu: {dado_atual_num}")
-        elif act == "d20":
-            dado_atual_img = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-            dado_atual_num = Dados.d20()
-            print(f"caiu: {dado_atual_num}")
-            #açoes geral/mecanicas
-        if fichas[ficha_esc].vivo:
-            if act == "cura":
-                cura = int(input("Valor curado: "))
-                fichas[ficha_esc].hp_val = min(fichas[ficha_esc].hp_val + cura, fichas[ficha_esc].hp)
-                turnos_reviver = 3
-                print(f"cura aplicada em: {fichas[ficha_esc]}")
-                cura = None
-            elif act == "dano":
+        match act:
+            case "ficha":
+                fichas[ficha_esc].ficha_info()
+                fichas[ficha_esc].hab_bonus()
+                #efeitos camera
+            case "pixel":
+                pixelar_ativo = not pixelar_ativo
+                print(f"Pixelar {'ativado' if pixelar_ativo else 'desativado'}")
+            case "vermelho":
+                hsv_state_red = True
+                hsv_state_blue = hsv_state_green = False
+                red_blue_off = False
+                print("Filtro vermelho ativado")
+            case "azul":
+                hsv_state_blue = True
+                hsv_state_red = hsv_state_green = False
+                red_blue_off = False
+                print("Filtro azul ativado")
+            case "verde":
+                hsv_state_green = True
+                hsv_state_red = hsv_state_blue = False  
+                red_blue_off = True
+                print("Filtro verde ativado")
+            case "inverter":
+                negativo_ativo = not negativo_ativo
+                print(f"Negativo {'ativado' if negativo_ativo else 'desativado'}")
+            case "escurecer":
+                escurecer_ativo = True
+                hsv_state_red = hsv_state_blue = hsv_state_green = False
+                red_blue_off = True
+                print("Escurecimento ativado")
+            case "normal":
+                hsv_state_red = False
+                hsv_state_blue = False
+                hsv_state_green = False
+                police = False
+                walter = False
+                red_blue_off = True
+                dado_atual_img = None
+                dado_atual_num = None
+                state = 1
+                print("Todos os filtros desativados")
+            case "policia":
+                olice = True
+                sv_state_red = hsv_state_blue = hsv_state_green = False
+                ed_blue_off = False
+                print("Modo polícia ativado")
+            case "walter":
+                walter = True
+                hsv_state_red = hsv_state_blue = hsv_state_green = False
+                print("Modo Walter ativado")
+            case "noir":
+                state = 2
+                print("Modo preto e branco ativado")
+            case "cor":
+                state = 1
+                print("Modo colorido ativado")
+                #dados
+            case "d4":
+                dado_atual_img = cv2.imread("imagens/d4-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+                dado_atual_num = Dados.d4()
+                print(f"caiu: {dado_atual_num}")
+            case "d6":
+                dado_atual_img = cv2.imread("imagens/d6-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+                dado_atual_num = Dados.d6()
+                print(f"caiu: {dado_atual_num}")
+            case "d10":
+                dado_atual_img = cv2.imread("imagens/d10-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+                dado_atual_num = Dados.d10()
+                print(f"caiu: {dado_atual_num}")
+            case "d20":
+                dado_atual_img = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+                dado_atual_num = Dados.d20()
+                print(f"caiu: {dado_atual_num}")
+                #açoes geral/mecanicas
+                if fichas[ficha_esc].vivo:
+                    if act == "cura":
+                        cura = int(input("Valor curado: "))
+                        fichas[ficha_esc].hp_val = min(fichas[ficha_esc].hp_val + cura, fichas[ficha_esc].hp)
+                        turnos_reviver = 3
+                        cura = None
+            case "dano":
                 if fichas[ficha_esc].hp_val < 1:
                     turnos_reviver -= 1
                     print("menos 1 turno para reviver")
@@ -333,7 +326,7 @@ def play():
                     fichas[ficha_esc].hp_val  -= dano
                     dano = None
                     print(f"Novo HP: {fichas[ficha_esc].hp_val}")
-            elif act == "hab usada":
+            case "hab usada":
                 qual_hab = input("Habilidade usada: ").lower()
                 hab_ficha = fichas[ficha_esc].bonus.lower()
                 if qual_hab == hab_ficha:
@@ -342,24 +335,24 @@ def play():
                     uso_qnt_perso -= qnt_usos
                 else:
                     print("não existe essa habilidade")
-            elif act == "hab reset":
+            case "hab reset":
                 print("Usos resetados.")
-            elif act == "full restore":
+            case "full restore":
                 fichas[ficha_esc].restore()
                 turnos_reviver = 3
-            elif act == "salario":
+            case "salario":
                 salario = input("digite seu ganho($): ")
                 #falta isso
-            elif act == "compra":
+            case "compra":
                 salario = input("digite o valor gasto: ")
                 #falta isso
-            elif act == "lv up":
+            case "lv up":
                 fichas[ficha_esc].lv_up()
-            elif act == "fim da sessão":
+            case "fim da sessão":
                 print("Espero que tenha tido uma boa sessão!")
                 break
-        else:
-            print("você morreu")
+    else:
+        print("você morreu")
 if ficha_esc in fichas:
     fichas[ficha_esc].ficha_info()
     fichas[ficha_esc].hab_bonus()
