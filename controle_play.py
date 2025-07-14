@@ -339,6 +339,7 @@ def play():
             case "full restore":
                 fichas[ficha_esc].restore()
                 turnos_reviver = 3
+                fichas[ficha_esc].esp = fichas[ficha_esc].esp_max
             case "salario":
                 salario = input("digite seu ganho($): ")
                 #falta isso
@@ -346,7 +347,19 @@ def play():
                 salario = input("digite o valor gasto: ")
                 #falta isso
             case "magia":
-                uso_magia = input(f"digite o quanto de espirito você quer usar(máximo de {fichas[ficha_esc].esp_max}): ")
+                mana = fichas[ficha_esc].esp
+                mana_max = fichas[ficha_esc].esp_max
+                print(f"atualmente possui {mana}")
+                uso_magia = int(input(f"digite o quanto de espirito você quer usar(máximo de {fichas[ficha_esc].esp_max}): "))
+                resultado = (uso_magia-mana)
+                if resultado > 0:
+                    print("passou do limite")
+                else:
+                    print(f"foi usado {uso_magia} de espirito")
+                    uso_magia -= mana
+                if mana > mana_max:
+                    mana = mana_max
+                    print(f"mana maxima({mana_max}) foi ultrapassado do limite recolocando dentro do range: {mana}")
             case "lv up":
                 fichas[ficha_esc].lv_up()
             case "fim da sessão":
