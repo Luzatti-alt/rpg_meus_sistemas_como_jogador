@@ -106,8 +106,9 @@ def Cam():
             barra_hp_min_x = 50
             barra_hp_height_y1 = int(altura - 100)
             barra_hp_height_y2 = int(altura - 50)
-            # proporção da vida arrumar o calculo
-            hp_ratio = max(0, min((hp / hp_max), 1.65))  # evita bugs
+            # proporção da vida arrumar o calculo pois a proporção esta certa
+            #so esta invertida
+            hp_ratio = max(0, min((hp / hp_max), 1.65))
             hp_width = int((barra_hp_max_width - barra_hp_min_x) / hp_ratio)# barra incompleta (vermelho)
             cv2.rectangle(img, (barra_hp_min_x, barra_hp_height_y1), (barra_hp_max_width, barra_hp_height_y2), cor_hp_incompleto, -1)
             # barra atual (verde)
@@ -323,7 +324,7 @@ def play():
         if fichas[ficha_esc].vivo:
             if act == "cura":
                 cura = int(input("Valor curado: "))
-                fichas[ficha_esc].hp_val += cura
+                fichas[ficha_esc].hp_val = min(fichas[ficha_esc].hp_val + cura, fichas[ficha_esc].hp)
                 turnos_reviver = 3
                 print(f"cura aplicada em: {fichas[ficha_esc]}")
                 cura = None
