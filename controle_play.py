@@ -95,8 +95,9 @@ def Cam():
         def d20_img():
             img_d20 = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
         def barras_webcam(img):
-            espessura_hp = 1#talvez fazer um calculo
-            espessura_mana = 1#talvez fazer um calculo
+            #espessura positivo so borda negativo ocupa tudo
+            espessura_hp = -1#talvez fazer um calculo 
+            espessura_mana = -1#talvez fazer um calculo
             cor_hp_full = (13,217,16)#rgb verde
             cor_hp_incompleto = (255,0,0)
             cor_mana_full = (255,234,0)
@@ -112,11 +113,11 @@ def Cam():
             p_mana_dois = (int(largura-50), int(altura / 10))
             #largura/altura dividira peça qnt do valor em segmentos
             qnt_vida = hp
-            largura_vida = hp_max #valor estatico por personagem (na subdivisões)
-            barra_hp = cv2.rectangle(img,p_hp_um,p_hp_dois,cor_hp_full,espessura_hp)#fazer verde ou vermelho
+            barra_hp_incompleto = cv2.rectangle(img,p_hp_um,p_hp_dois,cor_hp_incompleto,espessura_hp)
+            barra_hp_full = cv2.rectangle(img,p_hp_um,p_hp_dois,cor_hp_full,espessura_hp)#fazer verde ou vermelho
             qnt_mana = mana
-            altura_mana = mana_max #valor estatico por personagem (na subdivisões)
-            barra_mana = cv2.rectangle(img,p_mana_um,p_mana_dois,cor_mana_full,espessura_mana)#fazer amarelo ou azul
+            barra_mana_incompleto = cv2.rectangle(img,p_mana_um,p_mana_dois,cor_mana_full,espessura_mana)#fazer amarelo ou azul
+            barra_mana_full = cv2.rectangle(img,p_mana_um,p_mana_dois,cor_mana_incompleto,espessura_mana)#fazer amarelo ou azul
             return img
         #visual
         def pixelar(img):   
