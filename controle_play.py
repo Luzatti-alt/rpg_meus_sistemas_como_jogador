@@ -323,7 +323,9 @@ def play():
             elif act == "fim da sessão":
                 print("Espero que tenha tido uma boa sessão!")
                 break
-#especifica por jogador
+        else:
+            print("você morreu")
+            #especifica por jogador
 if ficha_esc in fichas:
     fichas[ficha_esc].ficha_info()
     fichas[ficha_esc].hab_bonus()
