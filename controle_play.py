@@ -265,7 +265,6 @@ def play():
             state = 1
             print("Modo colorido ativado")
             #dados
-            #achar dados ortogonais e animar nums aleatorios e a impressão de cair um numero e isso aparecer na camera
         if act == "d4":
             dado_atual_img = cv2.imread("imagens/d4-removebg-preview.png", cv2.IMREAD_UNCHANGED)
             dado_atual_num = Dados.d4()
@@ -283,47 +282,47 @@ def play():
             dado_atual_num = Dados.d20()
             print(f"caiu: {dado_atual_num}")
             #açoes geral/mecanicas
-        elif act == "cura":
-            cura = int(input("Valor curado: "))
-            fichas[ficha_esc].hp_val += cura
-            turnos_reviver = 3
-            print(f"cura aplicada {fichas[ficha_esc].hp_val}")
-            cura = None
-            # Adicione lógica do restore com valor especifico
-        elif act == "dano":
-            if fichas[ficha_esc].hp_val < 1:
-                turnos_reviver -= 1
-                print("menos 1 turno para reviver")
-                print(fichas[ficha_esc].hp_val)
-                if turnos_reviver < 1:
-                    print("morreu")
-            else:
-                print(fichas[ficha_esc].hp_val)
-                dano = int(input("Valor de dano sofrido: "))
-                fichas[ficha_esc].hp_val  -= dano
-                dano = None
-            # Adicione lógica de redução de vida
-        elif act == "hab usada":
-            qual_hab = input("Habilidade usada: ").lower()
-            hab_ficha = fichas[ficha_esc].bonus.lower()
-            if qual_hab == hab_ficha:
-                qnt_usos = input("Usos no turno: ")
-                uso_qnt_perso = fichas[ficha_esc].bonus_usos#sem () neste caso para acessar direto o valor
-            else: 
-                print("não existe essa habilidade")
-            # Adicione lógica de uso
-        elif act == "hab reset":
-            print("Usos resetados.")
-            # Adicione lógica de reset
-        elif act == "full restore":
-            fichas[ficha_esc].restore()
-        elif act == "salario":
-            salario = input("digite seu ganho($): ")
-        elif act == "lv up":
-            fichas[ficha_esc].lv_up()
-        elif act == "fim da sessão":
-            print("Espero que tenha tido uma boa sessão!")
-            break
+        if fichas[ficha_esc].vivo:
+            if act == "cura":
+                cura = int(input("Valor curado: "))
+                fichas[ficha_esc].hp_val += cura
+                turnos_reviver = 3
+                print(f"cura aplicada em: {fichas[ficha_esc]}")
+                cura = None
+            elif act == "dano":
+                if fichas[ficha_esc].hp_val < 1:
+                    turnos_reviver -= 1
+                    print("menos 1 turno para reviver")
+                    print(fichas[ficha_esc].hp_val)
+                    if turnos_reviver < 1:
+                        print("morreu")
+                        fichas[ficha_esc].vivo = False
+                else:
+                    print(fichas[ficha_esc].hp_val)
+                    dano = int(input("Valor de dano sofrido: "))
+                    fichas[ficha_esc].hp_val  -= dano
+                    dano = None
+            elif act == "hab usada":
+                qual_hab = input("Habilidade usada: ").lower()
+                hab_ficha = fichas[ficha_esc].bonus.lower()
+                if qual_hab == hab_ficha:
+                    qnt_usos = input("Usos no turno: ")
+                    uso_qnt_perso = fichas[ficha_esc].bonus_usos#sem () neste caso para acessar direto o valor
+                else:
+                    print("não existe essa habilidade")
+                # Adicione lógica de uso
+            elif act == "hab reset":
+                print("Usos resetados.")
+                # Adicione lógica de reset
+            elif act == "full restore":
+                fichas[ficha_esc].restore()
+            elif act == "salario":
+                salario = input("digite seu ganho($): ")
+            elif act == "lv up":
+                fichas[ficha_esc].lv_up()
+            elif act == "fim da sessão":
+                print("Espero que tenha tido uma boa sessão!")
+                break
 #especifica por jogador
 if ficha_esc in fichas:
     fichas[ficha_esc].ficha_info()
