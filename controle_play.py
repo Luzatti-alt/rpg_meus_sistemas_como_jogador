@@ -109,7 +109,7 @@ def Cam():
             # proporção da vida arrumar o calculo pois a proporção esta certa 
             #dano tbm esta aumentando a barra
             hp_ratio = max(0, min((hp / hp_max), 1.65))
-            hp_width = int((barra_hp_max_width - barra_hp_min_x) / hp_ratio)# barra incompleta (vermelho)
+            hp_width = int((barra_hp_max_width - barra_hp_min_x) * hp_ratio)# barra incompleta (vermelho)
             cv2.rectangle(img, (barra_hp_min_x, barra_hp_height_y1), (barra_hp_max_width, barra_hp_height_y2), cor_hp_incompleto, -1)
             # barra atual (verde)
             cv2.rectangle(img, (barra_hp_min_x, barra_hp_height_y1), (barra_hp_min_x + hp_width, barra_hp_height_y2), cor_hp_full, -1)
