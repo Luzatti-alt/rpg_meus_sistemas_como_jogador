@@ -130,6 +130,9 @@ def Cam():
             s = np.clip(s, 60, 255).astype(np.uint8)
             hsv_mod = cv2.merge([h, s, v])
             return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
+        def hp_na_cam(img):
+            print("add e seu updatada conforme hp vai sendo atualizado")
+        #div em sessoes dependendo do hp e vai reduzindo tipo boss bar em baixo meio centralizado
     #detectar camera
         if not cam.isOpened():
             print("Erro ao abrir a câmera.\n")
