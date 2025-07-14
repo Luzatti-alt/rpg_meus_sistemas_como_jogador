@@ -307,12 +307,11 @@ def play():
                 dado_atual_num = Dados.d20()
                 print(f"caiu: {dado_atual_num}")
                 #açoes geral/mecanicas
-                if fichas[ficha_esc].vivo:
-                    if act == "cura":
-                        cura = int(input("Valor curado: "))
-                        fichas[ficha_esc].hp_val = min(fichas[ficha_esc].hp_val + cura, fichas[ficha_esc].hp)
-                        turnos_reviver = 3
-                        cura = None
+            case "cura":
+                cura = int(input("Valor curado: "))
+                fichas[ficha_esc].hp_val = min(fichas[ficha_esc].hp_val + cura, fichas[ficha_esc].hp)
+                turnos_reviver = 3
+                cura = None
             case "dano":
                 if fichas[ficha_esc].hp_val < 1:
                     turnos_reviver -= 1
