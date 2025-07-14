@@ -96,8 +96,7 @@ def Cam():
             img_d20 = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
         def barras_webcam(img):
             #espessura positivo so borda negativo ocupa tudo
-            espessura_hp = -1#talvez fazer um calculo 
-            espessura_mana = -1#talvez fazer um calculo
+            espessura = -1
             cor_hp_full = (13,217,16)#rgb verde
             cor_hp_incompleto = (255,0,0)
             cor_mana_full = (255,234,0)
@@ -105,19 +104,27 @@ def Cam():
             largura = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH)) #480 no meu pc
             altura = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT)) #640 no meu pc
             #p1(superior esquerdo) p2(inferior direito) sendo com x e y
-            #p1 e p2 hp
+            #p1 e p2 hp normal
             p_hp_um = (int(largura - (largura / 8)-50), int(altura-100))
             p_hp_dois = (int(50), int(altura-50))
-            #p1 e p2 mana
+            largura_hp = hp
+            #p1 e p2 mana normal
             p_mana_um = (int(largura-100), int(altura - (altura / 10)))
             p_mana_dois = (int(largura-50), int(altura / 10))
+            altura_mana = mana
+            #p1 e p2 hp conforme valor
+            p_hp_um_variado = (int(largura - (largura / 8)-50), int(altura-100))
+            p_hp_dois_variado = (int(50), int(altura-50))
+            largura_hp = hp
+            #p1 e p2 mana conforme valor
+            p_mana_um_variado = (int(largura-100), int(altura - (altura / 10)))
+            p_mana_dois_variado = (int(largura-50), int(altura / 10))
+            altura_mana = mana
             #largura/altura dividira peça qnt do valor em segmentos
-            qnt_vida = hp
-            barra_hp_incompleto = cv2.rectangle(img,p_hp_um,p_hp_dois,cor_hp_incompleto,espessura_hp)
-            barra_hp_full = cv2.rectangle(img,p_hp_um,p_hp_dois,cor_hp_full,espessura_hp)#fazer verde ou vermelho
-            qnt_mana = mana
-            barra_mana_incompleto = cv2.rectangle(img,p_mana_um,p_mana_dois,cor_mana_full,espessura_mana)#fazer amarelo ou azul
-            barra_mana_full = cv2.rectangle(img,p_mana_um,p_mana_dois,cor_mana_incompleto,espessura_mana)#fazer amarelo ou azul
+            barra_hp_incompleto = cv2.rectangle(img,p_hp_um,p_hp_dois,cor_hp_incompleto,espessura)
+            barra_hp_full = cv2.rectangle(img,p_hp_um_variado,p_hp_dois_variado,cor_hp_full,espessura)#fazer verde ou vermelho
+            barra_mana_incompleto = cv2.rectangle(img,p_mana_um,p_mana_dois,cor_mana_full,espessura)#fazer amarelo ou azul
+            barra_mana_full = cv2.rectangle(img,p_mana_um_variado,p_mana_dois_variado,cor_mana_incompleto,espessura)#fazer amarelo ou azul
             return img
         #visual
         def pixelar(img):   
