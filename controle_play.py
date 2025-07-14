@@ -207,7 +207,7 @@ def play():
         thread.start()
         cam_on = True
     while valido:
-        act = input("\n sua ação é: ")
+        act = input("\n sua ação é: ").lower()
         if act == "ficha":
             fichas[ficha_esc].ficha_info()
             fichas[ficha_esc].hab_bonus()
@@ -306,8 +306,9 @@ def play():
                 qual_hab = input("Habilidade usada: ").lower()
                 hab_ficha = fichas[ficha_esc].bonus.lower()
                 if qual_hab == hab_ficha:
-                    qnt_usos = input("Usos no turno: ")
+                    qnt_usos = int(input("Usos no turno: "))
                     uso_qnt_perso = fichas[ficha_esc].bonus_usos#sem () neste caso para acessar direto o valor
+                    uso_qnt_perso -= qnt_usos
                 else:
                     print("não existe essa habilidade")
             elif act == "hab reset":
@@ -328,7 +329,6 @@ def play():
                 break
         else:
             print("você morreu")
-            #especifica por jogador
 if ficha_esc in fichas:
     fichas[ficha_esc].ficha_info()
     fichas[ficha_esc].hab_bonus()
