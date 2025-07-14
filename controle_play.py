@@ -87,8 +87,11 @@ def Cam():
         def d20_img():
             img_d20 = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
         def hp_na_cam(img):
-            print("add e seu updatada conforme hp vai sendo atualizado")
-        #div em sessoes dependendo do hp e vai reduzindo tipo boss bar em baixo meio centralizado
+            print("add e ser updatada conforme hp vai sendo atualizado")
+            #div em sessoes dependendo do hp e vai reduzindo tipo boss bar em baixo meio centralizado
+        def mana(img):
+            print("add e ser updatada conforme a 'mana' vai sendo atualizado")
+            #div em sessoes dependendo da mana e vai reduzindo tipo medidor direita quase que no meio
         #visual
         def pixelar(img):   
             altura, largura = img.shape[:2]
