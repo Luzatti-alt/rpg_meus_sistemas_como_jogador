@@ -9,6 +9,7 @@ turnos_reviver = 3
 ficha_esc = input("selecione a ficha: ").lower()
 valido = False
 cam_on = False
+mostrar_explosao = False
 rotacao = 0
 state = 1
 escurecer_ativo = False 
@@ -33,6 +34,7 @@ def instrucoes():
     print("\ninstruções deste controle use somente durante combate \nver ficha | ficha \nsofreu dano | dano e dps num de dano sofrido(ex dano 5) curado | vida e dps num da cura(vida 5) upou de nivel | lv up usou habilidade | hab usada dps o nome dela e por fim qnt de vezs usadas no turno ex chute 1(chute 1 vez)recarregou habilidade | hab reset \n efeitos de camera são digitados aqui: pixel(para pixelizar a camera),vermelho(imagem mais avermelhada),azul(imagem mais azulada) verde(imagem mais verde) inverter(inverte as cores) escurecer normal(retira os filtros) policia(alterna entre vermelho e azul) walter(filtro laranja) noir cor(desativa o noir/ou use o normal)\nse a sessão acabou |fim da sessão\n fim do guia")
 def Cam():
         cam = cv2.VideoCapture(0)
+        explosao_cap = cv2.VideoCapture("videos/Deltarune Explosion Green Screen(720P_HD).mp4")
         #misc
         global rotacao, state
         global mana, hp, mana_max
@@ -48,6 +50,7 @@ def Cam():
         global enter_pressed
         global pixelar_ativo
         global negativo_ativo
+        global mostrar_explosao
         #incluso com mecanicas
         def mostrar_dado_no_frame(frame):
             global dado_atual_img, dado_atual_num
@@ -80,6 +83,16 @@ def Cam():
             else:
                 frame[y:y+h, x:x+w] = imagem
             return frame
+        def remover_fundo_verde(frame_video):
+            hsv = cv2.cvtColor(frame_video, cv2.COLOR_BGR2HSV)
+            # Limite para verde
+            lower_green = np.array([35, 40, 40])
+            upper_green = np.array([85, 255, 255])
+            mask = cv2.inRange(hsv, lower_green, upper_green)
+            mask_inv = cv2.bitwise_not(mask)
+            # Remove o fundo
+            frame_video_sem_fundo = cv2.bitwise_and(frame_video, frame_video, mask=mask_inv)
+            return frame_video_sem_fundo, mask_inv
         def barras_webcam(img):
             hp = fichas[ficha_esc].hp_val
             hp_max = fichas[ficha_esc].hp
@@ -196,6 +209,22 @@ def Cam():
                     frame_display = negativo(frame_display)
                 if escurecer_ativo:
                     frame_display = escurecer(frame_display)
+                if mostrar_explosao:
+                    ret_exp, frame_exp = explosao_cap.read()
+                    if not ret_exp:
+                        explosao_cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+                        mostrar_explosao = False
+                    else:
+                        frame_exp = cv2.resize(frame_exp, (320, 180))  # redimensiona se necessário
+                        frame_exp_sem_fundo, mask_inv = remover_fundo_verde(frame_exp)
+                        x_offset, y_offset = 100, 100
+                        h, w = frame_exp.shape[:2]
+                        roi = frame_display[y_offset:y_offset+h, x_offset:x_offset+w]
+                        mask_inv_color = cv2.merge([mask_inv, mask_inv, mask_inv])
+                        bg = cv2.bitwise_and(roi, roi, mask=cv2.bitwise_not(mask_inv))
+                        fg = cv2.bitwise_and(frame_exp, frame_exp, mask=mask_inv)
+                        combinada = cv2.add(bg, fg)
+                        frame_display[y_offset:y_offset+h, x_offset:x_offset+w] = combinada
                 # Aplica modo preto e branco se selecionado
             if state == 2:
                 frame_display = mostrar_dado_no_frame(frame_display)
@@ -225,6 +254,7 @@ def play():
     global pixelar_ativo, negativo_ativo
     global valido, turnos_reviver
     global dado_atual_img, dado_atual_num 
+    global mostrar_explosao
     if not cam_on:
         thread = threading.Thread(target=Cam, daemon=True)
         thread.start()
@@ -236,6 +266,9 @@ def play():
                 fichas[ficha_esc].ficha_info()
                 fichas[ficha_esc].hab_bonus()
                 #efeitos camera
+            case "explosao":
+                mostrar_explosao = True
+                print("Explosão ativada")
             case "pixel":
                 pixelar_ativo = not pixelar_ativo
                 print(f"Pixelar {'ativado' if pixelar_ativo else 'desativado'}")
@@ -271,10 +304,11 @@ def play():
                 red_blue_off = True
                 dado_atual_img = None
                 dado_atual_num = None
+                mostrar_explosao = False
                 state = 1
                 print("Todos os filtros desativados")
             case "policia":
-                olice = True
+                police = True
                 sv_state_red = hsv_state_blue = hsv_state_green = False
                 ed_blue_off = False
                 print("Modo polícia ativado")
