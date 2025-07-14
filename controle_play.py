@@ -29,11 +29,19 @@ fichas = {
     "golpnur": golpnur,# obj e como ele fica aqui
     "xx": xx,#add outros players e seu objs(dados da ficha) n arquivo onde fica localizado as fichas e aqui do jeito que esta
 }
+hp = fichas[ficha_esc].hp
+hp_max = fichas[ficha_esc].hp_val
+mana =  fichas[ficha_esc].esp
+mana_max = fichas[ficha_esc].esp_max
 def instrucoes():
     print("\ninstruções deste controle use somente durante combate \nver ficha | ficha \nsofreu dano | dano e dps num de dano sofrido(ex dano 5) curado | vida e dps num da cura(vida 5) upou de nivel | lv up usou habilidade | hab usada dps o nome dela e por fim qnt de vezs usadas no turno ex chute 1(chute 1 vez)recarregou habilidade | hab reset \n efeitos de camera são digitados aqui: pixel(para pixelizar a camera),vermelho(imagem mais avermelhada),azul(imagem mais azulada) verde(imagem mais verde) inverter(inverte as cores) escurecer normal(retira os filtros) policia(alterna entre vermelho e azul) walter(filtro laranja) noir cor(desativa o noir/ou use o normal)\nse a sessão acabou |fim da sessão\n fim do guia")
 def Cam():
         cam = cv2.VideoCapture(0)
+        
+        #ver tamanho
+        #misc
         global rotacao, state
+        global mana, hp, mana_max
         #p/ações especificas deste jeito p/nn bugar
         global escurecer_ativo
         global red_blue_off
@@ -86,12 +94,32 @@ def Cam():
             img_d10 = cv2.imread("imagens/d10-removebg-preview.png", cv2.IMREAD_UNCHANGED)
         def d20_img():
             img_d20 = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-        def hp_na_cam(img):
-            print("add e ser updatada conforme hp vai sendo atualizado")
-            #div em sessoes dependendo do hp e vai reduzindo tipo boss bar em baixo meio centralizado
-        def mana(img):
-            print("add e ser updatada conforme a 'mana' vai sendo atualizado")
-            #div em sessoes dependendo da mana e vai reduzindo tipo medidor direita quase que no meio
+        def barras_webcam(img):
+            espessura_hp = 1#talvez fazer um calculo
+            espessura_mana = 1#talvez fazer um calculo
+            cor_hp_full = (13,217,16)#rgb
+            cor_hp_incompleto = (255,0,0)
+            cor_mana_full = (255,234,0)
+            cor_mana_incompleto = (250,240,132)
+            largura = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH)) #480 no meu pc
+            altura =int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT)) #640 no meu pc
+            print(f"altura: {altura}")
+            print(f"largura: {largura}")
+            #p1(superior esquerdo) p2(inferior direito) sendo com x e y
+            #p1 e p2 hp
+            p_hp_um = (int(largura - (largura / 8)), int(altura / 10))
+            p_hp_dois = (int(largura), int(altura / 9))
+            #p1 e p2 mana
+            p_mana_um = (int(largura / 9), int(altura - (altura / 10)))
+            p_mana_dois = (int(largura / 10), int(altura / 10))
+            #largura/altura dividira peça qnt do valor em segmentos
+            qnt_vida = hp
+            largura_vida = hp_max #valor estatico por personagem (na subdivisões)
+            barra_hp = cv2.rectangle(img,p_hp_um,p_hp_dois,cor_hp_full,espessura_hp)#fazer verde ou vermelho
+            qnt_mana = mana
+            altura_mana = mana_max #valor estatico por personagem (na subdivisões)
+            barra_mana = cv2.rectangle(img,p_mana_um,p_mana_dois,cor_mana_full,espessura_mana)#fazer amarelo ou azul
+            return img
         #visual
         def pixelar(img):   
             altura, largura = img.shape[:2]
@@ -149,6 +177,7 @@ def Cam():
             if not validacao:
                 #print("Erro ao capturar frame.")
                 break
+            frame = barras_webcam(frame)
             # Aplica rotação no frame original
             if rotacao == 1:
                 frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
