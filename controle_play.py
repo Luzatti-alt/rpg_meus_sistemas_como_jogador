@@ -27,16 +27,14 @@ dado_atual_num = None
 #so para conseguir acessar o metodo de hab_bonus e fazer a consulta da ficha aqui
 fichas = {
     "golpnur": golpnur,# obj e como ele fica aqui
-    "xx": xx,
-    #add outros players e seu objs(dados da ficha) n arquivo onde fica localizado as fichas e aqui do jeito que esta
+    "xx": xx,#add outros players e seu objs(dados da ficha) n arquivo onde fica localizado as fichas e aqui do jeito que esta
 }
 def instrucoes():
     print("\ninstruções deste controle use somente durante combate \nver ficha | ficha \nsofreu dano | dano e dps num de dano sofrido(ex dano 5) curado | vida e dps num da cura(vida 5) upou de nivel | lv up usou habilidade | hab usada dps o nome dela e por fim qnt de vezs usadas no turno ex chute 1(chute 1 vez)recarregou habilidade | hab reset \n efeitos de camera são digitados aqui: pixel(para pixelizar a camera),vermelho(imagem mais avermelhada),azul(imagem mais azulada) verde(imagem mais verde) inverter(inverte as cores) escurecer normal(retira os filtros) policia(alterna entre vermelho e azul) walter(filtro laranja) noir cor(desativa o noir/ou use o normal)\nse a sessão acabou |fim da sessão\n fim do guia")
 def Cam():
         cam = cv2.VideoCapture(0)
-        global rotacao
-        global state
-        #p/ações especificas
+        global rotacao, state
+        #p/ações especificas deste jeito p/nn bugar
         global escurecer_ativo
         global red_blue_off
         global hsv_state_red
