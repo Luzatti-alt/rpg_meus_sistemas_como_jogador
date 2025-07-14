@@ -95,10 +95,10 @@ def Cam():
             mana_max = fichas[ficha_esc].esp_max
             #espessura positivo so borda negativo ocupa tudo
             espessura = -1
-            cor_hp_full = (13,217,16)#rgb verde
-            cor_hp_incompleto = (255,0,0)
-            cor_mana_full = (255,234,0)
-            cor_mana_incompleto = (250,240,132)
+            cor_hp_full = (13,217,16)#bgr verde
+            cor_hp_incompleto = (0, 0, 255)
+            cor_mana_full = (0, 234, 255)
+            cor_mana_incompleto = (132, 240, 250)
             #p/calculos
             largura = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH)) #480 no meu pc
             altura = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT)) #640 no meu pc
@@ -106,8 +106,8 @@ def Cam():
             barra_hp_min_x = 50
             barra_hp_height_y1 = int(altura - 100)
             barra_hp_height_y2 = int(altura - 50)
-            # proporção da vida arrumar o calculo pois a proporção esta certa
-            #so esta invertida
+            # proporção da vida arrumar o calculo pois a proporção esta certa 
+            #dano tbm esta aumentando a barra
             hp_ratio = max(0, min((hp / hp_max), 1.65))
             hp_width = int((barra_hp_max_width - barra_hp_min_x) / hp_ratio)# barra incompleta (vermelho)
             cv2.rectangle(img, (barra_hp_min_x, barra_hp_height_y1), (barra_hp_max_width, barra_hp_height_y2), cor_hp_incompleto, -1)
