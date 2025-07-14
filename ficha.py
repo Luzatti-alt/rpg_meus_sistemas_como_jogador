@@ -48,7 +48,6 @@ class Ficha:
         print(f"level de {self.nome_char} upado: {self.lv}")
     def restore(self)->None:
         self.hp = self.hp_val
-        print("teste: ",self.hp_val)
         print("dano aplicado a ficha: ",self.hp_val)
 #aqui se atribui valoras aos personagens
 #exemplo hp 11 hp_atual 7 
