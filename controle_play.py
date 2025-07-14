@@ -46,6 +46,7 @@ def Cam():
         global enter_pressed
         global pixelar_ativo
         global negativo_ativo
+        #incluso com mecanicas
         def mostrar_dado_no_frame(frame):
             global dado_atual_img, dado_atual_num
             if dado_atual_img is not None and dado_atual_num is not None:
@@ -85,7 +86,10 @@ def Cam():
             img_d10 = cv2.imread("imagens/d10-removebg-preview.png", cv2.IMREAD_UNCHANGED)
         def d20_img():
             img_d20 = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-        #filtros
+        def hp_na_cam(img):
+            print("add e seu updatada conforme hp vai sendo atualizado")
+        #div em sessoes dependendo do hp e vai reduzindo tipo boss bar em baixo meio centralizado
+        #visual
         def pixelar(img):   
             altura, largura = img.shape[:2]
             pequeno = cv2.resize(img, (32, 24),     interpolation=cv2.INTER_LINEAR)
@@ -130,9 +134,6 @@ def Cam():
             s = np.clip(s, 60, 255).astype(np.uint8)
             hsv_mod = cv2.merge([h, s, v])
             return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
-        def hp_na_cam(img):
-            print("add e seu updatada conforme hp vai sendo atualizado")
-        #div em sessoes dependendo do hp e vai reduzindo tipo boss bar em baixo meio centralizado
     #detectar camera
         if not cam.isOpened():
             print("Erro ao abrir a câmera.\n")
