@@ -310,14 +310,17 @@ def play():
                     uso_qnt_perso = fichas[ficha_esc].bonus_usos#sem () neste caso para acessar direto o valor
                 else:
                     print("não existe essa habilidade")
-                # Adicione lógica de uso
             elif act == "hab reset":
                 print("Usos resetados.")
-                # Adicione lógica de reset
             elif act == "full restore":
                 fichas[ficha_esc].restore()
+                turnos_reviver = 3
             elif act == "salario":
                 salario = input("digite seu ganho($): ")
+                #falta isso
+            elif act == "compra":
+                salario = input("digite o valor gasto: ")
+                #falta isso
             elif act == "lv up":
                 fichas[ficha_esc].lv_up()
             elif act == "fim da sessão":
