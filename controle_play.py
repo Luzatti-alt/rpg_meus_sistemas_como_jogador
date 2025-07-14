@@ -29,16 +29,10 @@ fichas = {
     "golpnur": golpnur,# obj e como ele fica aqui
     "xx": xx,#add outros players e seu objs(dados da ficha) n arquivo onde fica localizado as fichas e aqui do jeito que esta
 }
-hp = fichas[ficha_esc].hp
-hp_max = fichas[ficha_esc].hp_val
-mana =  fichas[ficha_esc].esp
-mana_max = fichas[ficha_esc].esp_max
 def instrucoes():
     print("\ninstruções deste controle use somente durante combate \nver ficha | ficha \nsofreu dano | dano e dps num de dano sofrido(ex dano 5) curado | vida e dps num da cura(vida 5) upou de nivel | lv up usou habilidade | hab usada dps o nome dela e por fim qnt de vezs usadas no turno ex chute 1(chute 1 vez)recarregou habilidade | hab reset \n efeitos de camera são digitados aqui: pixel(para pixelizar a camera),vermelho(imagem mais avermelhada),azul(imagem mais azulada) verde(imagem mais verde) inverter(inverte as cores) escurecer normal(retira os filtros) policia(alterna entre vermelho e azul) walter(filtro laranja) noir cor(desativa o noir/ou use o normal)\nse a sessão acabou |fim da sessão\n fim do guia")
 def Cam():
         cam = cv2.VideoCapture(0)
-        
-        #ver tamanho
         #misc
         global rotacao, state
         global mana, hp, mana_max
@@ -95,36 +89,40 @@ def Cam():
         def d20_img():
             img_d20 = cv2.imread("imagens/d20-removebg-preview.png", cv2.IMREAD_UNCHANGED)
         def barras_webcam(img):
+            hp = fichas[ficha_esc].hp_val
+            hp_max = fichas[ficha_esc].hp
+            mana =  fichas[ficha_esc].esp
+            mana_max = fichas[ficha_esc].esp_max
             #espessura positivo so borda negativo ocupa tudo
             espessura = -1
             cor_hp_full = (13,217,16)#rgb verde
             cor_hp_incompleto = (255,0,0)
             cor_mana_full = (255,234,0)
             cor_mana_incompleto = (250,240,132)
+            #p/calculos
             largura = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH)) #480 no meu pc
             altura = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT)) #640 no meu pc
-            #p1(superior esquerdo) p2(inferior direito) sendo com x e y
-            #p1 e p2 hp normal
-            p_hp_um = (int(largura - (largura / 8)-50), int(altura-100))
-            p_hp_dois = (int(50), int(altura-50))
-            largura_hp = hp
-            #p1 e p2 mana normal
-            p_mana_um = (int(largura-100), int(altura - (altura / 10)))
-            p_mana_dois = (int(largura-50), int(altura / 10))
-            altura_mana = mana
-            #p1 e p2 hp conforme valor
-            p_hp_um_variado = (int(largura - (largura / 8)-50), int(altura-100))
-            p_hp_dois_variado = (int(50), int(altura-50))
-            largura_hp = hp
-            #p1 e p2 mana conforme valor
-            p_mana_um_variado = (int(largura-100), int(altura - (altura / 10)))
-            p_mana_dois_variado = (int(largura-50), int(altura / 10))
-            altura_mana = mana
-            #largura/altura dividira peça qnt do valor em segmentos
-            barra_hp_incompleto = cv2.rectangle(img,p_hp_um,p_hp_dois,cor_hp_incompleto,espessura)
-            barra_hp_full = cv2.rectangle(img,p_hp_um_variado,p_hp_dois_variado,cor_hp_full,espessura)#fazer verde ou vermelho
-            barra_mana_incompleto = cv2.rectangle(img,p_mana_um,p_mana_dois,cor_mana_full,espessura)#fazer amarelo ou azul
-            barra_mana_full = cv2.rectangle(img,p_mana_um_variado,p_mana_dois_variado,cor_mana_incompleto,espessura)#fazer amarelo ou azul
+            barra_hp_max_width = int(largura - (largura / 8) - 50)
+            barra_hp_min_x = 50
+            barra_hp_height_y1 = int(altura - 100)
+            barra_hp_height_y2 = int(altura - 50)
+            # proporção da vida
+            hp_ratio = max(0, min(hp / hp_max, 1))  # evita bugs
+            hp_width = int((barra_hp_max_width - barra_hp_min_x) * hp_ratio)# barra incompleta (vermelho)
+            cv2.rectangle(img, (barra_hp_min_x, barra_hp_height_y1), (barra_hp_max_width, barra_hp_height_y2), cor_hp_incompleto, -1)
+            # barra atual (verde)
+            cv2.rectangle(img, (barra_hp_min_x, barra_hp_height_y1), (barra_hp_min_x + hp_width, barra_hp_height_y2), cor_hp_full, -1)
+            barra_mana_max_y1 = int(altura - (altura / 10))
+            barra_mana_min_y = int(altura / 10)
+            barra_mana_x1 = int(largura - 100)
+            barra_mana_x2 = int(largura - 50)
+            # proporção da mana
+            mana_ratio = max(0, min(mana / mana_max, 1))
+            mana_height = int((barra_mana_max_y1 - barra_mana_min_y) * mana_ratio)
+            # barra incompleta (azul claro)
+            cv2.rectangle(img, (barra_mana_x1, barra_mana_min_y), (barra_mana_x2, barra_mana_max_y1), cor_mana_incompleto, -1)
+            # barra atual (amarelo)
+            cv2.rectangle(img, (barra_mana_x1, barra_mana_max_y1 - mana_height), (barra_mana_x2, barra_mana_max_y1), cor_mana_full, -1)
             return img
         #visual
         def pixelar(img):   
@@ -333,15 +331,15 @@ def play():
                 if fichas[ficha_esc].hp_val < 1:
                     turnos_reviver -= 1
                     print("menos 1 turno para reviver")
-                    print(fichas[ficha_esc].hp_val)
+                    print(f"HP atual: {fichas[ficha_esc].hp_val}")
                     if turnos_reviver < 1:
                         print("morreu")
                         fichas[ficha_esc].vivo = False
                 else:
-                    print(fichas[ficha_esc].hp_val)
                     dano = int(input("Valor de dano sofrido: "))
                     fichas[ficha_esc].hp_val  -= dano
                     dano = None
+                    print(f"Novo HP: {fichas[ficha_esc].hp_val}")
             elif act == "hab usada":
                 qual_hab = input("Habilidade usada: ").lower()
                 hab_ficha = fichas[ficha_esc].bonus.lower()
