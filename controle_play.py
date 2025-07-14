@@ -345,6 +345,8 @@ def play():
             case "compra":
                 salario = input("digite o valor gasto: ")
                 #falta isso
+            case "magia":
+                uso_magia = input(f"digite o quanto de espirito você quer usar(máximo de {fichas[ficha_esc].esp_max}): ")
             case "lv up":
                 fichas[ficha_esc].lv_up()
             case "fim da sessão":
