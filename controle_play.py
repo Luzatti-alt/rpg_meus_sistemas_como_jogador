@@ -7,6 +7,7 @@ import keyboard
 import threading #para poder rodar a camera e os inputs
 turnos_reviver = 3
 ficha_esc = input("selecione a ficha: ").lower()
+explosao_cap = cv2.VideoCapture("videos/Deltarune Explosion Green Screen(720P_HD).mp4")
 valido = False
 cam_on = False
 mostrar_explosao = False
@@ -33,6 +34,7 @@ fichas = {
 def instrucoes():
     print("\ninstruções deste controle use somente durante combate \nver ficha | ficha \nsofreu dano | dano e dps num de dano sofrido(ex dano 5) curado | vida e dps num da cura(vida 5) upou de nivel | lv up usou habilidade | hab usada dps o nome dela e por fim qnt de vezs usadas no turno ex chute 1(chute 1 vez)recarregou habilidade | hab reset \n efeitos de camera são digitados aqui: pixel(para pixelizar a camera),vermelho(imagem mais avermelhada),azul(imagem mais azulada) verde(imagem mais verde) inverter(inverte as cores) escurecer normal(retira os filtros) policia(alterna entre vermelho e azul) walter(filtro laranja) noir cor(desativa o noir/ou use o normal)\nse a sessão acabou |fim da sessão\n fim do guia")
 def Cam():
+        explosao_cap = None
         cam = cv2.VideoCapture(0)
         explosao_cap = cv2.VideoCapture("videos/Deltarune Explosion Green Screen(720P_HD).mp4")
         #misc
@@ -210,12 +212,16 @@ def Cam():
                 if escurecer_ativo:
                     frame_display = escurecer(frame_display)
                 if mostrar_explosao:
+                    if explosao_cap is None:
+                        explosao_cap = cv2.VideoCapture("videos/Deltarune Explosion Green Screen(720P_HD).mp4")
                     ret_exp, frame_exp = explosao_cap.read()
                     if not ret_exp:
                         explosao_cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
                         mostrar_explosao = False
+                        explosao_cap.release()
+                        explosao_cap = None
                     else:
-                        frame_exp = cv2.resize(frame_exp, (480, 480))  # redimensiona se necessário
+                        frame_exp = cv2.resize(frame_exp, (480, 480))
                         frame_exp_sem_fundo, mask_inv = remover_fundo_verde(frame_exp)
                         x_offset, y_offset = 100, 100
                         h, w = frame_exp.shape[:2]
@@ -225,6 +231,7 @@ def Cam():
                         fg = cv2.bitwise_and(frame_exp, frame_exp, mask=mask_inv)
                         combinada = cv2.add(bg, fg)
                         frame_display[y_offset:y_offset+h, x_offset:x_offset+w] = combinada
+
                 # Aplica modo preto e branco se selecionado
             if state == 2:
                 frame_display = cv2.cvtColor(frame_display, cv2.COLOR_BGR2GRAY)
