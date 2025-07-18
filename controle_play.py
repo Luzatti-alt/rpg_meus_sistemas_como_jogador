@@ -73,7 +73,7 @@ def Cam():
             return frame
         def sobrepor_imagem_fundo(frame, imagem, x, y):
             h, w = imagem.shape[:2]
-            if y + h > frame.shape[0] or x + w > frame.shape[1]:
+            if y + h > frame.shape[0] or x + w > frame.shape[1]:f
                 return frame
             roi = frame[y:y+h, x:x+w]
             if imagem.shape[2] == 4:
@@ -215,7 +215,7 @@ def Cam():
                         explosao_cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
                         mostrar_explosao = False
                     else:
-                        frame_exp = cv2.resize(frame_exp, (320, 180))  # redimensiona se necessário
+                        frame_exp = cv2.resize(frame_exp, (480, 480))  # redimensiona se necessário
                         frame_exp_sem_fundo, mask_inv = remover_fundo_verde(frame_exp)
                         x_offset, y_offset = 100, 100
                         h, w = frame_exp.shape[:2]
@@ -266,6 +266,7 @@ def play():
                 fichas[ficha_esc].ficha_info()
                 fichas[ficha_esc].hab_bonus()
                 #efeitos camera
+                #tem que arrumar conforme tamanho da camera
             case "explosao":
                 mostrar_explosao = True
                 print("Explosão ativada")
