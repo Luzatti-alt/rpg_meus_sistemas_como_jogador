@@ -227,7 +227,9 @@ def Cam():
                         frame_display[y_offset:y_offset+h, x_offset:x_offset+w] = combinada
                 # Aplica modo preto e branco se selecionado
             if state == 2:
-                frame_display = mostrar_dado_no_frame(frame_display)
+                frame_display = cv2.cvtColor(frame_display, cv2.COLOR_BGR2GRAY)
+                frame_display = cv2.cvtColor(frame_display, cv2.COLOR_GRAY2BGR)
+
             frame_display = mostrar_dado_no_frame(frame_display)
             cv2.imshow("Camera", frame_display)
             if keyboard.is_pressed('left'):
