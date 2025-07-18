@@ -73,7 +73,7 @@ def Cam():
             return frame
         def sobrepor_imagem_fundo(frame, imagem, x, y):
             h, w = imagem.shape[:2]
-            if y + h > frame.shape[0] or x + w > frame.shape[1]:f
+            if y + h > frame.shape[0] or x + w > frame.shape[1]:
                 return frame
             roi = frame[y:y+h, x:x+w]
             if imagem.shape[2] == 4:
@@ -306,12 +306,15 @@ def play():
                 dado_atual_img = None
                 dado_atual_num = None
                 mostrar_explosao = False
+                pixelar_ativo = False
+                negativo_ativo = False
+                escurecer_ativo = False
                 state = 1
                 print("Todos os filtros desativados")
             case "policia":
                 police = True
-                sv_state_red = hsv_state_blue = hsv_state_green = False
-                ed_blue_off = False
+                hsv_state_red = hsv_state_blue = hsv_state_green = False
+                red_blue_off = False
                 print("Modo polícia ativado")
             case "walter":
                 walter = True
