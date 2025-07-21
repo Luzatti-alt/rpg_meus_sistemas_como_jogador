@@ -3,7 +3,6 @@ from Dados import * #add na camera o resultado o que falta dos dados
 import cv2
 import keyboard
 import numpy as np
-import keyboard
 import threading #para poder rodar a camera e os inputs
 turnos_reviver = 3
 ficha_esc = input("selecione a ficha: ").lower()
