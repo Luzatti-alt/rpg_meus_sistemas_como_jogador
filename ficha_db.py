@@ -37,7 +37,7 @@ class Ficha(Base):
     hab_principal_qnt_usada = Column('quantidade de usada da habilidade principal', Integer)
     hab_bonus = Column('habilidade bonus', String)
     hab_bonus_qnt_uso = Column('quantidade de usos da habilidade bonus', Integer)
-    hab_bonus_qnt_usada = Column('quantidade de usos da habilidade bonus', Integer)
+    hab_bonus_qnt_usada = Column('quantidade usada e umaa habilidade bonus', Integer)
     passiva = Column('passiva', String)
 
     def __init__(self, nome_personagem, hp_total, hp_atual, vivo, level, xp, armour_hp,
