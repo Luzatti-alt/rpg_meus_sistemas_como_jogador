@@ -63,14 +63,34 @@ class rpg_app(App):
             Color(0, 1, 0, 1)
             self.cam_rect = Rectangle(size=cam_widget.size, pos=cam_widget.pos)
         cam_widget.bind(size=self.update_cam_rect, pos=self.update_cam_rect)
+        #sub box b(text, confirmacao )
+        sub_b_box = BoxLayout(
+        orientation='vertical',
+        size_hint=(None, None),
+        size=((largura - largura_log - 650)/2, altura /8),
+        pos=(460, 10),
+        spacing=5
+        )
         # ===================== CAMPO DE TEXTO =====================
         input_text = TextInput(
         hint_text="Digite aqui...",
-        size_hint_y=0.2
+         size=((largura - largura_log - 650)/2, 80)
         )
+        self.ip_text = TextInput(
+        hint_text="IP:",
+        size_hint=(None, None),
+        size=((largura - largura_log - 650)/2-6, 132),
+        pos=((largura/2)-10, 10)
+        )
+        self.confirmar = Button(text='Confirmar', size_hint=(None, None), size=((largura - largura_log - 650)/2, 80),
+                                  background_normal="", background_color=(0.2, 0.6, 0.9, 1),
+                                  pos=(0, altura - 100))
         # Adiciona os dois no central_box
         central_box.add_widget(cam_widget)
-        central_box.add_widget(input_text)
+        central_box.add_widget(sub_b_box)
+        layout.add_widget(self.ip_text)
+        sub_b_box.add_widget(input_text)
+        sub_b_box.add_widget(self.confirmar)
         layout.add_widget(central_box)
         # Botões e spinner
         self.criar_ficha = Button(text='Criar ficha', size_hint=(None, None), size=(300, 100),
@@ -100,7 +120,7 @@ class rpg_app(App):
                     'noir', 'laranja', 'invertido', 'escurecido', 'explosao', 'pixelar'),
             size_hint=(None, None),
             size=(300, 100),
-            pos=(0, altura / 2 + 125)
+            pos= (0, altura / 2 + 125)
         )
         self.up = Button(text='cima', size_hint=(None, None), size=(150, 100),
                          background_normal="", background_color=(0.2, 0.6, 0.9, 1),
