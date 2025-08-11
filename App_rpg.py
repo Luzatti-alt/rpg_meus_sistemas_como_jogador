@@ -8,69 +8,71 @@ from kivy.graphics import Color, Rectangle
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
-
-
+from kivy.uix.textinput import TextInput
+from kivy.uix.boxlayout import BoxLayout
 class rpg_app(App):
     def build(self):
         altura = Window.height
         largura = Window.width
-
         layout = FloatLayout()
-
         # Fundo geral
         with layout.canvas.before:
             Color(0.1, 0.1, 0.1, 1)
             self.bg_rect = Rectangle(size=Window.size, pos=layout.pos)
-
-        def update_bg(*args):
-            self.bg_rect.pos = layout.pos
-            self.bg_rect.size = Window.size
-        layout.bind(pos=update_bg, size=update_bg)
-
+        layout.bind(pos=self.update_bg, size=self.update_bg)
         # Área de log
         self.log_layout = GridLayout(cols=1, size_hint_y=None, spacing=5, padding=5)
         self.log_layout.bind(minimum_height=self.log_layout.setter('height'))
-
-        # Posicionar o log à direita dos botões, mas com margem (espaço)
-        margem_lateral = 50  # espaço entre log e borda direita
         largura_log = 300
-        altura_log = altura - 20
-
         self.scroll_log = ScrollView(
             size_hint=(None, None),
-            size=(largura_log, altura_log),
-            pos=(largura - largura_log - margem_lateral, 10),  # deslocado da borda direita
+            size=(largura_log, altura - 15),
+            pos=(largura - largura_log - 10, 10),
             bar_width=10
         )
-
-        # Fundo do log diferente do fundo geral
         with self.scroll_log.canvas.before:
-            Color(0.1, 0.1, 0.2, 1)  # fundo azul escuro pro log
+            Color(0.1, 0.1, 0.2, 1)
             self.log_bg = Rectangle(size=self.scroll_log.size, pos=self.scroll_log.pos)
-
-        def update_log_bg(*args):
-            self.log_bg.pos = self.scroll_log.pos
-            self.log_bg.size = self.scroll_log.size
-        self.scroll_log.bind(pos=update_log_bg, size=update_log_bg)
-
+        self.scroll_log.bind(pos=self.update_log_bg, size=self.update_log_bg)
         self.scroll_log.add_widget(self.log_layout)
         layout.add_widget(self.scroll_log)
-
         # Função para adicionar mensagens no log
         def add_log(msg):
             log_label = Label(
                 text=msg,
                 size_hint_y=None,
-                height=25,
+                height=60,
                 color=(1, 1, 1, 1),
                 halign="left",
                 valign="middle"
             )
             log_label.bind(size=lambda *x: log_label.setter('text_size')(log_label, (log_label.width, None)))
             self.log_layout.add_widget(log_label)
-            self.scroll_log.scroll_y = 0  # rolar para o fim automaticamente
-
-        # Botões e spinner, com posições fixas conforme seu código original
+            self.scroll_log.scroll_y = 0
+        # === ÁREA CENTRAL ===
+        central_box = BoxLayout(
+        orientation='vertical',
+        size_hint=(None, None),
+        size=(largura - largura_log - 650, altura - 20),
+        pos=(460, 10),
+        spacing=10
+        )
+        # ===================== CAIXA VERDE (CAM) =====================
+        cam_widget = FloatLayout(size_hint_y=0.8)
+        with cam_widget.canvas:
+            Color(0, 1, 0, 1)
+            self.cam_rect = Rectangle(size=cam_widget.size, pos=cam_widget.pos)
+        cam_widget.bind(size=self.update_cam_rect, pos=self.update_cam_rect)
+        # ===================== CAMPO DE TEXTO =====================
+        input_text = TextInput(
+        hint_text="Digite aqui...",
+        size_hint_y=0.2
+        )
+        # Adiciona os dois no central_box
+        central_box.add_widget(cam_widget)
+        central_box.add_widget(input_text)
+        layout.add_widget(central_box)
+        # Botões e spinner
         self.criar_ficha = Button(text='Criar ficha', size_hint=(None, None), size=(300, 100),
                                   background_normal="", background_color=(0.2, 0.6, 0.9, 1),
                                   pos=(0, altura - 100))
@@ -115,29 +117,10 @@ class rpg_app(App):
         self.aplicar_efeito = Button(text='Aplicar efeito', size_hint=(None, None), size=(300, 100),
                                      background_normal="", background_color=(0.2, 0.6, 0.9, 1),
                                      pos=(0, altura / 2 + 25))
-
-        # Adiciona todos os botões e spinner
         for widget in [self.criar_ficha, self.d4, self.d6, self.d10, self.d20,
                        self.up, self.down, self.direita, self.esquerda,
                        self.aplicar_efeito, self.efeitos, self.dano, self.cura]:
             layout.add_widget(widget)
-
-        # Reposicionamento dinâmico
-        def reposicionar_elementos(*args):
-            altura = Window.height
-            largura = Window.width
-            self.criar_ficha.pos = (0, altura - 100)
-            self.efeitos.pos = (0, altura / 2 + 125)
-            self.aplicar_efeito.pos = (0, altura / 2 + 25)
-            self.d4.pos = (0, altura / 2 + 325)
-            self.d6.pos = (0, altura / 2 + 225)
-            self.d10.pos = (150, altura / 2 + 225)
-            self.d20.pos = (150, altura / 2 + 325)
-            self.scroll_log.pos = (largura_log, 10)
-            self.scroll_log.size = (largura_log, altura - 20)
-
-        Window.bind(size=reposicionar_elementos)
-
         # Ações dos botões com log
         self.criar_ficha.bind(on_release=lambda x: add_log("Criar Ficha clicado"))
         self.d4.bind(on_release=lambda x: add_log("Rolou um d4"))
@@ -151,8 +134,14 @@ class rpg_app(App):
         self.aplicar_efeito.bind(on_release=lambda x: add_log(f"Efeito aplicado: {self.efeitos.text}"))
         self.cura.bind(on_release=lambda x: add_log("Curando"))
         self.dano.bind(on_release=lambda x: add_log("Causando dano"))
-
         return layout
-
-
+    def update_bg(self, *args):
+        self.bg_rect.pos = (0, 0)
+        self.bg_rect.size = Window.size
+    def update_log_bg(self, *args):
+        self.log_bg.pos = self.scroll_log.pos
+        self.log_bg.size = self.scroll_log.size
+    def update_cam_rect(self, instance, value):
+        self.cam_rect.pos = instance.pos
+        self.cam_rect.size = instance.size
 rpg_app().run()
