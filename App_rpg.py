@@ -157,7 +157,7 @@ class TelaPrincipal(Screen):
         self.aplicar_efeito.bind(on_release=lambda x: add_log(f"Efeito aplicado: {self.efeitos.text}"))
         self.cura.bind(on_release=lambda x: add_log("Curando"))
         self.dano.bind(on_release=lambda x: add_log("Causando dano"))
-        return layout
+        self.add_widget(layout)
     def update_bg(self, *args):
         self.bg_rect.pos = (0, 0)
         self.bg_rect.size = Window.size
