@@ -4,9 +4,11 @@ from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
+from kivy.uix.screenmanager import Screen
 
-class ficha_criar(App):
-    def build(self):
+class TelaCriarFicha(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         layout = FloatLayout()
 
         # Campos que o usuário preenche  
@@ -91,6 +93,3 @@ class ficha_criar(App):
         session.add(ficha)  
         session.commit()  
         print("Ficha criada com sucesso!")
-
-if __name__ == "__main__":
-    ficha_criar().run()
