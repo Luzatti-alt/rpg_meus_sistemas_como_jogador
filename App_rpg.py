@@ -145,7 +145,7 @@ class TelaPrincipal(Screen):
                        self.aplicar_efeito, self.efeitos, self.dano, self.cura]:
             layout.add_widget(widget)
         # Ações dos botões com log
-        self.criar_ficha.bind(on_release=lambda x: self.manager.current = "criar_ficha")
+        self.criar_ficha.bind(on_release=lambda x: setattr(self.manager, "current", "criar_ficha"))
         self.d4.bind(on_release=lambda x: add_log("Rolou um d4"))
         self.d6.bind(on_release=lambda x: add_log("Rolou um d6"))
         self.d10.bind(on_release=lambda x: add_log("Rolou um d10"))
