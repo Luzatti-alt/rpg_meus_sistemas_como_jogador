@@ -7,5 +7,6 @@ app = Flask(__name__)
 #por enquanto somente a rota principal
 @app.route("/")#home page
 def cam_virt_mobile():
-	return render_template()#retornar o audio e o video do app
+	return "camera ficara aqui o return certo comentado aqui por enquanto"
+	#return render_template()#retornar o audio e o video do app
 app.run(host="0.0.0.0",port=5000)
