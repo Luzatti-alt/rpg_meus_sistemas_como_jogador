@@ -10,6 +10,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
+#app
 class rpg_app(App):
     def build(self):
         altura = Window.height
