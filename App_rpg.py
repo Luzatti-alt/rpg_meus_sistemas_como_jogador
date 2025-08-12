@@ -10,9 +10,11 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
-#app
-class rpg_app(App):
-    def build(self):
+from kivy.uix.screenmanager import Screen
+
+class TelaPrincipal(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         altura = Window.height
         largura = Window.width
         layout = FloatLayout()
@@ -143,7 +145,7 @@ class rpg_app(App):
                        self.aplicar_efeito, self.efeitos, self.dano, self.cura]:
             layout.add_widget(widget)
         # Ações dos botões com log
-        self.criar_ficha.bind(on_release=lambda x: add_log("Criar Ficha clicado"))
+        self.criar_ficha.bind(on_release=lambda x: self.manager.current = "criar_ficha")
         self.d4.bind(on_release=lambda x: add_log("Rolou um d4"))
         self.d6.bind(on_release=lambda x: add_log("Rolou um d6"))
         self.d10.bind(on_release=lambda x: add_log("Rolou um d10"))
@@ -165,4 +167,3 @@ class rpg_app(App):
     def update_cam_rect(self, instance, value):
         self.cam_rect.pos = instance.pos
         self.cam_rect.size = instance.size
-rpg_app().run()
