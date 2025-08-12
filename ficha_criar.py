@@ -50,7 +50,7 @@ class TelaCriarFicha(Screen):
         btn_criar.bind(on_release=lambda x: self.salvar_ficha(campos))  
         layout.add_widget(btn_criar)  
 
-        return layout  
+        self.add_widget(layout)  
 
     def salvar_ficha(self, campos):  
         # Verifica se todos os campos obrigatórios estão preenchidos  
