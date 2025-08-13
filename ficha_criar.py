@@ -44,11 +44,14 @@ class TelaCriarFicha(Screen):
         ]  
         for campo in campos:  
             layout.add_widget(campo)  
-
+         
         # Botão de criar ficha  
         btn_criar = Button(text="Criar ficha", size_hint=(None, None), size=(120, 50), pos_hint={"right": 0.98, "y": 0.02})  
         btn_criar.bind(on_release=lambda x: self.salvar_ficha(campos))  
-        layout.add_widget(btn_criar)  
+        layout.add_widget(btn_criar)
+        btn_retornar = Button(text="voltar", size_hint=(None, None), size=(120, 50), pos_hint={"left": 0.98, "y": 0.02})  
+        btn_retornar.bind(on_release=lambda x: setattr(self.manager, "current", "principal"))  
+        layout.add_widget(btn_retornar)  
 
         self.add_widget(layout)  
 
