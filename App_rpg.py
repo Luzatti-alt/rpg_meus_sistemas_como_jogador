@@ -1,4 +1,9 @@
 from ficha_db import *
+from kivy.uix.image import Image
+from kivy.clock import Clock
+from kivy.graphics.texture import Texture
+import cv2
+from camera import get_frame
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
@@ -61,11 +66,8 @@ class TelaPrincipal(Screen):
         spacing=10
         )
         # ===================== CAIXA VERDE (CAM) =====================
-        cam_widget = FloatLayout(size_hint_y=0.8)
-        with cam_widget.canvas:
-            Color(0, 1, 0, 1)
-            self.cam_rect = Rectangle(size=cam_widget.size, pos=cam_widget.pos)
-        cam_widget.bind(size=self.update_cam_rect, pos=self.update_cam_rect)
+        self.cam_view = Image(size_hint_y=0.8, allow_stretch=True, keep_ratio=True)
+        Clock.schedule_interval(self.update_cam_frame, 1/30)  # ~30 FPS
         #sub box b(text, confirmacao )
         sub_b_box = BoxLayout(
         orientation='vertical',
@@ -89,7 +91,7 @@ class TelaPrincipal(Screen):
                                   background_normal="", background_color=(0.2, 0.6, 0.9, 1),
                                   pos=(0, altura - 100))
         # Adiciona os dois no central_box
-        central_box.add_widget(cam_widget)
+        central_box.add_widget(self.cam_view)
         central_box.add_widget(sub_b_box)
         layout.add_widget(self.ip_text)
         sub_b_box.add_widget(input_text)
@@ -164,6 +166,12 @@ class TelaPrincipal(Screen):
     def update_log_bg(self, *args):
         self.log_bg.pos = self.scroll_log.pos
         self.log_bg.size = self.scroll_log.size
-    def update_cam_rect(self, instance, value):
-        self.cam_rect.pos = instance.pos
-        self.cam_rect.size = instance.size
+    def update_cam_frame(self, dt):
+        frame = get_frame()
+        if frame is None:
+            return
+        # OpenCV -> Kivy Texture (BGR -> mantém bgr no blit; flip vertical p/ Kivy)
+        buf = cv2.flip(frame, 0).tobytes()
+        texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
+        texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
+        self.cam_view.texture = texture
