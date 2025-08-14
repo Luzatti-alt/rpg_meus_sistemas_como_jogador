@@ -77,7 +77,7 @@ class TelaPrincipal(Screen):
         spacing=5
         )
         # ===================== CAMPO DE TEXTO =====================
-        input_text = TextInput(
+        self.input_text = TextInput(
         hint_text="Digite aqui...",
          size=((largura - largura_log - 650)/2, 80)
         )
@@ -94,7 +94,7 @@ class TelaPrincipal(Screen):
         central_box.add_widget(self.cam_view)
         central_box.add_widget(sub_b_box)
         layout.add_widget(self.ip_text)
-        sub_b_box.add_widget(input_text)
+        sub_b_box.add_widget(self.input_text)
         sub_b_box.add_widget(self.confirmar)
         layout.add_widget(central_box)
         # Botões e spinner
@@ -200,7 +200,6 @@ class TelaPrincipal(Screen):
         sub_box_width = (largura - largura_log - 650) / 2
         sub_box_height = altura / 8
         self.confirmar.size = (sub_box_width, 80)
-        self.confirmar.pos = (0, altura - 100)
         # Atualiza central_box
         self.children[0].children[0].size = (largura - largura_log - 650, altura - 20)
         self.children[0].children[0].pos = (460, 10)
@@ -219,6 +218,7 @@ class TelaPrincipal(Screen):
         self.efeitos.pos= (0, altura / 4 + 150)
         self.aplicar_efeito.pos = (0, altura / 4 + 75)
         #size
+        self.input_text.size = (sub_box_width, 80)
         self.efeitos.size = (largura/6, altura /12)
         self.d4.size = (largura/6, altura / 12)
         self.d6.size = (largura/6, altura / 12)
