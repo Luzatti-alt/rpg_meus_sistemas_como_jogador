@@ -218,7 +218,8 @@ class TelaPrincipal(Screen):
         self.efeitos.pos= (0, altura / 4 + 150)
         self.aplicar_efeito.pos = (0, altura / 4 + 75)
         #size
-        self.input_text.size = (sub_box_width, 80)
+        self.criar_ficha.size = (largura/6,altura / 12)
+        self.input_text.size = (sub_box_width, 160)
         self.efeitos.size = (largura/6, altura /12)
         self.d4.size = (largura/6, altura / 12)
         self.d6.size = (largura/6, altura / 12)
