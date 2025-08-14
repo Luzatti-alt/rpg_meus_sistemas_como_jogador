@@ -216,7 +216,8 @@ class TelaPrincipal(Screen):
         self.down.pos = (0, altura / 4 - 175)
         self.esquerda.pos = (150, altura / 4 - 175)
         self.direita.pos = (150, altura / 4 - 75)
-        self.aplicar_efeito.pos = (0, altura / 4 + 25)
+        self.efeitos.pos= (0, altura / 4 + 150)
+        self.aplicar_efeito.pos = (0, altura / 4 + 75)
         #size
         self.efeitos.size = (largura/6, altura /12)
         self.d4.size = (largura/6, altura / 12)
@@ -230,4 +231,3 @@ class TelaPrincipal(Screen):
         self.esquerda.size = (largura/6, altura / 12)
         self.direita.size = (largura/6, altura / 12)
         self.aplicar_efeito.size = (largura/6, altura / 12)
-        self.efeitos.size = (largura/6, altura / 12)
