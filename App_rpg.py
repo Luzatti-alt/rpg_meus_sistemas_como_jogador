@@ -177,44 +177,44 @@ class TelaPrincipal(Screen):
         texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
         texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
         self.cam_view.texture = texture
-     def reposicionar_elementos(self, *args):
-         altura = Window.height
-         largura = Window.width
-         # Atualiza fundo
-         self.bg_rect.size = Window.size
-         self.bg_rect.pos = (0, 0)
-         # Atualiza log
-         largura_log = 300
-         self.scroll_log.size = (largura_log, altura - 15)
-         self.scroll_log.pos = (largura - largura_log - 10, 10)
-         self.log_bg.size = self.scroll_log.size
-         self.log_bg.pos = self.scroll_log.pos
-         # Atualiza posição do campo IP
-         self.ip_text.size = ((largura - largura_log - 650) / 2 - 6, 132)
-         self.ip_text.pos = ((largura / 2) - 10, 10)
-         # Atualiza central_box
-         self.cam_view.size_hint_y = 0.8
-         self.cam_view.allow_stretch = True
-         self.cam_view.keep_ratio = True
-         # Atualiza sub_b_box
-         sub_box_width = (largura - largura_log - 650) / 2
-         sub_box_height = altura / 8
-         self.confirmar.size = (sub_box_width, 80)
-         self.confirmar.pos = (0, altura - 100)
-         # Atualiza central_box
-         self.children[0].children[0].size = (largura - largura_log - 650, altura - 20)
-         self.children[0].children[0].pos = (460, 10)
-         # Atualiza botões de dados e movimentação
-         self.criar_ficha.pos = (0, altura - 100)
-         self.d4.pos = (0, altura / 2 + 325)
-         self.d6.pos = (0, altura / 2 + 225)
-         self.d10.pos = (150, altura / 2 + 225)
-         self.d20.pos = (150, altura / 2 + 325)
-         self.cura.pos = (150, altura / 2 - 75)
-         self.dano.pos = (0, altura / 2 - 75)
-         self.up.pos = (0, 100)
-         self.down.pos = (0, 0)
-         self.esquerda.pos = (150, 0)
-         self.direita.pos = (150, 100)
-         self.aplicar_efeito.pos = (0, altura / 2 + 25)
-         self.efeitos.pos = (0, altura / 2 + 125)
+    def reposicionar_elementos(self, *args):
+        altura = Window.height
+        largura = Window.width
+        # Atualiza fundo
+        self.bg_rect.size = Window.size
+        self.bg_rect.pos = (0, 0)
+        # Atualiza log
+        largura_log = 300
+        self.scroll_log.size = (largura_log, altura - 15)
+        self.scroll_log.pos = (largura - largura_log - 10, 10)
+        self.log_bg.size = self.scroll_log.size
+        self.log_bg.pos = self.scroll_log.pos
+        # Atualiza posição do campo IP
+        self.ip_text.size = ((largura - largura_log - 650) / 2 - 6, 132)
+        self.ip_text.pos = ((largura / 2) - 10, 10)
+        # Atualiza central_box
+        self.cam_view.size_hint_y = 0.8
+        self.cam_view.allow_stretch = True
+        self.cam_view.keep_ratio = True
+        # Atualiza sub_b_box
+        sub_box_width = (largura - largura_log - 650) / 2
+        sub_box_height = altura / 8
+        self.confirmar.size = (sub_box_width, 80)
+        self.confirmar.pos = (0, altura - 100)
+        # Atualiza central_box
+        self.children[0].children[0].size = (largura - largura_log - 650, altura - 20)
+        self.children[0].children[0].pos = (460, 10)
+        # Atualiza botões de dados e movimentação
+        self.criar_ficha.pos = (0, altura - 100)
+        self.d4.pos = (0, altura / 2 + 325)
+        self.d6.pos = (0, altura / 2 + 225)
+        self.d10.pos = (150, altura / 2 + 225)
+        self.d20.pos = (150, altura / 2 + 325)
+        self.cura.pos = (150, altura / 2 - 75)
+        self.dano.pos = (0, altura / 2 - 75)
+        self.up.pos = (0, 100)
+        self.down.pos = (0, 0)
+        self.esquerda.pos = (150, 0)
+        self.direita.pos = (150, 100)
+        self.aplicar_efeito.pos = (0, altura / 2 + 25)
+        self.efeitos.pos = (0, altura / 2 + 125)
