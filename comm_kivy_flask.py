@@ -1,12 +1,18 @@
-#parte da comm entre o app e o servidor
-#(app pega os dados do opencv e o PyAudio e manda aos sevidores do flask(localmente))
-#gera a urç e compartilho a tela para poder fazer a camera virtual
-from flask import Flask,render_template
-#from pyaudio import *
+from flask import Flask, request
+import cv2
+import numpy as np
 app = Flask(__name__)
-#por enquanto somente a rota principal
-@app.route("/")#home page
-def cam_virt_mobile():
-	return "camera ficara aqui o return certo comentado aqui por enquanto"
-	#return render_template()#retornar o audio e o video do app
-app.run(host="0.0.0.0",port=5000)
+@app.route("/stream", methods=["POST"])
+def receber_stream():
+    video_file = request.files["video"]
+    audio_file = request.files["audio"]
+    # Vídeo
+    npimg = np.frombuffer(video_file.read(), np.uint8)
+    frame = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+    cv2.imshow("Video Recebido", frame)
+    cv2.waitKey(1)
+    # Áudio
+    with open("temp_audio.wav", "wb") as f:
+        f.write(audio_file.read())
+    return "ok"
+app.run(host="0.0.0.0", port=5000)
