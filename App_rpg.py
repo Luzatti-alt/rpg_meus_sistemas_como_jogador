@@ -78,8 +78,9 @@ class TelaPrincipal(Screen):
         )
         # ===================== CAMPO DE TEXTO =====================
         self.input_text = TextInput(
-        hint_text="Digite aqui...",
-         size=((largura - largura_log - 650)/2, 80)
+            hint_text="Digite aqui...",
+            size_hint=(None, None),
+            size=((largura - largura_log - 650)/2, 80)
         )
         self.ip_text = TextInput(
         hint_text="IP:",
@@ -199,7 +200,7 @@ class TelaPrincipal(Screen):
         # Atualiza sub_b_box
         sub_box_width = (largura - largura_log - 650) / 2
         sub_box_height = altura / 8
-        self.confirmar.size = (sub_box_width, 80)
+        self.confirmar.size = (sub_box_width, 60)
         # Atualiza central_box
         self.children[0].children[0].size = (largura - largura_log - 650, altura - 20)
         self.children[0].children[0].pos = (460, 10)
@@ -219,7 +220,7 @@ class TelaPrincipal(Screen):
         self.aplicar_efeito.pos = (0, altura / 4 + 75)
         #size
         self.criar_ficha.size = (largura/6,altura / 12)
-        self.input_text.size = (sub_box_width, 160)
+        self.input_text.size = (sub_box_width, 67)
         self.efeitos.size = (largura/6, altura /12)
         self.d4.size = (largura/6, altura / 12)
         self.d6.size = (largura/6, altura / 12)
