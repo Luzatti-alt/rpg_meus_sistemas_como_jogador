@@ -159,7 +159,7 @@ def filtro_walter(img):
 # ===== Função chamada pelo Kivy =====
 def get_frame():
     """Retorna um frame processado para exibir no Kivy."""
-    global explosao_cap
+    global explosao_cap, mostrar_explosao
 
     ret_cam, frame = cam.read()
     if not ret_cam:
