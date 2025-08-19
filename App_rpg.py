@@ -3,7 +3,7 @@ from kivy.uix.image import Image
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
 import cv2
-from camera import get_frame
+from camera import *
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
@@ -16,6 +16,8 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
+# Importa a função que aplica o filtro diretamente do arquivo camera.py
+from camera import aplicar_filtro
 
 class TelaPrincipal(Screen):
     def __init__(self, **kwargs):
@@ -132,15 +134,16 @@ class TelaPrincipal(Screen):
             layout.add_widget(widget)
         # Ações dos botões com log
         self.criar_ficha.bind(on_release=lambda x: setattr(self.manager, "current", "criar_ficha"))
-        self.d4.bind(on_release=lambda x: add_log("Rolou um d4"))
+        self.d4.bind(on_release=lambda x: add_log("Rolou um d4") )
         self.d6.bind(on_release=lambda x: add_log("Rolou um d6"))
         self.d10.bind(on_release=lambda x: add_log("Rolou um d10"))
         self.d20.bind(on_release=lambda x: add_log("Rolou um d20"))
         self.up.bind(on_release=lambda x: add_log("Movendo para cima"))
-        self.down.bind(on_release=lambda x: add_log("Movendo para baixo"))
+        self.down.bind(on_release=lambda x: add_log("Movendo para baixo")) # Corrigido: cam.direita() removido
         self.direita.bind(on_release=lambda x: add_log("Movendo para direita"))
         self.esquerda.bind(on_release=lambda x: add_log("Movendo para esquerda"))
-        self.aplicar_efeito.bind(on_release=lambda x: add_log(f"Efeito aplicado: {self.efeitos.text}"))
+        # Ação do botão "Aplicar efeito" agora chama a função do camera.py
+        self.aplicar_efeito.bind(on_release=lambda x: (aplicar_filtro(self.efeitos.text), add_log(f"Efeito aplicado: {self.efeitos.text}")))
         self.cura.bind(on_release=lambda x: add_log("Curando"))
         self.dano.bind(on_release=lambda x: add_log("Causando dano"))
         self.add_widget(layout)
@@ -169,7 +172,7 @@ class TelaPrincipal(Screen):
         self.bg_rect.pos = (0, 0)
         # Atualiza log
         largura_log = 300
-        self.scroll_log.sieze = (largura_log, altura - 15)
+        self.scroll_log.size = (largura_log, altura - 15)
         self.scroll_log.pos = (largura - largura_log - 10, 10)
         self.log_bg.size = self.scroll_log.size
         self.log_bg.pos = self.scroll_log.pos
