@@ -62,7 +62,16 @@ def mostrar_dado_no_frame(frame):
         cv2.putText(frame, text, (text_x, text_y), font, font_scale,
                     (255, 255, 255), thickness, cv2.LINE_AA)
     return frame
-
+def rotacionar_camera(direcao):
+        global rotacao
+        if direcao == 'direita':
+            rotacao = 90
+        elif direcao == 'esquerda':
+            rotacao = 270
+        elif direcao == "baixo":  # Alteração necessária
+            rotacao = 180
+        elif direcao == "cima":   # Alteração necessária
+            rotacao = 0
 def sobrepor_imagem_fundo(frame, imagem, x, y):
     h, w = imagem.shape[:2]
     if y + h > frame.shape[0] or x + w > frame.shape[1]:
@@ -201,16 +210,6 @@ def rolar_dado(tipo_dado):
     # Retorna o resultado da rolagem.
     return f'Você rolou um {tipo_dado} e o resultado foi {dado_atual_num}!'
 
-def rotacionar_camera(direcao):
-    global rotacao
-    if direcao == 'direita':
-        rotacao = 90
-    elif direcao == 'esquerda':
-        rotacao = 270
-    elif rotacao == "baixo":
-        rotacao = 180
-    elif rotacao == "cima":
-        rotacao = 0
 
 # ===== Adicionando a função para aplicar o filtro =====
 def aplicar_filtro(nome_filtro):
@@ -254,17 +253,12 @@ def get_frame():
     if not ret_cam:
         return None
     frame = barras_webcam(frame)
+    if rotacao != 0:
+        (h, w) = frame.shape[:2]
+        (cx, cy) = (w // 2, h // 2)
+        M = cv2.getRotationMatrix2D((cx, cy), rotacao, 1.0)
+        frame = cv2.warpAffine(frame, M, (w, h))
     # Rotação
-    def rotacionar_camera(direcao):
-        global rotacao
-        if direcao == 'direita':
-            rotacao = 90
-        elif direcao == 'esquerda':
-            rotacao = 270
-        elif direcao == "baixo":  # Alteração necessária
-            rotacao = 180
-        elif direcao == "cima":   # Alteração necessária
-            rotacao = 0
     frame_display = frame.copy()
     # Filtros
     if police and not red_blue_off:
