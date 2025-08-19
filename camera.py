@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+import Dados 
 # ===== Configuração de captura =====
 cam = cv2.VideoCapture(0)
 explosao_cap = cv2.VideoCapture("videos/Deltarune Explosion Green Screen(720P_HD).mp4")
@@ -156,6 +156,46 @@ def filtro_walter(img):
     hsv_mod = cv2.merge([h, s, v])
     return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
 
+# ===== Adicionando a função para aplicar o filtro =====
+def aplicar_filtro(nome_filtro):
+    """
+    Controla o estado das variáveis globais para aplicar o filtro selecionado.
+    Desativa todos os outros efeitos para garantir que apenas um esteja ativo.
+    """
+    global hsv_state_red, hsv_state_blue, hsv_state_green, pixelar_ativo, negativo_ativo, escurecer_ativo, police, walter, mostrar_explosao
+    
+    # Desativa todos os efeitos primeiro
+    hsv_state_red = False
+    hsv_state_blue = False
+    hsv_state_green = False
+    pixelar_ativo = False
+    negativo_ativo = False
+    escurecer_ativo = False
+    police = False
+    walter = False
+    mostrar_explosao = False
+
+    # Ativa o efeito selecionado
+    if nome_filtro == 'vermelho':
+        hsv_state_red = True
+    elif nome_filtro == 'azul':
+        hsv_state_blue = True
+    elif nome_filtro == 'verde':
+        hsv_state_green = True
+    elif nome_filtro == 'pixelar':
+        pixelar_ativo = True
+    elif nome_filtro == 'invertido':
+        negativo_ativo = True
+    elif nome_filtro == 'escurecido':
+        escurecer_ativo = True
+    elif nome_filtro == 'policia':
+        police = True
+    elif nome_filtro == 'laranja':
+        walter = True
+    elif nome_filtro == 'explosao':
+        mostrar_explosao = True
+
+
 # ===== Função chamada pelo Kivy =====
 def get_frame():
     """Retorna um frame processado para exibir no Kivy."""
@@ -168,11 +208,11 @@ def get_frame():
     frame = barras_webcam(frame)
 
     # Rotação
-    if rotacao == 1:
+    def direita():
         frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
-    elif rotacao == 2:
+    def baixo():
         frame = cv2.rotate(frame, cv2.ROTATE_180)
-    elif rotacao == 3:
+    def esquerda():
         frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
 
     frame_display = frame.copy()
