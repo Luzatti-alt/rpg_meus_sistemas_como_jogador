@@ -204,9 +204,11 @@ def rolar_dado(tipo_dado):
 def rotacionar_camera(direcao):
     global rotacao
     if direcao == 'direita':
-        rotacao = (rotacao + 90) % 360
+        rotacao = 90
     elif direcao == 'esquerda':
-        rotacao = (rotacao - 90 + 360) % 360
+        rotacao = 270
+    elif rotacao == "baixo":
+        rotacao = 180
 
 # ===== Adicionando a função para aplicar o filtro =====
 def aplicar_filtro(nome_filtro):
