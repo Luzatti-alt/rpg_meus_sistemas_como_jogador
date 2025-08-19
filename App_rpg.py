@@ -134,14 +134,17 @@ class TelaPrincipal(Screen):
             layout.add_widget(widget)
         # Ações dos botões com log
         self.criar_ficha.bind(on_release=lambda x: setattr(self.manager, "current", "criar_ficha"))
-        self.d4.bind(on_release=lambda x: add_log("Rolou um d4") )
-        self.d6.bind(on_release=lambda x: add_log("Rolou um d6"))
-        self.d10.bind(on_release=lambda x: add_log("Rolou um d10"))
-        self.d20.bind(on_release=lambda x: add_log("Rolou um d20"))
+        self.d4.bind(on_release=lambda x: (rolar_dado('d4'), add_log("Rolou um d4, caiu o numero: " + str(dado_atual_num))))
+        self.d6.bind(on_release=lambda x: (rolar_dado('d6'), add_log("Rolou um d6, caiu o numero: " + str(dado_atual_num))))
+        self.d10.bind(on_release=lambda x: (rolar_dado('d10'), add_log("Rolou um d10, caiu o numero: " + str(dado_atual_num))))
+        self.d20.bind(on_release=lambda x: (rolar_dado('d20'), add_log("Rolou um d20, caiu o numero: " + str(dado_atual_num))))
+
+
         self.up.bind(on_release=lambda x: add_log("Movendo para cima"))
         self.down.bind(on_release=lambda x: add_log("Movendo para baixo")) # Corrigido: cam.direita() removido
-        self.direita.bind(on_release=lambda x: add_log("Movendo para direita"))
-        self.esquerda.bind(on_release=lambda x: add_log("Movendo para esquerda"))
+        self.direita.bind(on_release=lambda x: rotacionar_frame('direita'))
+        self.esquerda.bind(on_release=lambda x: rotacionar_frame('esquerda'))
+
         # Ação do botão "Aplicar efeito" agora chama a função do camera.py
         self.aplicar_efeito.bind(on_release=lambda x: (aplicar_filtro(self.efeitos.text), add_log(f"Efeito aplicado: {self.efeitos.text}")))
         self.cura.bind(on_release=lambda x: add_log("Curando"))
