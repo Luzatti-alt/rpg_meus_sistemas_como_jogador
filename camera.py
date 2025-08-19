@@ -262,7 +262,7 @@ def get_frame():
     elif rotacao == 270:
         frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
     elif rotacao == 0:
-        frame = cv2.rotate(frame, cv2.ROTATE_180)
+        pass
     frame_display = frame.copy()
     # Filtros
     if police and not red_blue_off:
