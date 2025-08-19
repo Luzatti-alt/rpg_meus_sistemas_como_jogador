@@ -59,7 +59,7 @@ class TelaPrincipal(Screen):
             self.scroll_log.scroll_y = 0
         # === ÁREA CENTRAL ===
         # ===================== CAIXA VERDE (CAM) =====================
-        self.cam_view = Image(allow_stretch=True, keep_ratio=False)
+        self.cam_view = Image(allow_stretch=True, keep_ratio=False,size_hint=(None,None))
         Clock.schedule_interval(self.update_cam_frame, 1/30)  # ~30 FPS
         # ===================== CAMPO DE TEXTO =====================
         self.input_text = TextInput(
@@ -169,7 +169,7 @@ class TelaPrincipal(Screen):
         self.bg_rect.pos = (0, 0)
         # Atualiza log
         largura_log = 300
-        self.scroll_log.size = (largura_log, altura - 15)
+        self.scroll_log.sieze = (largura_log, altura - 15)
         self.scroll_log.pos = (largura - largura_log - 10, 10)
         self.log_bg.size = self.scroll_log.size
         self.log_bg.pos = self.scroll_log.pos
