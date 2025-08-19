@@ -4,7 +4,6 @@ import Dados
 # ===== Configuração de captura =====
 cam = cv2.VideoCapture(0)
 explosao_cap = cv2.VideoCapture("videos/Deltarune Explosion Green Screen(720P_HD).mp4")
-
 # ===== Variáveis globais =====
 rotacao = 0
 state = 0
@@ -24,6 +23,25 @@ negativo_ativo = False
 mostrar_explosao = False
 dado_atual_img = None
 dado_atual_num = None
+imagens_dados = {
+    'd4': None,
+    'd6': None,
+    'd10': None,
+    'd20': None
+}
+
+def carregar_imagens_dados():
+    try:
+        # Tente carregar as imagens. Substitua os caminhos de arquivo se necessário.
+        imagens_dados['d4'] = cv2.imread('d4-removebg-preview.png', cv2.IMREAD_UNCHANGED)
+        imagens_dados['d6'] = cv2.imread('d6-removebg-preview.png', cv2.IMREAD_UNCHANGED)
+        imagens_dados['d10'] = cv2.imread('d10-removebg-preview.png', cv2.IMREAD_UNCHANGED)
+        imagens_dados['d20'] = cv2.imread('d20-removebg-preview.png', cv2.IMREAD_UNCHANGED)
+    except Exception as e:
+        print(f"Erro ao carregar imagens dos dados: {e}")
+
+# Chame esta função na inicialização para pré-carregar as imagens.
+carregar_imagens_dados()
 
 # ===== Funções =====
 def mostrar_dado_no_frame(frame):
@@ -89,9 +107,9 @@ def barras_webcam(img):
     hp_ratio = max(0, min((hp_val / hp_max), 1.65))
     hp_width = int((barra_hp_max_width - barra_hp_min_x) * hp_ratio)
     cv2.rectangle(img, (barra_hp_min_x, barra_hp_height_y1),
-                  (barra_hp_max_width, barra_hp_height_y2), cor_hp_incompleto, -1)
+                    (barra_hp_max_width, barra_hp_height_y2), cor_hp_incompleto, -1)
     cv2.rectangle(img, (barra_hp_min_x, barra_hp_height_y1),
-                  (barra_hp_min_x + hp_width, barra_hp_height_y2), cor_hp_full, -1)
+                    (barra_hp_min_x + hp_width, barra_hp_height_y2), cor_hp_full, -1)
     barra_mana_max_y1 = int(altura - (altura / 10))
     barra_mana_min_y = int(altura / 10)
     barra_mana_x1 = int(largura - 100)
@@ -99,9 +117,9 @@ def barras_webcam(img):
     mana_ratio = max(0, min(mana_val / mana_max_val, 1))
     mana_height = int((barra_mana_max_y1 - barra_mana_min_y) * mana_ratio)
     cv2.rectangle(img, (barra_mana_x1, barra_mana_min_y),
-                  (barra_mana_x2, barra_mana_max_y1), cor_mana_incompleto, -1)
+                    (barra_mana_x2, barra_mana_max_y1), cor_mana_incompleto, -1)
     cv2.rectangle(img, (barra_mana_x1, barra_mana_max_y1 - mana_height),
-                  (barra_mana_x2, barra_mana_max_y1), cor_mana_full, -1)
+                    (barra_mana_x2, barra_mana_max_y1), cor_mana_full, -1)
     return img
 
 # ==== Filtros ====
@@ -156,12 +174,42 @@ def filtro_walter(img):
     hsv_mod = cv2.merge([h, s, v])
     return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
 
+# ===== Funções para a rotação e rolagem de dados =====
+
+def rolar_dado(tipo_dado):
+    global dado_atual_img, dado_atual_num
+    
+    import random
+    class Dados:
+        def d4(): return random.randint(1,4)
+        def d6(): return random.randint(1,6)
+        def d10(): return random.randint(1,10)
+        def d20(): return random.randint(1,20)
+        
+    if tipo_dado == 'd4':
+        dado_atual_num = Dados.d4()
+        dado_atual_img = imagens_dados['d4']
+    elif tipo_dado == 'd6':
+        dado_atual_num = Dados.d6()
+        dado_atual_img = imagens_dados['d6']
+    elif tipo_dado == 'd10':
+        dado_atual_num = Dados.d10()
+        dado_atual_img = imagens_dados['d10']
+    elif tipo_dado == 'd20':
+        dado_atual_num = Dados.d20()
+        dado_atual_img = imagens_dados['imagens/d20-removebg-preview.png']
+    # Retorna o resultado da rolagem.
+    return f'Você rolou um {tipo_dado} e o resultado foi {dado_atual_num}!'
+
+def rotacionar_camera(direcao):
+    global rotacao
+    if direcao == 'direita':
+        rotacao = (rotacao + 90) % 360
+    elif direcao == 'esquerda':
+        rotacao = (rotacao - 90 + 360) % 360
+
 # ===== Adicionando a função para aplicar o filtro =====
 def aplicar_filtro(nome_filtro):
-    """
-    Controla o estado das variáveis globais para aplicar o filtro selecionado.
-    Desativa todos os outros efeitos para garantir que apenas um esteja ativo.
-    """
     global hsv_state_red, hsv_state_blue, hsv_state_green, pixelar_ativo, negativo_ativo, escurecer_ativo, police, walter, mostrar_explosao
     
     # Desativa todos os efeitos primeiro
@@ -194,29 +242,22 @@ def aplicar_filtro(nome_filtro):
         walter = True
     elif nome_filtro == 'explosao':
         mostrar_explosao = True
-
-
 # ===== Função chamada pelo Kivy =====
 def get_frame():
-    """Retorna um frame processado para exibir no Kivy."""
-    global explosao_cap, mostrar_explosao
+    global explosao_cap, mostrar_explosao, rotacao
 
     ret_cam, frame = cam.read()
     if not ret_cam:
         return None
-
     frame = barras_webcam(frame)
-
     # Rotação
-    def direita():
+    if rotacao == 90:
         frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
-    def baixo():
+    elif rotacao == 180:
         frame = cv2.rotate(frame, cv2.ROTATE_180)
-    def esquerda():
+    elif rotacao == 270:
         frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
-
     frame_display = frame.copy()
-
     # Filtros
     if police and not red_blue_off:
         global police_contador
@@ -262,3 +303,9 @@ def get_frame():
 
     frame_display = mostrar_dado_no_frame(frame_display)
     return frame_display
+if __name__ == '__main__':
+    resultado = rolar_dado('d20')
+    print(resultado)
+
+    rotacionar_camera('direita')
+    print(f"Nova rotação da câmera: {rotacao} graus.")
