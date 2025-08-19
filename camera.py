@@ -24,10 +24,10 @@ mostrar_explosao = False
 dado_atual_img = None
 dado_atual_num = None
 imagens_dados = {
-    'd4': None,
-    'd6': None,
-    'd10': None,
-    'd20': None
+    'd4': "imagens/d4-removebg-preview.png",
+    'd6': "imagens/d6-removebg-preview.png",
+    'd10': "imagens/d10-removebg-preview.png",
+    'd20': "imagens/d20-removebg-preview.png"
 }
 
 def carregar_imagens_dados():
@@ -197,7 +197,7 @@ def rolar_dado(tipo_dado):
         dado_atual_img = imagens_dados['d10']
     elif tipo_dado == 'd20':
         dado_atual_num = Dados.d20()
-        dado_atual_img = imagens_dados['imagens/d20-removebg-preview.png']
+        dado_atual_img = imagens_dados['d20']
     # Retorna o resultado da rolagem.
     return f'Você rolou um {tipo_dado} e o resultado foi {dado_atual_num}!'
 
