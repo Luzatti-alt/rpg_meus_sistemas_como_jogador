@@ -255,14 +255,16 @@ def get_frame():
         return None
     frame = barras_webcam(frame)
     # Rotação
-    if rotacao == 90:
-        frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
-    elif rotacao == 180:
-        frame = cv2.rotate(frame, cv2.ROTATE_180)
-    elif rotacao == 270:
-        frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
-    elif rotacao == 0:
-        pass
+    def rotacionar_camera(direcao):
+        global rotacao
+        if direcao == 'direita':
+            rotacao = 90
+        elif direcao == 'esquerda':
+            rotacao = 270
+        elif direcao == "baixo":  # Alteração necessária
+            rotacao = 180
+        elif direcao == "cima":   # Alteração necessária
+            rotacao = 0
     frame_display = frame.copy()
     # Filtros
     if police and not red_blue_off:
