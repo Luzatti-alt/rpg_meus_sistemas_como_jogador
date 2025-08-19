@@ -168,38 +168,37 @@ def get_frame():
     frame = barras_webcam(frame)
 
     # Rotação
-    if rotacao == 1:
+    def esquerda():
         frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
-    elif rotacao == 2:
+    def baixo():
         frame = cv2.rotate(frame, cv2.ROTATE_180)
-    elif rotacao == 3:
+    def direita():
         frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
 
     frame_display = frame.copy()
 
     # Filtros
-    if police and not red_blue_off:
+    def policia_efeito():
         global police_contador
         police_contador += 1
         if police_contador % 30 < 15:
             frame_display = vermelho(frame_display)
         else:
             frame_display = azul(frame_display)
-    else:
-        if hsv_state_red and not red_blue_off:
-            frame_display = vermelho(frame_display)
-        if hsv_state_blue and not red_blue_off:
-            frame_display = azul(frame_display)
-        if hsv_state_green:
-            frame_display = verde(frame_display)
-        if walter:
-            frame_display = filtro_walter(frame_display)
-        if pixelar_ativo:
-            frame_display = pixelar(frame_display)
-        if negativo_ativo:
-            frame_display = negativo(frame_display)
-        if escurecer_ativo:
-            frame_display = escurecer(frame_display)
+    def vermelho():
+        frame_display = vermelho(frame_display)
+    def azul():
+        frame_display = azul(frame_display)
+    def verde():
+        frame_display = verde(frame_display)
+    def laranja():
+        frame_display = filtro_walter(frame_display)
+    def pixelar():
+        frame_display = pixelar(frame_display)
+    def negativo():
+        frame_display = negativo(frame_display)
+    def escurecer():
+        frame_display = escurecer(frame_display)
         if mostrar_explosao:
             ret_exp, frame_exp = explosao_cap.read()
             if not ret_exp:
