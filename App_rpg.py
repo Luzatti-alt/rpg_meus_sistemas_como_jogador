@@ -58,24 +58,9 @@ class TelaPrincipal(Screen):
             self.log_layout.add_widget(log_label)
             self.scroll_log.scroll_y = 0
         # === ÁREA CENTRAL ===
-        central_box = BoxLayout(
-        orientation='vertical',
-        size_hint=(None, None),
-        size=(largura - largura_log - 650, altura - 20),
-        pos=(460, 10),
-        spacing=10
-        )
         # ===================== CAIXA VERDE (CAM) =====================
-        self.cam_view = Image(size_hint_y=0.8, allow_stretch=True, keep_ratio=True)
+        self.cam_view = Image(allow_stretch=True, keep_ratio=False)
         Clock.schedule_interval(self.update_cam_frame, 1/30)  # ~30 FPS
-        #sub box b(text, confirmacao )
-        sub_b_box = BoxLayout(
-        orientation='vertical',
-        size_hint=(None, None),
-        size=((largura - largura_log - 650)/2, altura /8),
-        pos=(460, 10),
-        spacing=5
-        )
         # ===================== CAMPO DE TEXTO =====================
         self.input_text = TextInput(
             hint_text="Digite aqui...",
@@ -92,12 +77,10 @@ class TelaPrincipal(Screen):
                                   background_normal="", background_color=(0.2, 0.6, 0.9, 1),
                                   pos=(0, altura - 100))
         # Adiciona os dois no central_box
-        central_box.add_widget(self.cam_view)
-        central_box.add_widget(sub_b_box)
+        layout.add_widget(self.cam_view)
         layout.add_widget(self.ip_text)
-        sub_b_box.add_widget(self.input_text)
-        sub_b_box.add_widget(self.confirmar)
-        layout.add_widget(central_box)
+        layout.add_widget(self.input_text)
+        layout.add_widget(self.confirmar)
         # Botões e spinner
         self.criar_ficha = Button(text='Criar ficha', size_hint=(None, None), size=(300, 100),
                                   background_normal="", background_color=(0.2, 0.6, 0.9, 1),
@@ -192,19 +175,17 @@ class TelaPrincipal(Screen):
         self.log_bg.pos = self.scroll_log.pos
         # Atualiza posição do campo IP
         self.ip_text.size = ((largura - largura_log - 650) / 2 - 6, 132)
-        self.ip_text.pos = ((largura / 2) - 10, 10)
-        # Atualiza central_box
-        self.cam_view.size_hint_y = 0.8
-        self.cam_view.allow_stretch = True
-        self.cam_view.keep_ratio = True
-        # Atualiza sub_b_box
+        self.ip_text.pos = ((largura / 2) - 10, altura/10)
+        # Atualiza confirmar/input_text
         sub_box_width = (largura - largura_log - 650) / 2
-        sub_box_height = altura / 8
-        self.confirmar.size = (sub_box_width, 60)
-        # Atualiza central_box
-        self.children[0].children[0].size = (largura - largura_log - 650, altura - 20)
-        self.children[0].children[0].pos = (460, 10)
-        # Atualiza botões de dados e movimentação
+        self.input_text.size = (sub_box_width, 67)
+        self.input_text.pos= (460, altura/9)
+        self.confirmar.size = (460, altura/8)
+        self.input_text.pos= (460, altura/10)
+        # === Câmera alinhada com input_text e ip_text ===
+        self.cam_view.size = (sub_box_width,altura/16)
+        self.cam_view.pos = (460, altura/4)
+        # === Botões ===
         self.criar_ficha.pos = (0, altura / 4 + 395)
         self.d4.pos = (0, altura / 4 + 305)
         self.d6.pos = (0, altura / 4 + 235)
@@ -216,12 +197,10 @@ class TelaPrincipal(Screen):
         self.down.pos = (0, altura / 4 - 145)
         self.esquerda.pos = (170, altura / 4 - 145)
         self.direita.pos = (170, altura / 4 - 75)
-        self.efeitos.pos= (0, altura / 4 + 150)
-        self.aplicar_efeito.pos = (0, altura / 4 + 75)
-        #size
-        self.criar_ficha.size = (largura/8,altura / 12)
-        self.input_text.size = (sub_box_width, 67)
-        self.efeitos.size = (largura/8, altura /12)
+        self.efeitos.pos = (0, altura / 4 + 150)
+        # Tamanhos
+        self.criar_ficha.size = (largura/8, altura / 12)
+        self.efeitos.size = (largura/8, altura / 12)
         self.d4.size = (largura/8, altura / 12)
         self.d6.size = (largura/8, altura / 12)
         self.d10.size = (largura/8, altura / 12)
