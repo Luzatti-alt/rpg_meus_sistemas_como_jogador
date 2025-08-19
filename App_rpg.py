@@ -138,12 +138,10 @@ class TelaPrincipal(Screen):
         self.d6.bind(on_release=lambda x: (rolar_dado('d6'), add_log("Rolou um d6, caiu o numero: " + str(dado_atual_num))))
         self.d10.bind(on_release=lambda x: (rolar_dado('d10'), add_log("Rolou um d10, caiu o numero: " + str(dado_atual_num))))
         self.d20.bind(on_release=lambda x: (rolar_dado('d20'), add_log("Rolou um d20, caiu o numero: " + str(dado_atual_num))))
-
-
-        self.up.bind(on_release=lambda x: add_log("Movendo para cima")and rotacionar_camera('cima'))
-        self.down.bind(on_release=lambda x: add_log("Movendo para baixo") and rotacionar_camera('baixo')) 
-        self.direita.bind(on_release=lambda x: add_log("Movendo para direita") and rotacionar_camera('direita'))
-        self.esquerda.bind(on_release=lambda x: add_log("Movendo para esquerda") and rotacionar_camera('esquerda'))
+        self.up.bind(on_release=lambda x: (add_log("Movendo para cima"), rotacionar_camera('cima')))
+        self.down.bind(on_release=lambda x: (add_log("Movendo para baixo"), rotacionar_camera('baixo'))) 
+        self.direita.bind(on_release=lambda x: (add_log("Movendo para direita"), rotacionar_camera('direita')))
+        self.esquerda.bind(on_release=lambda x: (add_log("Movendo para esquerda"), rotacionar_camera('esquerda')))
 
         # Ação do botão "Aplicar efeito" agora chama a função do camera.py
         self.aplicar_efeito.bind(on_release=lambda x: (aplicar_filtro(self.efeitos.text), add_log(f"Efeito aplicado: {self.efeitos.text}")))
