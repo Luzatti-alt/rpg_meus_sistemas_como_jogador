@@ -178,13 +178,13 @@ class TelaPrincipal(Screen):
         self.ip_text.pos = ((largura / 2) - 10, altura/10)
         # Atualiza confirmar/input_text
         sub_box_width = (largura - largura_log - 650) / 2
-        self.input_text.size = (sub_box_width, 67)
-        self.input_text.pos= (460, altura/9)
-        self.confirmar.size = (460, altura/8)
-        self.input_text.pos= (460, altura/10)
+        self.input_text.size = (sub_box_width, altura/10)
+        self.input_text.pos= (460, altura/5.5)
+        self.confirmar.pos = (460, altura/10)
+        self.confirmar.size = (sub_box_width, altura/10)
         # === Câmera alinhada com input_text e ip_text ===
-        self.cam_view.size = (sub_box_width,altura/16)
-        self.cam_view.pos = (460, altura/4)
+        self.cam_view.size = (sub_box_width*2,altura/1.5)
+        self.cam_view.pos = (460, altura/4+25)
         # === Botões ===
         self.criar_ficha.pos = (0, altura / 4 + 395)
         self.d4.pos = (0, altura / 4 + 305)
@@ -197,7 +197,8 @@ class TelaPrincipal(Screen):
         self.down.pos = (0, altura / 4 - 145)
         self.esquerda.pos = (170, altura / 4 - 145)
         self.direita.pos = (170, altura / 4 - 75)
-        self.efeitos.pos = (0, altura / 4 + 150)
+        self.efeitos.pos = (0, altura / 4 + 155)
+        self.aplicar_efeito.pos=(0, altura / 4 + 85)
         # Tamanhos
         self.criar_ficha.size = (largura/8, altura / 12)
         self.efeitos.size = (largura/8, altura / 12)
