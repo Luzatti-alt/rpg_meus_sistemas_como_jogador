@@ -209,6 +209,8 @@ def rotacionar_camera(direcao):
         rotacao = 270
     elif rotacao == "baixo":
         rotacao = 180
+    elif rotacao == "cima":
+        rotacao = 0
 
 # ===== Adicionando a função para aplicar o filtro =====
 def aplicar_filtro(nome_filtro):
@@ -259,6 +261,8 @@ def get_frame():
         frame = cv2.rotate(frame, cv2.ROTATE_180)
     elif rotacao == 270:
         frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+    elif rotacao == 0:
+        frame = cv2.rotate(frame, cv2.ROTATE_180)
     frame_display = frame.copy()
     # Filtros
     if police and not red_blue_off:
