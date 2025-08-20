@@ -3,6 +3,8 @@ from kivy.uix.image import Image
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
 import cv2
+import camera
+from ficha_db import session, Ficha
 from camera import *
 from kivy.app import App
 from kivy.uix.button import Button
@@ -59,6 +61,7 @@ class TelaPrincipal(Screen):
             log_label.bind(size=lambda *x: log_label.setter('text_size')(log_label, (log_label.width, None)))
             self.log_layout.add_widget(log_label)
             self.scroll_log.scroll_y = 0
+
         def rolar_e_logar(tipo_dado):
             resultado = rolar_dado(tipo_dado)
             add_log(resultado)
@@ -159,9 +162,15 @@ class TelaPrincipal(Screen):
         self.aplicar_efeito.bind(on_release=lambda x: (aplicar_filtro(self.efeitos.text), add_log(f"Efeito aplicado: {self.efeitos.text}")))
         self.cura.bind(on_release=lambda x: add_log("Curando"))
         self.dano.bind(on_release=lambda x: add_log("Causando dano"))
+        self.personagem.bind(text=self.atualizar_hp_personagem)
         self.add_widget(layout)
         Window.bind(on_resize=self.reposicionar_elementos)
         self.reposicionar_elementos()
+    def atualizar_hp_personagem(self, spinner, text):
+            ficha = session.query(Ficha).filter_by(nome_personagem=text).first()
+            if ficha:
+                camera.hp_personagem = ficha.hp_atual
+                camera.nome_personagem_atual = text
     def update_bg(self, *args):
         self.bg_rect.pos = (0, 0)
         self.bg_rect.size = Window.size
