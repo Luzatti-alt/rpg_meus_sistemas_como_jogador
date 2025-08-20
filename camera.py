@@ -42,19 +42,19 @@ def hp_val(frame):
     hp_img = cv2.imread("imagens/escudo-removebg-preview.png", cv2.IMREAD_UNCHANGED)
     if hp_personagem is not None and nome_personagem_atual is not None and hp_img is not None:
         esc_h, esc_w = hp_img.shape[:2]
-        # --- Posição no canto superior direito ---
+        # Redimensiona se for maior que o frame
         if esc_h > frame.shape[0] or esc_w > frame.shape[1]:
             escala = min(frame.shape[0] / esc_h, frame.shape[1] / esc_w, 0.2)
             esc_w = int(esc_w * escala)
             esc_h = int(esc_h * escala)
             hp_img = cv2.resize(hp_img, (esc_w, esc_h), interpolation=cv2.INTER_AREA)
-        x = 310
-        y = -215
-        print(f"Escudo em x={x}, y={y}, esc_w={esc_w}, esc_h={esc_h}, frame_w={frame.shape[1]}, frame_h={frame.shape[0]}")
-        frame = sobrepor_imagem_fundo(frame, hp_img, x, y)
-        # --- Calcular centro do escudo ---
-        center_x = x + esc_w // 2
-        center_y = y + esc_h // 2
+        # Centro desejado do escudo
+        center_x = frame.shape[1] - esc_w // 2 - 20
+        center_y = 20 + esc_h // 2
+        x_escudo = center_x - esc_w // 2
+        y_escudo = center_y - esc_h // 2
+        frame = sobrepor_imagem_fundo(frame, hp_img, x_escudo, y_escudo)
+        # Número centralizado no escudo
         texto = str(hp_personagem)
         font = cv2.FONT_HERSHEY_SIMPLEX
         font_scale = 2.0
