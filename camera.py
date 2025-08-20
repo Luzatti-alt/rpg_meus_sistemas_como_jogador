@@ -289,11 +289,18 @@ def get_frame():
                 explosao_cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
                 mostrar_explosao = False
             else:
-                frame_exp = cv2.resize(frame_exp, (480, 480))
-                _, mask_inv = remover_fundo_verde(frame_exp)
-                x_offset, y_offset = 100, 100
+                frame_exp = cv2.resize(frame_exp, (639, 479))  # Redimensiona a explosão
+                frame_exp_sem_fundo, mask_inv = remover_fundo_verde(frame_exp)
+                x_offset, y_offset = 0, 0
                 h, w = frame_exp.shape[:2]
+                # Garante que não vamos acessar fora dos limites do frame
+                if y_offset + h > frame_display.shape[0] or x_offset + w > frame_display.shape[1]:
+                    print("Erro: explosão fora dos limites da tela")
+                    return frame_display
                 roi = frame_display[y_offset:y_offset+h, x_offset:x_offset+w]
+                # Garante que a máscara tem o mesmo tamanho do ROI
+                if mask_inv.shape[:2] != roi.shape[:2]:
+                    mask_inv = cv2.resize(mask_inv, (roi.shape[1], roi.shape[0]))   
                 bg = cv2.bitwise_and(roi, roi, mask=cv2.bitwise_not(mask_inv))
                 fg = cv2.bitwise_and(frame_exp, frame_exp, mask=mask_inv)
                 combinada = cv2.add(bg, fg)
