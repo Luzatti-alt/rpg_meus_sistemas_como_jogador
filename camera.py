@@ -69,22 +69,20 @@ def hp_val(frame):
 def mana_val(frame):
     global mana_personagem, nome_personagem_atual
     mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-    if mana_personagem is not None and nome_personagem_atual is not None and mana_img is not None:
-        esc_h, esc_w = mana_img.shape[:2]
-        # Redimensiona se for maior que o frame
-        if esc_h > frame.shape[0] or esc_w > frame.shape[1]:
-            escala = min(frame.shape[0] / esc_h, frame.shape[1] / esc_w, 0.2)
-            esc_w = int(esc_w * escala)
-            esc_h = int(esc_h * escala)
-            mana_img = cv2.resize(mana_img, (esc_w, esc_h), interpolation=cv2.INTER_AREA)
-        # Posição igual ao escudo, mas Y deslocado para baixo
-        center_x = frame.shape[1] - esc_w // 2 - 20
-        # Pega a posição do escudo (usada em hp_val)
-        mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-        mana_h = mana_img.shape[0] if mana_img is not None else 0
-        center_y = 20 + mana_h + esc_h // 2 + 10  # 10 pixels abaixo do escudo
-        x_mana = center_x - esc_w // 2
-        y_mana = center_y - esc_h // 2
+    escudo_img = cv2.imread("imagens/escudo-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+    if mana_personagem is not None and nome_personagem_atual is not None and mana_img is not None and escudo_img is not None:
+        # Redimensiona ambos para caber no frame
+        escudo_h, escudo_w = escudo_img.shape[:2]
+        mana_h, mana_w = mana_img.shape[:2]
+        max_w = min(frame.shape[1], escudo_w, mana_w)
+        max_h = min(frame.shape[0] // 6, escudo_h, mana_h)  # limitar altura para caber os dois
+        escudo_img = cv2.resize(escudo_img, (max_w, max_h), interpolation=cv2.INTER_AREA)
+        mana_img = cv2.resize(mana_img, (max_w, max_h), interpolation=cv2.INTER_AREA)
+        # Posição: mesmo X do escudo, Y logo abaixo do escudo
+        center_x = frame.shape[1] - max_w // 2 - 20
+        center_y = 20 + max_h + max_h // 2 + 10  # 10 px abaixo do escudo
+        x_mana = center_x - max_w // 2
+        y_mana = center_y - max_h // 2
         frame = sobrepor_imagem_fundo(frame, mana_img, x_mana, y_mana)
         # Número centralizado no escudo de mana
         texto = str(mana_personagem)
