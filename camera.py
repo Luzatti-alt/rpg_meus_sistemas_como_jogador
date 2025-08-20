@@ -87,43 +87,6 @@ def remover_fundo_verde(frame_video):
     frame_video_sem_fundo = cv2.bitwise_and(frame_video, frame_video, mask=mask_inv)
     return frame_video_sem_fundo, mask_inv
 
-def barras_webcam(img):
-    try:
-        hp_val = fichas[ficha_esc].hp_val
-        hp_max = fichas[ficha_esc].hp
-        mana_val = fichas[ficha_esc].esp
-        mana_max_val = fichas[ficha_esc].esp_max
-    except:
-        hp_val, hp_max, mana_val, mana_max_val = 80, 100, 50, 100
-
-    cor_hp_full = (13, 217, 16)
-    cor_hp_incompleto = (0, 0, 255)
-    cor_mana_full = (0, 234, 255)
-    cor_mana_incompleto = (254, 255, 207)
-    largura = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
-    altura = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    barra_hp_max_width = int(largura - (largura / 8) - 50)
-    barra_hp_min_x = 50
-    barra_hp_height_y1 = int(altura - 100)
-    barra_hp_height_y2 = int(altura - 50)
-    hp_ratio = max(0, min((hp_val / hp_max), 1.65))
-    hp_width = int((barra_hp_max_width - barra_hp_min_x) * hp_ratio)
-    cv2.rectangle(img, (barra_hp_min_x, barra_hp_height_y1),
-                    (barra_hp_max_width, barra_hp_height_y2), cor_hp_incompleto, -1)
-    cv2.rectangle(img, (barra_hp_min_x, barra_hp_height_y1),
-                    (barra_hp_min_x + hp_width, barra_hp_height_y2), cor_hp_full, -1)
-    barra_mana_max_y1 = int(altura - (altura / 10))
-    barra_mana_min_y = int(altura / 10)
-    barra_mana_x1 = int(largura - 100)
-    barra_mana_x2 = int(largura - 50)
-    mana_ratio = max(0, min(mana_val / mana_max_val, 1))
-    mana_height = int((barra_mana_max_y1 - barra_mana_min_y) * mana_ratio)
-    cv2.rectangle(img, (barra_mana_x1, barra_mana_min_y),
-                    (barra_mana_x2, barra_mana_max_y1), cor_mana_incompleto, -1)
-    cv2.rectangle(img, (barra_mana_x1, barra_mana_max_y1 - mana_height),
-                    (barra_mana_x2, barra_mana_max_y1), cor_mana_full, -1)
-    return img
-
 # ==== Filtros ====
 def pixelar(img):
     altura, largura = img.shape[:2]
@@ -246,7 +209,7 @@ def get_frame():
     ret_cam, frame = cam.read()
     if not ret_cam:
         return None
-    frame = barras_webcam(frame)
+    
     if rotacao != 0:
         (h, w) = frame.shape[:2]
         (cx, cy) = (w // 2, h // 2)
