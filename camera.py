@@ -166,19 +166,39 @@ def rolar_dado(tipo_dado):
         dado_atual_img = imagens_dados['d20']
     # Retorna o resultado da rolagem.
     return f'Você rolou um {tipo_dado} e o resultado foi {dado_atual_num}!'
-def hp_cal(img):
+def hp_val(frame):
+    global hp_personagem, nome_personagem_atual
     hp_img = cv2.imread("imagens/escudo-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-    if hp_personagem is not None and nome_personagem_atual is not None:
-        texto = f"{nome_personagem_atual}: {hp_personagem} HP"
+
+    if hp_personagem is not None and nome_personagem_atual is not None and hp_img is not None:
+        esc_h, esc_w = hp_img.shape[:2]
+
+        # --- Posição no canto superior direito ---
+        x = frame.shape[1] - esc_w - 20   # 20 px da borda direita
+        y = 20                             # 20 px do topo
+
+        # --- Sobrepor o escudo no frame ---
+        frame = sobrepor_imagem_fundo(frame, hp_img, x, y)
+
+        # --- Calcular centro do escudo ---
+        center_x = x + esc_w // 2
+        center_y = y + esc_h // 2
+
+        # --- Escrever o HP no centro ---
+        texto = str(hp_personagem)
         font = cv2.FONT_HERSHEY_SIMPLEX
-        font_scale = 1.2
-        thickness = 3
+        font_scale = 2.0   # maior pra destacar
+        thickness = 4
         text_size, _ = cv2.getTextSize(texto, font, font_scale, thickness)
-        text_x = 20
-        text_y = frame.shape[0] - 40  # aparece embaixo da tela
+
+        text_x = center_x - text_size[0] // 2
+        text_y = center_y + text_size[1] // 2
+
         cv2.putText(frame, texto, (text_x, text_y), font, font_scale,
-                    (0, 255, 0), thickness, cv2.LINE_AA)
+                    (255, 255, 255), thickness, cv2.LINE_AA)
+
     return frame
+
 def mana_val(img):
     mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
 
@@ -279,6 +299,9 @@ def get_frame():
         frame_display = cv2.cvtColor(frame_display, cv2.COLOR_GRAY2BGR)
 
     frame_display = mostrar_dado_no_frame(frame_display)
+    frame_display = hp_val(frame_display)
+    #frame_display = mana_val(frame_display)
+    #comentado enquanto nn estiver feito
     return frame_display
 if __name__ == '__main__':
     resultado = rolar_dado('d20')
