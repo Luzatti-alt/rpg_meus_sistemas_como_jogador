@@ -142,17 +142,13 @@ def filtro_walter(img):
 # ===== Funções para a rotação e rolagem de dados =====
 
 def rolar_dado(tipo_dado):
-    global dado_atual_img, dado_atual_num
-    
+    global dado_atual_img, dado_atual_num  
     import random
     class Dados:
         def d4(): return random.randint(1,4)
         def d6(): return random.randint(1,6)
         def d10(): return random.randint(1,10)
-        def d20(): return random.randint(1,20)
-
-
-        
+        def d20(): return random.randint(1,20)    
     if tipo_dado == 'd4':
         dado_atual_num = Dados.d4()
         dado_atual_img = imagens_dados['d4']
@@ -167,12 +163,14 @@ def rolar_dado(tipo_dado):
         dado_atual_img = imagens_dados['d20']
     # Retorna o resultado da rolagem.
     return f'Você rolou um {tipo_dado} e o resultado foi {dado_atual_num}!'
-
+def hp_cal(img):
+    hp_img = cv2.imread("imagens/escudo-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+def mana_val(img):
+    mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
 
 # ===== Adicionando a função para aplicar o filtro =====
 def aplicar_filtro(nome_filtro):
     global hsv_state_red, hsv_state_blue, hsv_state_green, pixelar_ativo, negativo_ativo, escurecer_ativo, police, walter, mostrar_explosao
-    
     # Desativa todos os efeitos primeiro
     hsv_state_red = False
     hsv_state_blue = False
@@ -183,7 +181,6 @@ def aplicar_filtro(nome_filtro):
     police = False
     walter = False
     mostrar_explosao = False
-
     # Ativa o efeito selecionado
     if nome_filtro == 'vermelho':
         hsv_state_red = True
@@ -205,11 +202,9 @@ def aplicar_filtro(nome_filtro):
         mostrar_explosao = True
 def get_frame():
     global explosao_cap, mostrar_explosao, rotacao
-
     ret_cam, frame = cam.read()
     if not ret_cam:
         return None
-    
     if rotacao != 0:
         (h, w) = frame.shape[:2]
         (cx, cy) = (w // 2, h // 2)
