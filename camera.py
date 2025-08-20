@@ -22,20 +22,14 @@ negativo_ativo = False
 mostrar_explosao = False
 dado_atual_img = None
 dado_atual_num = None
-imagens_dados = {
-    'd4': "imagens/d4-removebg-preview.png",
-    'd6': "imagens/d6-removebg-preview.png",
-    'd10': "imagens/d10-removebg-preview.png",
-    'd20': "imagens/d20-removebg-preview.png"
-}
-
+imagens_dados = {}
 def carregar_imagens_dados():
     try:
         # Tente carregar as imagens. Substitua os caminhos de arquivo se necessário.
-        imagens_dados['d4'] = cv2.imread('d4-removebg-preview.png', cv2.IMREAD_UNCHANGED)
-        imagens_dados['d6'] = cv2.imread('d6-removebg-preview.png', cv2.IMREAD_UNCHANGED)
-        imagens_dados['d10'] = cv2.imread('d10-removebg-preview.png', cv2.IMREAD_UNCHANGED)
-        imagens_dados['d20'] = cv2.imread('d20-removebg-preview.png', cv2.IMREAD_UNCHANGED)
+        imagens_dados['d4'] = cv2.imread('imagens/d4-removebg-preview.png', cv2.IMREAD_UNCHANGED)
+        imagens_dados['d6'] = cv2.imread('imagens/d6-removebg-preview.png', cv2.IMREAD_UNCHANGED)
+        imagens_dados['d10'] = cv2.imread('imagens/d20-removebg-preview.png', cv2.IMREAD_UNCHANGED)
+        imagens_dados['d20'] = cv2.imread('imagens/d20-removebg-preview.png', cv2.IMREAD_UNCHANGED)
     except Exception as e:
         print(f"Erro ao carregar imagens dos dados: {e}")
 
