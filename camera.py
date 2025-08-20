@@ -289,10 +289,12 @@ def get_frame():
                 explosao_cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
                 mostrar_explosao = False
             else:
+                frame_h, frame_w = frame_display.shape[:2]
                 frame_exp = cv2.resize(frame_exp, (639, 479))  # Redimensiona a explosão
                 frame_exp_sem_fundo, mask_inv = remover_fundo_verde(frame_exp)
-                x_offset, y_offset = 0, 0
                 h, w = frame_exp.shape[:2]
+                x_offset = (frame_w - w) // 2
+                y_offset = (frame_h - h) // 2
                 # Garante que não vamos acessar fora dos limites do frame
                 if y_offset + h > frame_display.shape[0] or x_offset + w > frame_display.shape[1]:
                     print("Erro: explosão fora dos limites da tela")
