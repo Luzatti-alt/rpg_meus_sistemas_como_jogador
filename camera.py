@@ -80,12 +80,12 @@ def mana_val(frame):
         # Posição igual ao escudo, mas Y deslocado para baixo
         center_x = frame.shape[1] - esc_w // 2 - 20
         # Pega a posição do escudo (usada em hp_val)
-        escudo_img = cv2.imread("imagens/escudo-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-        escudo_h = escudo_img.shape[0] if escudo_img is not None else 0
-        center_y = 20 + escudo_h + esc_h // 2 + 10  # 10 pixels abaixo do escudo
-        x_escudo = center_x - esc_w // 2
-        y_escudo = center_y - esc_h // 2
-        frame = sobrepor_imagem_fundo(frame, mana_img, x_escudo, y_escudo)
+        mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+        mana_h = mana_img.shape[0] if mana_img is not None else 0
+        center_y = 20 + mana_h + esc_h // 2 + 10  # 10 pixels abaixo do escudo
+        x_mana = center_x - esc_w // 2
+        y_mana = center_y - esc_h // 2
+        frame = sobrepor_imagem_fundo(frame, mana_img, x_mana, y_mana)
         # Número centralizado no escudo de mana
         texto = str(mana_personagem)
         font = cv2.FONT_HERSHEY_SIMPLEX
@@ -323,7 +323,6 @@ def get_frame():
     frame_display = mostrar_dado_no_frame(frame_display)
     frame_display = hp_val(frame_display)
     frame_display = mana_val(frame_display)
-    #comentado enquanto nn estiver feito
     return frame_display
 if __name__ == '__main__':
     resultado = rolar_dado('d20')
