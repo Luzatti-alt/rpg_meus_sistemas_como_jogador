@@ -322,7 +322,7 @@ def get_frame():
 
     frame_display = mostrar_dado_no_frame(frame_display)
     frame_display = hp_val(frame_display)
-    #frame_display = mana_val(frame_display)
+    frame_display = mana_val(frame_display)
     #comentado enquanto nn estiver feito
     return frame_display
 if __name__ == '__main__':
