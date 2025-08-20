@@ -113,10 +113,11 @@ class TelaPrincipal(Screen):
             size=(300, 100),
             pos= (0, altura / 2 + 125)
             )
-        nomes_personagens_lista = session.query(Ficha.nome_personagem).all()
+        nomes_personagens_tuplas = session.query(Ficha.nome_personagem).all()
+        nomes_personagens_lista = [nome[0] for nome in nomes_personagens_tuplas]
         self.personagem = Spinner(
             text='personagem',
-            values=('ver na ficha db',str(nomes_personagens_lista)),
+            values=(nomes_personagens_lista),
             size_hint=(None, None),
             size=(300, 100),
             pos= (0, altura / 2 + 125)
