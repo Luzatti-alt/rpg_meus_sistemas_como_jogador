@@ -23,6 +23,8 @@ mostrar_explosao = False
 dado_atual_img = None
 dado_atual_num = None
 imagens_dados = {}
+hp_personagem = None
+nome_personagem_atual = None
 def carregar_imagens_dados():
     try:
         # Tente carregar as imagens. Substitua os caminhos de arquivo se necessário.
@@ -55,6 +57,7 @@ def mostrar_dado_no_frame(frame):
         cv2.putText(frame, text, (text_x, text_y), font, font_scale,
                     (255, 255, 255), thickness, cv2.LINE_AA)
     return frame
+
 def rotacionar_camera(direcao):
         global rotacao
         if direcao == 'direita':
@@ -165,6 +168,17 @@ def rolar_dado(tipo_dado):
     return f'Você rolou um {tipo_dado} e o resultado foi {dado_atual_num}!'
 def hp_cal(img):
     hp_img = cv2.imread("imagens/escudo-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+    if hp_personagem is not None and nome_personagem_atual is not None:
+        texto = f"{nome_personagem_atual}: {hp_personagem} HP"
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        font_scale = 1.2
+        thickness = 3
+        text_size, _ = cv2.getTextSize(texto, font, font_scale, thickness)
+        text_x = 20
+        text_y = frame.shape[0] - 40  # aparece embaixo da tela
+        cv2.putText(frame, texto, (text_x, text_y), font, font_scale,
+                    (0, 255, 0), thickness, cv2.LINE_AA)
+    return frame
 def mana_val(img):
     mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
 
