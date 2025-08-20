@@ -112,6 +112,13 @@ class TelaPrincipal(Screen):
             size_hint=(None, None),
             size=(300, 100),
             pos= (0, altura / 2 + 125)
+            )
+        self.personagem = Spinner(
+            text='personagem',
+            values=('ver na ficha db','adicionar'),
+            size_hint=(None, None),
+            size=(300, 100),
+            pos= (0, altura / 2 + 125)
         )
         self.up = Button(text='cima', size_hint=(None, None), size=(150, 100),
                          background_normal="", background_color=(0.2, 0.6, 0.9, 1),
@@ -130,7 +137,7 @@ class TelaPrincipal(Screen):
                                      pos=(0, altura / 2 + 25))
         for widget in [self.criar_ficha, self.d4, self.d6, self.d10, self.d20,
                        self.up, self.down, self.direita, self.esquerda,
-                       self.aplicar_efeito, self.efeitos, self.dano, self.cura]:
+                       self.aplicar_efeito, self.efeitos,self.personagem, self.dano, self.cura]:
             layout.add_widget(widget)
         # Ações dos botões com log
         self.criar_ficha.bind(on_release=lambda x: setattr(self.manager, "current", "criar_ficha"))
@@ -202,10 +209,12 @@ class TelaPrincipal(Screen):
         self.esquerda.pos = (largura/6-25, altura / 4 - 145)
         self.direita.pos = (largura/6-25, altura / 4 - 75)
         self.efeitos.pos = (0, altura / 4 + 155)
+        self.personagem.pos = (largura/6-25, altura / 4 + 155)
         self.aplicar_efeito.pos=(0, altura / 4 + 85)
         # Tamanhos
         self.criar_ficha.size = (largura/8, altura / 12)
         self.efeitos.size = (largura/8, altura / 12)
+        self.personagem.size = (largura/8, altura / 12)
         self.d4.size = (80, altura / 12)
         self.d6.size = (80, altura / 12)
         self.d10.size = (80, altura / 12)
