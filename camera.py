@@ -72,18 +72,21 @@ def mana_val(frame):
     if mana_personagem is not None and nome_personagem_atual is not None and mana_img is not None:
         esc_h, esc_w = mana_img.shape[:2]
         # Redimensiona se for maior que o frame
-        if esc_h > img.shape[0] or esc_w > img.shape[1]:
-            escala = min(img.shape[0] / esc_h, img.shape[1] / esc_w, 0.2)
+        if esc_h > frame.shape[0] or esc_w > frame.shape[1]:
+            escala = min(frame.shape[0] / esc_h, frame.shape[1] / esc_w, 0.2)
             esc_w = int(esc_w * escala)
             esc_h = int(esc_h * escala)
             mana_img = cv2.resize(mana_img, (esc_w, esc_h), interpolation=cv2.INTER_AREA)
-        # Centro desejado do escudo
-        center_x = img.shape[1] - esc_w // 2 - 20
-        center_y = 20 + esc_h // 2
+        # Posição igual ao escudo, mas Y deslocado para baixo
+        center_x = frame.shape[1] - esc_w // 2 - 20
+        # Pega a posição do escudo (usada em hp_val)
+        escudo_img = cv2.imread("imagens/escudo-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+        escudo_h = escudo_img.shape[0] if escudo_img is not None else 0
+        center_y = 20 + escudo_h + esc_h // 2 + 10  # 10 pixels abaixo do escudo
         x_escudo = center_x - esc_w // 2
         y_escudo = center_y - esc_h // 2
-        img = sobrepor_imagem_fundo(img, mana_img, x_escudo, (y_escudo-20))
-        # Número centralizado no escudo
+        frame = sobrepor_imagem_fundo(frame, mana_img, x_escudo, y_escudo)
+        # Número centralizado no escudo de mana
         texto = str(mana_personagem)
         font = cv2.FONT_HERSHEY_SIMPLEX
         font_scale = 1.5
@@ -91,7 +94,7 @@ def mana_val(frame):
         text_size, baseline = cv2.getTextSize(texto, font, font_scale, thickness)
         text_x = center_x - text_size[0] // 2
         text_y = center_y + text_size[1] // 2
-        cv2.putText(img, texto, (text_x, text_y), font, font_scale,
+        cv2.putText(frame, texto, (text_x, text_y), font, font_scale,
                     (255, 255, 255), thickness, cv2.LINE_AA)
     return frame
 def mostrar_dado_no_frame(frame):
