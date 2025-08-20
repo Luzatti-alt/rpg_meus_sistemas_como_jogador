@@ -67,15 +67,15 @@ class TelaPrincipal(Screen):
         self.input_text = TextInput(
             hint_text="Digite aqui...",
             size_hint=(None, None),
-            size=((largura - largura_log - 650)/2, 80)
+            size=((largura - 750)/2, 80)
         )
         self.ip_text = TextInput(
         hint_text="IP:",
         size_hint=(None, None),
-        size=((largura - largura_log - 650)/2-6, 132),
+        size=((largura - 750)/2-6, 132),
         pos=((largura/2)-10, 10)
         )
-        self.confirmar = Button(text='Confirmar', size_hint=(None, None), size=((largura - largura_log - 650)/2, 80),
+        self.confirmar = Button(text='Confirmar', size_hint=(None, None), size=((largura - 750)/2, 80),
                                   background_normal="", background_color=(0.2, 0.6, 0.9, 1),
                                   pos=(0, altura - 100))
         # Adiciona os dois no central_box
@@ -173,43 +173,43 @@ class TelaPrincipal(Screen):
         self.bg_rect.pos = (0, 0)
         # Atualiza log
         largura_log = 300
+        sub_box_width = (largura - 650) / 2
         self.scroll_log.size = (largura_log- 50, altura - 15)
         self.scroll_log.pos = (largura - largura_log +30, 10)
         self.log_bg.size = self.scroll_log.size
         self.log_bg.pos = self.scroll_log.pos
         # Atualiza posição do campo IP
-        self.ip_text.size = ((largura - largura_log - 650) / 2 - 6, 132)
-        self.ip_text.pos = ((largura / 2) - 10, altura/10-40)
+        self.ip_text.size = ((largura - 650) / 2 - 18, 132)
+        self.ip_text.pos = ((largura/3)+sub_box_width-25, altura/10-40)
         # Atualiza confirmar/input_text
-        sub_box_width = (largura - largura_log - 650) / 2
         self.input_text.size = (sub_box_width, altura/10+3.5)
-        self.input_text.pos= (460, altura/5.5-20)
-        self.confirmar.pos = (460, altura/10-40)
+        self.input_text.pos= (largura/3-45, altura/5.5-20)
+        self.confirmar.pos = (largura/3-45, altura/10-40)
         self.confirmar.size = (sub_box_width, altura/10)
         # === Câmera alinhada com input_text e ip_text ===
         self.cam_view.size = (sub_box_width*2,altura/1.5)
-        self.cam_view.pos = (460, altura/4+25)
+        self.cam_view.pos = (largura/3-45, altura/4+25)
         # === Botões ===
         self.criar_ficha.pos = (0, altura / 4 + 395)
         self.d4.pos = (0, altura / 4 + 305)
         self.d6.pos = (0, altura / 4 + 235)
-        self.d10.pos = (180, altura / 4 + 235)
-        self.d20.pos = (180, altura / 4 + 305)
-        self.cura.pos = (170, altura / 4)
+        self.d10.pos = (100, altura / 4 + 235)
+        self.d20.pos = (100, altura / 4 + 305)
+        self.cura.pos = (largura/6-25, altura / 4)
         self.dano.pos = (0, altura / 4)
         self.up.pos = (0, altura / 4 - 75)
         self.down.pos = (0, altura / 4 - 145)
-        self.esquerda.pos = (170, altura / 4 - 145)
-        self.direita.pos = (170, altura / 4 - 75)
+        self.esquerda.pos = (largura/6-25, altura / 4 - 145)
+        self.direita.pos = (largura/6-25, altura / 4 - 75)
         self.efeitos.pos = (0, altura / 4 + 155)
         self.aplicar_efeito.pos=(0, altura / 4 + 85)
         # Tamanhos
         self.criar_ficha.size = (largura/8, altura / 12)
         self.efeitos.size = (largura/8, altura / 12)
-        self.d4.size = (largura/8, altura / 12)
-        self.d6.size = (largura/8, altura / 12)
-        self.d10.size = (largura/8, altura / 12)
-        self.d20.size = (largura/8, altura / 12)
+        self.d4.size = (80, altura / 12)
+        self.d6.size = (80, altura / 12)
+        self.d10.size = (80, altura / 12)
+        self.d20.size = (80, altura / 12)
         self.cura.size = (largura/8, altura / 12)
         self.dano.size = (largura/8, altura / 12)
         self.up.size = (largura/8, altura / 12)
