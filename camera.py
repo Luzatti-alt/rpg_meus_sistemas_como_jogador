@@ -6,9 +6,7 @@ explosao_cap = cv2.VideoCapture("videos/Deltarune Explosion Green Screen(720P_HD
 # ===== Variáveis globais =====
 rotacao = 0
 state = 0
-mana = hp = mana_max = 100
 fichas = []
-ficha_esc = 0
 escurecer_ativo = False
 red_blue_off = False
 hsv_state_red = False
@@ -45,22 +43,25 @@ def hp_val(frame):
     if hp_personagem is not None and nome_personagem_atual is not None and hp_img is not None:
         esc_h, esc_w = hp_img.shape[:2]
         # --- Posição no canto superior direito ---
-        x = frame.shape[1] - esc_w - 20   # 20 px da borda direita
-        y = 40                             # 20 px do topo
-        # --- Sobrepor o escudo no frame ---
+        if esc_h > frame.shape[0] or esc_w > frame.shape[1]:
+            escala = min(frame.shape[0] / esc_h, frame.shape[1] / esc_w, 0.2)
+            esc_w = int(esc_w * escala)
+            esc_h = int(esc_h * escala)
+            hp_img = cv2.resize(hp_img, (esc_w, esc_h), interpolation=cv2.INTER_AREA)
+        x = 310
+        y = -215                            # 20 px do topo
+        print(f"Escudo em x={x}, y={y}, esc_w={esc_w}, esc_h={esc_h}, frame_w={frame.shape[1]}, frame_h={frame.shape[0]}")
         frame = sobrepor_imagem_fundo(frame, hp_img, x, y)
         # --- Calcular centro do escudo ---
         center_x = x + esc_w // 2
         center_y = y + esc_h // 2
-        # --- Escrever o HP no centro corretamente ---
         texto = str(hp_personagem)
         font = cv2.FONT_HERSHEY_SIMPLEX
         font_scale = 2.0
         thickness = 4
         text_size, baseline = cv2.getTextSize(texto, font, font_scale, thickness)
-        # Ajusta para centralizar no escudo
-        text_x = center_x - text_size[0]
-        text_y = center_y + text_size[1]   # Ajuste para baseline
+        text_x = center_x - text_size[0] // 2
+        text_y = center_y + text_size[1] // 2
         cv2.putText(frame, texto, (text_x, text_y), font, font_scale,
                     (255, 255, 255), thickness, cv2.LINE_AA)
     return frame
@@ -301,3 +302,4 @@ if __name__ == '__main__':
 
     rotacionar_camera('direita')
     
+
