@@ -69,7 +69,7 @@ def hp_val(frame):
 def mana_val(img):
     global mana_personagem, nome_personagem_atual
     mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
-    if mana_img is not None and nome_personagem_atual is not None and hp_img is not None:
+    if mana_personagem is not None and nome_personagem_atual is not None and mana_img is not None:
         esc_h, esc_w = hp_img.shape[:2]
         # Redimensiona se for maior que o frame
         if esc_h > frame.shape[0] or esc_w > frame.shape[1]:
