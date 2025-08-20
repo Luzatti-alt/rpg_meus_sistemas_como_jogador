@@ -66,23 +66,23 @@ def hp_val(frame):
         cv2.putText(frame, texto, (text_x, text_y), font, font_scale,
                     (255, 255, 255), thickness, cv2.LINE_AA)
     return frame
-def mana_val(img):
+def mana_val(frame):
     global mana_personagem, nome_personagem_atual
     mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
     if mana_personagem is not None and nome_personagem_atual is not None and mana_img is not None:
         esc_h, esc_w = mana_img.shape[:2]
         # Redimensiona se for maior que o frame
-        if esc_h > frame.shape[0] or esc_w > frame.shape[1]:
-            escala = min(frame.shape[0] / esc_h, frame.shape[1] / esc_w, 0.2)
+        if esc_h > img.shape[0] or esc_w > img.shape[1]:
+            escala = min(img.shape[0] / esc_h, img.shape[1] / esc_w, 0.2)
             esc_w = int(esc_w * escala)
             esc_h = int(esc_h * escala)
             mana_img = cv2.resize(mana_img, (esc_w, esc_h), interpolation=cv2.INTER_AREA)
         # Centro desejado do escudo
-        center_x = frame.shape[1] - esc_w // 2 - 20
+        center_x = img.shape[1] - esc_w // 2 - 20
         center_y = 20 + esc_h // 2
         x_escudo = center_x - esc_w // 2
         y_escudo = center_y - esc_h // 2
-        frame = mana_personagem(frame, mana_img, x_escudo, (y_escudo-20))
+        img = sobrepor_imagem_fundo(img, mana_img, x_escudo, (y_escudo-20))
         # Número centralizado no escudo
         texto = str(mana_personagem)
         font = cv2.FONT_HERSHEY_SIMPLEX
@@ -91,10 +91,9 @@ def mana_val(img):
         text_size, baseline = cv2.getTextSize(texto, font, font_scale, thickness)
         text_x = center_x - text_size[0] // 2
         text_y = center_y + text_size[1] // 2
-        cv2.putText(frame, texto, (text_x, text_y), font, font_scale,
+        cv2.putText(img, texto, (text_x, text_y), font, font_scale,
                     (255, 255, 255), thickness, cv2.LINE_AA)
     return frame
-
 def mostrar_dado_no_frame(frame):
     global dado_atual_img, dado_atual_num
     if dado_atual_img is not None and dado_atual_num is not None:
