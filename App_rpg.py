@@ -174,8 +174,8 @@ class TelaPrincipal(Screen):
         # Atualiza log
         largura_log = 300
         sub_box_width = (largura - 650) / 2
-        self.scroll_log.size = (largura_log- 50, altura - 15)
-        self.scroll_log.pos = (largura - largura_log +30, 10)
+        self.scroll_log.size = (200, altura - 15)
+        self.scroll_log.pos = ((largura/1.25), altura/10-40)
         self.log_bg.size = self.scroll_log.size
         self.log_bg.pos = self.scroll_log.pos
         # Atualiza posição do campo IP
