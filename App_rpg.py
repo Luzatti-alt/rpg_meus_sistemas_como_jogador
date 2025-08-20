@@ -59,6 +59,9 @@ class TelaPrincipal(Screen):
             log_label.bind(size=lambda *x: log_label.setter('text_size')(log_label, (log_label.width, None)))
             self.log_layout.add_widget(log_label)
             self.scroll_log.scroll_y = 0
+        def rolar_e_logar(tipo_dado):
+            resultado = rolar_dado(tipo_dado)
+            add_log(resultado)
         # === ÁREA CENTRAL ===
         # ===================== CAIXA VERDE (CAM) =====================
         self.cam_view = Image(allow_stretch=True, keep_ratio=False,size_hint=(None,None))
@@ -143,10 +146,10 @@ class TelaPrincipal(Screen):
             layout.add_widget(widget)
         # Ações dos botões com log
         self.criar_ficha.bind(on_release=lambda x: setattr(self.manager, "current", "criar_ficha"))
-        self.d4.bind(on_release=lambda x: (rolar_dado('d4'), add_log("Rolou um d4, caiu o numero: " + str(dado_atual_num))))
-        self.d6.bind(on_release=lambda x: (rolar_dado('d6'), add_log("Rolou um d6, caiu o numero: " + str(dado_atual_num))))
-        self.d10.bind(on_release=lambda x: (rolar_dado('d10'), add_log("Rolou um d10, caiu o numero: " + str(dado_atual_num))))
-        self.d20.bind(on_release=lambda x: (rolar_dado('d20'), add_log("Rolou um d20, caiu o numero: " + str(dado_atual_num))))
+        self.d4.bind(on_release=lambda x: rolar_e_logar('d4'))
+        self.d6.bind(on_release=lambda x: rolar_e_logar('d6'))
+        self.d10.bind(on_release=lambda x: rolar_e_logar('d10'))
+        self.d20.bind(on_release=lambda x: rolar_e_logar('d20'))
         self.up.bind(on_release=lambda x: (add_log("Movendo para cima"), rotacionar_camera('cima')))
         self.down.bind(on_release=lambda x: (add_log("Movendo para baixo"), rotacionar_camera('baixo'))) 
         self.direita.bind(on_release=lambda x: (add_log("Movendo para direita"), rotacionar_camera('direita')))
