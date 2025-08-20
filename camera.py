@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import Dados 
 # ===== Configuração de captura =====
 cam = cv2.VideoCapture(0)
 explosao_cap = cv2.VideoCapture("videos/Deltarune Explosion Green Screen(720P_HD).mp4")
@@ -194,6 +193,8 @@ def rolar_dado(tipo_dado):
         def d6(): return random.randint(1,6)
         def d10(): return random.randint(1,10)
         def d20(): return random.randint(1,20)
+
+
         
     if tipo_dado == 'd4':
         dado_atual_num = Dados.d4()
@@ -245,7 +246,6 @@ def aplicar_filtro(nome_filtro):
         walter = True
     elif nome_filtro == 'explosao':
         mostrar_explosao = True
-# ===== Função chamada pelo Kivy =====
 def get_frame():
     global explosao_cap, mostrar_explosao, rotacao
 
