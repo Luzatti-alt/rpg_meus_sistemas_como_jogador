@@ -184,20 +184,22 @@ def hp_val(frame):
         center_x = x + esc_w // 2
         center_y = y + esc_h // 2
 
-        # --- Escrever o HP no centro ---
+        # --- Escrever o HP no centro corretamente ---
         texto = str(hp_personagem)
         font = cv2.FONT_HERSHEY_SIMPLEX
-        font_scale = 2.0   # maior pra destacar
+        font_scale = 2.0
         thickness = 4
-        text_size, _ = cv2.getTextSize(texto, font, font_scale, thickness)
+        text_size, baseline = cv2.getTextSize(texto, font, font_scale, thickness)
 
+        # Ajusta para centralizar no escudo
         text_x = center_x - text_size[0] // 2
-        text_y = center_y + text_size[1] // 2
+        text_y = center_y + text_size[1] // 2 - baseline // 2  # Ajuste para baseline
 
         cv2.putText(frame, texto, (text_x, text_y), font, font_scale,
                     (255, 255, 255), thickness, cv2.LINE_AA)
 
     return frame
+
 
 def mana_val(img):
     mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
