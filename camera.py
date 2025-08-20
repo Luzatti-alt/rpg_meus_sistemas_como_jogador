@@ -49,7 +49,7 @@ def hp_val(frame):
             esc_h = int(esc_h * escala)
             hp_img = cv2.resize(hp_img, (esc_w, esc_h), interpolation=cv2.INTER_AREA)
         x = 310
-        y = -215                            # 20 px do topo
+        y = -215
         print(f"Escudo em x={x}, y={y}, esc_w={esc_w}, esc_h={esc_h}, frame_w={frame.shape[1]}, frame_h={frame.shape[0]}")
         frame = sobrepor_imagem_fundo(frame, hp_img, x, y)
         # --- Calcular centro do escudo ---
