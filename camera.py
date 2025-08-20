@@ -22,6 +22,7 @@ dado_atual_img = None
 dado_atual_num = None
 imagens_dados = {}
 hp_personagem = None
+mana_personagem = None
 nome_personagem_atual = None
 def carregar_imagens_dados():
     try:
@@ -57,14 +58,43 @@ def hp_val(frame):
         # Número centralizado no escudo
         texto = str(hp_personagem)
         font = cv2.FONT_HERSHEY_SIMPLEX
-        font_scale = 2.0
-        thickness = 4
+        font_scale = 1.5
+        thickness = 3
         text_size, baseline = cv2.getTextSize(texto, font, font_scale, thickness)
         text_x = center_x - text_size[0] // 2
         text_y = center_y + text_size[1] // 2
         cv2.putText(frame, texto, (text_x, text_y), font, font_scale,
                     (255, 255, 255), thickness, cv2.LINE_AA)
     return frame
+def mana_val(img):
+    global mana_personagem, nome_personagem_atual
+    mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
+    if mana_img is not None and nome_personagem_atual is not None and hp_img is not None:
+        esc_h, esc_w = hp_img.shape[:2]
+        # Redimensiona se for maior que o frame
+        if esc_h > frame.shape[0] or esc_w > frame.shape[1]:
+            escala = min(frame.shape[0] / esc_h, frame.shape[1] / esc_w, 0.2)
+            esc_w = int(esc_w * escala)
+            esc_h = int(esc_h * escala)
+            hp_img = cv2.resize(hp_img, (esc_w, esc_h), interpolation=cv2.INTER_AREA)
+        # Centro desejado do escudo
+        center_x = frame.shape[1] - esc_w // 2 - 20
+        center_y = 20 + esc_h // 2
+        x_escudo = center_x - esc_w // 2
+        y_escudo = center_y - esc_h // 2
+        frame = sobrepor_imagem_fundo(frame, hp_img, x_escudo, y_escudo)
+        # Número centralizado no escudo
+        texto = str(hp_personagem)
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        font_scale = 1.5
+        thickness = 3
+        text_size, baseline = cv2.getTextSize(texto, font, font_scale, thickness)
+        text_x = center_x - text_size[0] // 2
+        text_y = center_y + text_size[1] // 2
+        cv2.putText(frame, texto, (text_x, text_y), font, font_scale,
+                    (255, 255, 255), thickness, cv2.LINE_AA)
+    return frame
+
 def mostrar_dado_no_frame(frame):
     global dado_atual_img, dado_atual_num
     if dado_atual_img is not None and dado_atual_num is not None:
@@ -192,10 +222,6 @@ def rolar_dado(tipo_dado):
         dado_atual_img = imagens_dados['d20']
     # Retorna o resultado da rolagem.
     return f'Você rolou um {tipo_dado} e o resultado foi {dado_atual_num}!'
-
-
-def mana_val(img):
-    mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
 
 # ===== Adicionando a função para aplicar o filtro =====
 def aplicar_filtro(nome_filtro):
