@@ -70,19 +70,19 @@ def mana_val(img):
     global mana_personagem, nome_personagem_atual
     mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
     if mana_personagem is not None and nome_personagem_atual is not None and mana_img is not None:
-        esc_h, esc_w = hp_img.shape[:2]
+        esc_h, esc_w = mana_img.shape[:2]
         # Redimensiona se for maior que o frame
         if esc_h > frame.shape[0] or esc_w > frame.shape[1]:
             escala = min(frame.shape[0] / esc_h, frame.shape[1] / esc_w, 0.2)
             esc_w = int(esc_w * escala)
             esc_h = int(esc_h * escala)
-            hp_img = cv2.resize(hp_img, (esc_w, esc_h), interpolation=cv2.INTER_AREA)
+            mana_img = cv2.resize(mana_img, (esc_w, esc_h), interpolation=cv2.INTER_AREA)
         # Centro desejado do escudo
         center_x = frame.shape[1] - esc_w // 2 - 20
         center_y = 20 + esc_h // 2
         x_escudo = center_x - esc_w // 2
         y_escudo = center_y - esc_h // 2
-        frame = sobrepor_imagem_fundo(frame, hp_img, x_escudo, y_escudo)
+        frame = sobrepor_imagem_fundo(frame, mana_img, x_escudo, (y_escudo-20))
         # Número centralizado no escudo
         texto = str(hp_personagem)
         font = cv2.FONT_HERSHEY_SIMPLEX
