@@ -173,18 +173,18 @@ class TelaPrincipal(Screen):
         self.bg_rect.pos = (0, 0)
         # Atualiza log
         largura_log = 300
-        self.scroll_log.size = (largura_log, altura - 15)
-        self.scroll_log.pos = (largura - largura_log - 10, 10)
+        self.scroll_log.size = (largura_log- 50, altura - 15)
+        self.scroll_log.pos = (largura - largura_log +30, 10)
         self.log_bg.size = self.scroll_log.size
         self.log_bg.pos = self.scroll_log.pos
         # Atualiza posição do campo IP
         self.ip_text.size = ((largura - largura_log - 650) / 2 - 6, 132)
-        self.ip_text.pos = ((largura / 2) - 10, altura/10)
+        self.ip_text.pos = ((largura / 2) - 10, altura/10-40)
         # Atualiza confirmar/input_text
         sub_box_width = (largura - largura_log - 650) / 2
-        self.input_text.size = (sub_box_width, altura/10)
-        self.input_text.pos= (460, altura/5.5)
-        self.confirmar.pos = (460, altura/10)
+        self.input_text.size = (sub_box_width, altura/10+3.5)
+        self.input_text.pos= (460, altura/5.5-20)
+        self.confirmar.pos = (460, altura/10-40)
         self.confirmar.size = (sub_box_width, altura/10)
         # === Câmera alinhada com input_text e ip_text ===
         self.cam_view.size = (sub_box_width*2,altura/1.5)
@@ -193,8 +193,8 @@ class TelaPrincipal(Screen):
         self.criar_ficha.pos = (0, altura / 4 + 395)
         self.d4.pos = (0, altura / 4 + 305)
         self.d6.pos = (0, altura / 4 + 235)
-        self.d10.pos = (170, altura / 4 + 235)
-        self.d20.pos = (170, altura / 4 + 305)
+        self.d10.pos = (180, altura / 4 + 235)
+        self.d20.pos = (180, altura / 4 + 305)
         self.cura.pos = (170, altura / 4)
         self.dano.pos = (0, altura / 4)
         self.up.pos = (0, altura / 4 - 75)
