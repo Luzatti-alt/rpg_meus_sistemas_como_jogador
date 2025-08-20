@@ -169,6 +169,7 @@ class TelaPrincipal(Screen):
     def atualizar_hp_personagem(self, spinner, text):
             ficha = session.query(Ficha).filter_by(nome_personagem=text).first()
             if ficha:
+                camera.mana_personagem = ficha.mana_atual
                 camera.hp_personagem = ficha.hp_atual
                 camera.nome_personagem_atual = text
     def update_bg(self, *args):
