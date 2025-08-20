@@ -82,9 +82,9 @@ def mana_val(img):
         center_y = 20 + esc_h // 2
         x_escudo = center_x - esc_w // 2
         y_escudo = center_y - esc_h // 2
-        frame = sobrepor_imagem_fundo(frame, mana_img, x_escudo, (y_escudo-20))
+        frame = mana_personagem(frame, mana_img, x_escudo, (y_escudo-20))
         # Número centralizado no escudo
-        texto = str(hp_personagem)
+        texto = str(mana_personagem)
         font = cv2.FONT_HERSHEY_SIMPLEX
         font_scale = 1.5
         thickness = 3
