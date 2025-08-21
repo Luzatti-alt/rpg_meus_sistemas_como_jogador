@@ -93,7 +93,7 @@ def mana_val(frame):
         text_size, baseline = cv2.getTextSize(texto, font, font_scale, thickness)
         text_x = center_x - text_size[0] // 2
         text_y = center_y + text_size[1] // 2
-        cv2.putText(frame, texto, (text_x, text_y), font, font_scale,
+        cv2.putText(frame, texto, (text_x+160, text_y), font, font_scale,
                     (255, 255, 255), thickness, cv2.LINE_AA)
     return frame
 def mostrar_dado_no_frame(frame):
