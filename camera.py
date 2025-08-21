@@ -75,12 +75,13 @@ def mana_val(frame):
         escudo_h, escudo_w = escudo_img.shape[:2]
         mana_h, mana_w = mana_img.shape[:2]
         max_w = min(frame.shape[1], escudo_w, mana_w)
-        max_h = min(frame.shape[0] // 6, escudo_h, mana_h)  # limitar altura para caber os dois
+        max_h = min(frame.shape[0] // 4, escudo_h, mana_h)  # limitar altura para caber os dois
         escudo_img = cv2.resize(escudo_img, (max_w, max_h), interpolation=cv2.INTER_AREA)
         mana_img = cv2.resize(mana_img, (max_w, max_h), interpolation=cv2.INTER_AREA)
-        # Posição: mesmo X do escudo, Y logo abaixo do escudo
+        # Centraliza horizontalmente com o escudo de HP
         center_x = frame.shape[1] - max_w // 2 - 20
-        center_y = 20 + max_h + max_h // 2 + 10  # 10 px abaixo do escudo
+        # Mais afastado para baixo (aumente o valor 40 para descer mais)
+        center_y = 20 + max_h + max_h // 2  # 40 px abaixo do escudo de HP
         x_mana = center_x - max_w // 2
         y_mana = center_y - max_h // 2
         frame = sobrepor_imagem_fundo(frame, mana_img, x_mana, y_mana)
