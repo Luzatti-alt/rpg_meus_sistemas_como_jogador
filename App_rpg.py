@@ -111,6 +111,9 @@ class TelaPrincipal(Screen):
         self.dano = Button(text='Dano', size_hint=(None, None), size=(150, 100),
                            background_normal="", background_color=(0.2, 0.6, 0.9, 1),
                            pos=(0, altura / 2 - 75))
+        self.magia = Button(text='Magia', size_hint=(None, None), size=(150, 100),
+                           background_normal="", background_color=(0.2, 0.6, 0.9, 1),
+                           pos=(0, altura / 2 - 75))
         self.efeitos = Spinner(
             text='Efeito a ser aplicado',
             values=('desativar', 'normal', 'vermelho', 'verde', 'azul', 'policia',
@@ -143,7 +146,7 @@ class TelaPrincipal(Screen):
         self.aplicar_efeito = Button(text='Aplicar efeito', size_hint=(None, None), size=(300, 100),
                                      background_normal="", background_color=(0.2, 0.6, 0.9, 1),
                                      pos=(0, altura / 2 + 25))
-        for widget in [self.criar_ficha, self.d4, self.d6, self.d10, self.d20,
+        for widget in [self.criar_ficha,self.magia, self.d4, self.d6, self.d10, self.d20,
                        self.up, self.down, self.direita, self.esquerda,
                        self.aplicar_efeito, self.efeitos,self.personagem, self.dano, self.cura]:
             layout.add_widget(widget)
@@ -219,12 +222,13 @@ class TelaPrincipal(Screen):
         self.d20.pos = (100, altura / 4 + 335)
         self.cura.pos = (largura/6-25, altura / 4+60)
         self.dano.pos = (0, altura / 4+60)
+        self.magia.pos = (0, altura / 4)
         self.up.pos = (0, altura / 4 - 85)
         self.down.pos = (0, altura / 4 - 145)
         self.esquerda.pos = (largura/6-25, altura / 4 - 145)
         self.direita.pos = (largura/6-25, altura / 4 - 85)
         self.efeitos.pos = (0, altura / 4 + 195)
-        self.personagem.pos = (largura/6-25, altura / 4 + 195)
+        self.personagem.pos = (largura/6-25, altura / 4 + 400)
         self.aplicar_efeito.pos=(0, altura / 4 + 130)
         # Tamanhos
         self.criar_ficha.size = (largura/8, altura / 12)
@@ -236,6 +240,7 @@ class TelaPrincipal(Screen):
         self.d20.size = (80, altura / 12)
         self.cura.size = (largura/8, altura / 12)
         self.dano.size = (largura/8, altura / 12)
+        self.magia.size = (largura/8, altura / 12)
         self.up.size = (largura/8, altura / 14)
         self.down.size = (largura/8, altura / 14)
         self.esquerda.size = (largura/8, altura / 14)
