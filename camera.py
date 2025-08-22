@@ -1,9 +1,11 @@
 import cv2
 import numpy as np
 # ===== Configuração de captura =====
-cam = cv2.VideoCapture(0)
+# Tenta usar o backend DirectShow para resolver o erro.
+cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 explosao_cap = cv2.VideoCapture("videos/Deltarune Explosion Green Screen(720P_HD).mp4")
 sj_aura = cv2.VideoCapture("videos/DBZ Super Saiyan Aura Green Screen Effect (CREDIT TO JMKREBS30)(720P_HD).mp4")
+
 # ===== Variáveis globais =====
 rotacao = 0
 state = 0
@@ -19,13 +21,14 @@ walter = False
 pixelar_ativo = False
 negativo_ativo = False
 mostrar_explosao = False
-ssJ_aura_show = False
+ssj_aura_show = False
 dado_atual_img = None
 dado_atual_num = None
 imagens_dados = {}
 hp_personagem = None
 mana_personagem = None
 nome_personagem_atual = None
+
 def carregar_imagens_dados():
     try:
         # Tente carregar as imagens. Substitua os caminhos de arquivo se necessário.
@@ -39,7 +42,7 @@ def carregar_imagens_dados():
 # Chame esta função na inicialização para pré-carregar as imagens.
 carregar_imagens_dados()
 
-# ===== Funções =====
+# ===== Funções de UI (User Interface) =====
 def hp_val(frame):
     global hp_personagem, nome_personagem_atual
     hp_img = cv2.imread("imagens/escudo-removebg-preview.png", cv2.IMREAD_UNCHANGED)
@@ -68,6 +71,7 @@ def hp_val(frame):
         cv2.putText(frame, texto, (text_x, text_y), font, font_scale,
                     (255, 255, 255), thickness, cv2.LINE_AA)
     return frame
+
 def mana_val(frame):
     global mana_personagem, nome_personagem_atual
     mana_img = cv2.imread("imagens/mana-removebg-preview.png", cv2.IMREAD_UNCHANGED)
@@ -95,9 +99,10 @@ def mana_val(frame):
         text_size, baseline = cv2.getTextSize(texto, font, font_scale, thickness)
         text_x = center_x - text_size[0] // 2
         text_y = center_y + text_size[1] // 2
-        cv2.putText(frame, texto, (text_x+160, text_y), font, font_scale,
+        cv2.putText(frame, texto, (text_x + 160, text_y), font, font_scale,
                     (255, 255, 255), thickness, cv2.LINE_AA)
     return frame
+
 def mostrar_dado_no_frame(frame):
     global dado_atual_img, dado_atual_num
     if dado_atual_img is not None and dado_atual_num is not None:
@@ -117,16 +122,6 @@ def mostrar_dado_no_frame(frame):
                     (255, 255, 255), thickness, cv2.LINE_AA)
     return frame
 
-def rotacionar_camera(direcao):
-        global rotacao
-        if direcao == 'direita':
-            rotacao = 90
-        elif direcao == 'esquerda':
-            rotacao = 270
-        elif direcao == "baixo":  # Alteração necessária
-            rotacao = 180
-        elif direcao == "cima":   # Alteração necessária
-            rotacao = 0
 def sobrepor_imagem_fundo(frame, imagem, x, y):
     h, w = imagem.shape[:2]
     if y + h > frame.shape[0] or x + w > frame.shape[1]:
@@ -149,7 +144,78 @@ def remover_fundo_verde(frame_video):
     frame_video_sem_fundo = cv2.bitwise_and(frame_video, frame_video, mask=mask_inv)
     return frame_video_sem_fundo, mask_inv
 
-# ==== Filtros ====
+# ==== Funções de Controle (para os botões) ====
+
+def rolar_dado(tipo_dado):
+    global dado_atual_img, dado_atual_num
+    import random
+    class Dados:
+        def d4(): return random.randint(1,4)
+        def d6(): return random.randint(1,6)
+        def d10(): return random.randint(1,10)
+        def d20(): return random.randint(1,20)
+    if tipo_dado == 'd4':
+        dado_atual_num = Dados.d4()
+        dado_atual_img = imagens_dados['d4']
+    elif tipo_dado == 'd6':
+        dado_atual_num = Dados.d6()
+        dado_atual_img = imagens_dados['d6']
+    elif tipo_dado == 'd10':
+        dado_atual_num = Dados.d10()
+        dado_atual_img = imagens_dados['d10']
+    elif tipo_dado == 'd20':
+        dado_atual_num = Dados.d20()
+        dado_atual_img = imagens_dados['d20']
+    return f'Você rolou um {tipo_dado} e o resultado foi {dado_atual_num}!'
+
+def rotacionar_camera(direcao):
+    global rotacao
+    if direcao == 'direita':
+        rotacao = 90
+    elif direcao == 'esquerda':
+        rotacao = 270
+    elif direcao == "baixo":
+        rotacao = 180
+    elif direcao == "cima":
+        rotacao = 0
+
+def aplicar_filtro(nome_filtro):
+    global hsv_state_red, hsv_state_blue, hsv_state_green, pixelar_ativo, negativo_ativo, escurecer_ativo, police, walter, mostrar_explosao, ssj_aura_show
+    # Desativa todos os efeitos primeiro
+    hsv_state_red = False
+    hsv_state_blue = False
+    hsv_state_green = False
+    pixelar_ativo = False
+    negativo_ativo = False
+    escurecer_ativo = False
+    police = False
+    walter = False
+    mostrar_explosao = False
+    ssj_aura_show = False
+    
+    # Ativa o efeito selecionado
+    if nome_filtro == 'vermelho':
+        hsv_state_red = True
+    elif nome_filtro == 'azul':
+        hsv_state_blue = True
+    elif nome_filtro == 'verde':
+        hsv_state_green = True
+    elif nome_filtro == 'pixelar':
+        pixelar_ativo = True
+    elif nome_filtro == 'invertido':
+        negativo_ativo = True
+    elif nome_filtro == 'escurecido':
+        escurecer_ativo = True
+    elif nome_filtro == 'policia':
+        police = True
+    elif nome_filtro == 'laranja':
+        walter = True
+    elif nome_filtro == 'explosao':
+        mostrar_explosao = True
+    elif nome_filtro == 'ssj aura': # Alterado para corresponder ao spinner
+        ssj_aura_show = True
+
+# ==== Filtros (lógica de processamento de imagem) ====
 def pixelar(img):
     altura, largura = img.shape[:2]
     pequeno = cv2.resize(img, (32, 24), interpolation=cv2.INTER_LINEAR)
@@ -201,78 +267,24 @@ def filtro_walter(img):
     hsv_mod = cv2.merge([h, s, v])
     return cv2.cvtColor(hsv_mod, cv2.COLOR_HSV2BGR)
 
-# ===== Funções para a rotação e rolagem de dados =====
-
-def rolar_dado(tipo_dado):
-    global dado_atual_img, dado_atual_num  
-    import random
-    class Dados:
-        def d4(): return random.randint(1,4)
-        def d6(): return random.randint(1,6)
-        def d10(): return random.randint(1,10)
-        def d20(): return random.randint(1,20)    
-    if tipo_dado == 'd4':
-        dado_atual_num = Dados.d4()
-        dado_atual_img = imagens_dados['d4']
-    elif tipo_dado == 'd6':
-        dado_atual_num = Dados.d6()
-        dado_atual_img = imagens_dados['d6']
-    elif tipo_dado == 'd10':
-        dado_atual_num = Dados.d10()
-        dado_atual_img = imagens_dados['d10']
-    elif tipo_dado == 'd20':
-        dado_atual_num = Dados.d20()
-        dado_atual_img = imagens_dados['d20']
-    # Retorna o resultado da rolagem.
-    return f'Você rolou um {tipo_dado} e o resultado foi {dado_atual_num}!'
-
-# ===== Adicionando a função para aplicar o filtro =====
-def aplicar_filtro(nome_filtro):
-    global hsv_state_red, hsv_state_blue, hsv_state_green, pixelar_ativo, negativo_ativo, escurecer_ativo, police, walter, mostrar_explosao
-    # Desativa todos os efeitos primeiro
-    hsv_state_red = False
-    hsv_state_blue = False
-    hsv_state_green = False
-    pixelar_ativo = False
-    negativo_ativo = False
-    escurecer_ativo = False
-    police = False
-    walter = False
-    mostrar_explosao = False
-    # Ativa o efeito selecionado
-    if nome_filtro == 'vermelho':
-        hsv_state_red = True
-    elif nome_filtro == 'azul':
-        hsv_state_blue = True
-    elif nome_filtro == 'verde':
-        hsv_state_green = True
-    elif nome_filtro == 'pixelar':
-        pixelar_ativo = True
-    elif nome_filtro == 'invertido':
-        negativo_ativo = True
-    elif nome_filtro == 'escurecido':
-        escurecer_ativo = True
-    elif nome_filtro == 'policia':
-        police = True
-    elif nome_filtro == 'laranja':
-        walter = True
-    elif nome_filtro == 'explosao':
-        mostrar_explosao = True
+# ===== Função principal para obter o quadro da câmara e aplicar efeitos =====
 def get_frame():
-    global explosao_cap, mostrar_explosao, rotacao, ssj_aura_show
+    global explosao_cap, mostrar_explosao, rotacao, sj_aura, ssj_aura_show, police_contador
     ret_cam, frame = cam.read()
     if not ret_cam:
         return None
+    
+    # Rotação da câmera
     if rotacao != 0:
         (h, w) = frame.shape[:2]
         (cx, cy) = (w // 2, h // 2)
         M = cv2.getRotationMatrix2D((cx, cy), rotacao, 1.0)
         frame = cv2.warpAffine(frame, M, (w, h))
-    # Rotação
+        
     frame_display = frame.copy()
-    # Filtros
+
+    # Lógica para os filtros
     if police and not red_blue_off:
-        global police_contador
         police_contador += 1
         if police_contador % 30 < 15:
             frame_display = vermelho(frame_display)
@@ -293,54 +305,41 @@ def get_frame():
             frame_display = negativo(frame_display)
         if escurecer_ativo:
             frame_display = escurecer(frame_display)
-        if mostrar_explosao:
-            ret_exp, frame_exp = explosao_cap.read()
-            if not ret_exp:
-                explosao_cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
-                mostrar_explosao = False
-            else:
-                frame_h, frame_w = frame_display.shape[:2]
-                frame_exp = cv2.resize(frame_exp, (639, 479))  # Redimensiona a explosão
-                frame_exp_sem_fundo, mask_inv = remover_fundo_verde(frame_exp)
-                h, w = frame_exp.shape[:2]
-                x_offset = (frame_w - w) // 2
-                y_offset = (frame_h - h) // 2
-                # Garante que não vamos acessar fora dos limites do frame
-                if y_offset + h > frame_display.shape[0] or x_offset + w > frame_display.shape[1]:
-                    print("Erro: explosão fora dos limites da tela")
-                    return frame_display
-                roi = frame_display[y_offset:y_offset+h, x_offset:x_offset+w]
-                # Garante que a máscara tem o mesmo tamanho do ROI
-                if mask_inv.shape[:2] != roi.shape[:2]:
-                    mask_inv = cv2.resize(mask_inv, (roi.shape[1], roi.shape[0]))   
-                bg = cv2.bitwise_and(roi, roi, mask=cv2.bitwise_not(mask_inv))
-                fg = cv2.bitwise_and(frame_exp, frame_exp, mask=mask_inv)
-                combinada = cv2.add(bg, fg)
-                frame_display[y_offset:y_offset+h, x_offset:x_offset+w] = combinada
-        if ssj_aura_show:
-            ret_exp, frame_exp = sj_aura.read()
-            if not ret_exp:
-                sj_aura.set(cv2.CAP_PROP_POS_FRAMES, 0)
-                ssJ_aura_show = False
-            else:
-                frame_h, frame_w = frame_display.shape[:2]
-                frame_exp = cv2.resize(frame_exp, (639, 479))  # Redimensiona a explosão
-                frame_exp_sem_fundo, mask_inv = remover_fundo_verde(frame_exp)
-                h, w = frame_exp.shape[:2]
-                x_offset = (frame_w - w) // 2
-                y_offset = (frame_h - h) // 2
-                # Garante que não vamos acessar fora dos limites do frame
-                if y_offset + h > frame_display.shape[0] or x_offset + w > frame_display.shape[1]:
-                    print("Erro: ssj aura fora dos limites da tela")
-                    return frame_display
-                roi = frame_display[y_offset:y_offset+h, x_offset:x_offset+w]
-                # Garante que a máscara tem o mesmo tamanho do ROI
-                if mask_inv.shape[:2] != roi.shape[:2]:
-                    mask_inv = cv2.resize(mask_inv, (roi.shape[1], roi.shape[0]))   
-                bg = cv2.bitwise_and(roi, roi, mask=cv2.bitwise_not(mask_inv))
-                fg = cv2.bitwise_and(frame_exp, frame_exp, mask=mask_inv)
-                combinada = cv2.add(bg, fg)
-                frame_display[y_offset:y_offset+h, x_offset:x_offset+w] = combinada
+
+    # Lógica para os vídeos de fundo verde
+    if mostrar_explosao:
+        ret_exp, frame_exp = explosao_cap.read()
+        if not ret_exp:
+            explosao_cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            mostrar_explosao = False
+        else:
+            frame_h, frame_w = frame_display.shape[:2]
+            frame_exp = cv2.resize(frame_exp, (frame_w, frame_h))
+            frame_exp_sem_fundo, mask_inv = remover_fundo_verde(frame_exp)
+            
+            roi = frame_display[0:frame_h, 0:frame_w]
+            bg = cv2.bitwise_and(roi, roi, mask=cv2.bitwise_not(mask_inv))
+            fg = cv2.bitwise_and(frame_exp, frame_exp, mask=mask_inv)
+            combinada = cv2.add(bg, fg)
+            frame_display[0:frame_h, 0:frame_w] = combinada
+    
+    if ssj_aura_show:
+        ret_aura, frame_aura = sj_aura.read()
+        if not ret_aura:
+            sj_aura.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            ssj_aura_show = False
+        else:
+            frame_h, frame_w = frame_display.shape[:2]
+            frame_aura = cv2.resize(frame_aura, (frame_w, frame_h))
+            frame_aura_sem_fundo, mask_inv_aura = remover_fundo_verde(frame_aura)
+
+            roi_aura = frame_display[0:frame_h, 0:frame_w]
+            bg_aura = cv2.bitwise_and(roi_aura, roi_aura, mask=cv2.bitwise_not(mask_inv_aura))
+            fg_aura = cv2.bitwise_and(frame_aura, frame_aura, mask=mask_inv_aura)
+            combinada_aura = cv2.add(bg_aura, fg_aura)
+            frame_display[0:frame_h, 0:frame_w] = combinada_aura
+            
+    # Lógica final de exibição da UI
     if state == 2:
         frame_display = cv2.cvtColor(frame_display, cv2.COLOR_BGR2GRAY)
         frame_display = cv2.cvtColor(frame_display, cv2.COLOR_GRAY2BGR)
@@ -348,10 +347,24 @@ def get_frame():
     frame_display = mostrar_dado_no_frame(frame_display)
     frame_display = hp_val(frame_display)
     frame_display = mana_val(frame_display)
-    return frame_display
-if __name__ == '__main__':
-    resultado = rolar_dado('d20')
-
-    rotacionar_camera('direita')
     
+    return frame_display
 
+if __name__ == '__main__':
+    # Este é um exemplo de como a lógica de controlo pode ser usada.
+    # No seu programa principal, você pode chamar estas funções.
+    resultado = rolar_dado('d20')
+    print(resultado)
+    
+    # Ativa o filtro de aura Super Saiyan
+    aplicar_filtro('aura_ssj')
+    
+    while True:
+        frame = get_frame()
+        if frame is not None:
+            cv2.imshow('Câmera com Efeitos', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cam.release()
+    cv2.destroyAllWindows()
