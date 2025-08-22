@@ -259,7 +259,7 @@ def aplicar_filtro(nome_filtro):
     elif nome_filtro == 'explosao':
         mostrar_explosao = True
 def get_frame():
-    global explosao_cap, mostrar_explosao, rotacao
+    global explosao_cap, mostrar_explosao, rotacao, ssj_aura_show
     ret_cam, frame = cam.read()
     if not ret_cam:
         return None
@@ -317,8 +317,8 @@ def get_frame():
                 fg = cv2.bitwise_and(frame_exp, frame_exp, mask=mask_inv)
                 combinada = cv2.add(bg, fg)
                 frame_display[y_offset:y_offset+h, x_offset:x_offset+w] = combinada
-        if ssj_aura:
-            ret_exp, frame_exp = explosao_cap.read()
+        if ssj_aura_show:
+            ret_exp, frame_exp = sj_aura.read()
             if not ret_exp:
                 sj_aura.set(cv2.CAP_PROP_POS_FRAMES, 0)
                 ssJ_aura_show = False
@@ -331,7 +331,7 @@ def get_frame():
                 y_offset = (frame_h - h) // 2
                 # Garante que não vamos acessar fora dos limites do frame
                 if y_offset + h > frame_display.shape[0] or x_offset + w > frame_display.shape[1]:
-                    print("Erro: explosão fora dos limites da tela")
+                    print("Erro: ssj aura fora dos limites da tela")
                     return frame_display
                 roi = frame_display[y_offset:y_offset+h, x_offset:x_offset+w]
                 # Garante que a máscara tem o mesmo tamanho do ROI
