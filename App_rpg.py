@@ -117,7 +117,7 @@ class TelaPrincipal(Screen):
         self.efeitos = Spinner(
             text='Efeito a ser aplicado',
             values=('desativar', 'normal', 'vermelho', 'verde', 'azul', 'policia',
-                    'noir', 'laranja', 'invertido', 'escurecido', 'explosao', 'pixelar'),
+                    'noir', 'laranja', 'invertido', 'escurecido','ssj aura', 'explosao', 'pixelar'),
             size_hint=(None, None),
             size=(300, 100),
             pos= (0, altura / 2 + 125)
