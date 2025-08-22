@@ -3,6 +3,7 @@ import numpy as np
 # ===== Configuração de captura =====
 cam = cv2.VideoCapture(0)
 explosao_cap = cv2.VideoCapture("videos/Deltarune Explosion Green Screen(720P_HD).mp4")
+sj_aura = cv2.VideoCapture("videos/DBZ Super Saiyan Aura Green Screen Effect (CREDIT TO JMKREBS30)(720P_HD).mp4")
 # ===== Variáveis globais =====
 rotacao = 0
 state = 0
@@ -18,6 +19,7 @@ walter = False
 pixelar_ativo = False
 negativo_ativo = False
 mostrar_explosao = False
+ssJ_aura_show = False
 dado_atual_img = None
 dado_atual_num = None
 imagens_dados = {}
@@ -296,6 +298,30 @@ def get_frame():
             if not ret_exp:
                 explosao_cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
                 mostrar_explosao = False
+            else:
+                frame_h, frame_w = frame_display.shape[:2]
+                frame_exp = cv2.resize(frame_exp, (639, 479))  # Redimensiona a explosão
+                frame_exp_sem_fundo, mask_inv = remover_fundo_verde(frame_exp)
+                h, w = frame_exp.shape[:2]
+                x_offset = (frame_w - w) // 2
+                y_offset = (frame_h - h) // 2
+                # Garante que não vamos acessar fora dos limites do frame
+                if y_offset + h > frame_display.shape[0] or x_offset + w > frame_display.shape[1]:
+                    print("Erro: explosão fora dos limites da tela")
+                    return frame_display
+                roi = frame_display[y_offset:y_offset+h, x_offset:x_offset+w]
+                # Garante que a máscara tem o mesmo tamanho do ROI
+                if mask_inv.shape[:2] != roi.shape[:2]:
+                    mask_inv = cv2.resize(mask_inv, (roi.shape[1], roi.shape[0]))   
+                bg = cv2.bitwise_and(roi, roi, mask=cv2.bitwise_not(mask_inv))
+                fg = cv2.bitwise_and(frame_exp, frame_exp, mask=mask_inv)
+                combinada = cv2.add(bg, fg)
+                frame_display[y_offset:y_offset+h, x_offset:x_offset+w] = combinada
+        if ssj_aura:
+            ret_exp, frame_exp = explosao_cap.read()
+            if not ret_exp:
+                sj_aura.set(cv2.CAP_PROP_POS_FRAMES, 0)
+                ssJ_aura_show = False
             else:
                 frame_h, frame_w = frame_display.shape[:2]
                 frame_exp = cv2.resize(frame_exp, (639, 479))  # Redimensiona a explosão
